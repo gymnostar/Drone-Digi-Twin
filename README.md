@@ -88,13 +88,7 @@ Therefore, simplify geometry for CFD while retaining relevant details for RF pro
 | Python | 3.9.13 (local Windows environment) | Simulation integration and mission planning |
 | Project AirSim Python Client | 1.0.2 (`projectairsim==1.0.2`) | Python API for drone control and simulation |
 | NumPy | 2.0.2 | Numerical computing |
-| OpenCV | 5.0.0.93 | Image processing |
 | Matplotlib | 3.9.4 | Data visualization |
-| Shapely | 2.0.7 | Geometric operations |
-| pynng | 0.9.0 | Communication between Python client and simulator |
-| msgpack | 1.1.2 | Data serialization |
-| Azure Core | 1.39.0 | Azure service integration |
-| Azure Storage Blob | 12.30.3 | Cloud storage integration |
 | Unreal Engine | 5.7 | 3D simulation environment |
 | Project AirSim | 1.0.1 (local installation) | Autonomous drone simulation |
 | ParaView | To be confirmed | CFD post-processing |
