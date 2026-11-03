@@ -95,3 +95,14 @@ Therefore, simplify geometry for CFD while retaining relevant details for RF pro
 
 *Note: Project AirSim simulator (1.0.1) and Python client (1.0.2) have separate version numbers.*
 **Long-term objective:** Integrate CFD wind fields, RF propagation maps, and autonomous mission planning into a digital twin for energy-aware drone navigation in complex environments.
+
+
+## Munich work
+
+Fausto contributed the `FröttmaningFreimann/` folder:
+
+- [FröttmaningFreimann/scene/qgis/](FröttmaningFreimann/scene/qgis/README.md): the full Munich environment. Open `Frottmaning_Freimann_3D.qgz` in QGIS.
+- [Site reference image](FröttmaningFreimann/scene/crop-reference.png): possible areas for future work; an illustration, not active QGIS scenes.
+- [FröttmaningFreimann/scene/scripts/](FröttmaningFreimann/scene/scripts/): scripts to rebuild the geographic scene from raw data.
+- [FröttmaningFreimann/wind-review/](FröttmaningFreimann/wind-review/): the retired wind test. View `review.png`, or use `Open Review.command` on macOS for ParaView.
+- [FröttmaningFreimann/NOTES.md](FröttmaningFreimann/NOTES.md): Fausto's Project 3 outline, work review, assumptions and next steps.

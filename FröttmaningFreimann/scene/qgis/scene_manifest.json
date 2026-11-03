@@ -1,0 +1,496 @@
+{
+  "crs": "EPSG:25832",
+  "vertical_datum": "DHHN2016 NH (metres)",
+  "extent_utm32": [
+    694000.0,
+    5342000.0,
+    698000.0,
+    5345000.0
+  ],
+  "area_km2": 12.0,
+  "dem_resolution_m": 1,
+  "dem_size_pixels": [
+    4000,
+    3000
+  ],
+  "dem_min_max_m": [
+    477.03802490234375,
+    561.9950561523438
+  ],
+  "counts": {
+    "source_buildings": 9210,
+    "scene_buildings": 3035,
+    "GroundSurface": 3035,
+    "WallSurface": 24062,
+    "RoofSurface": 6972,
+    "footprints": 3035,
+    "boundary_buildings_hidden": 52,
+    "displayed_buildings": 2983,
+    "displayed_surfaces": 33485
+  },
+  "selection": "Complete buildings whose XY bounding boxes intersect existing DGM1 coverage; no source XYZ modified.",
+  "turbines": [
+    {
+      "name": "Fröttmaning",
+      "x": 695400.717,
+      "y": 5343454.1535,
+      "ground": 562.08,
+      "hub": 66.8,
+      "diameter": 66.0,
+      "model": "Enercon E-66",
+      "lod2_id": "DEBY_LOD2_5149447",
+      "terrain_sample_m": 561.9510498046875
+    },
+    {
+      "name": "Freimann",
+      "x": 695061.79,
+      "y": 5344651.42,
+      "ground": 537.389,
+      "hub": 80.0,
+      "diameter": 138.0,
+      "model": "Enercon E-138",
+      "lod2_id": "DEBY_LOD2_108248982",
+      "terrain_sample_m": 539.47900390625
+    }
+  ],
+  "rotor_limitations": "Illustrative blade/hub profiles; fixed north-facing orientation, not surveyed or animated. Existing LoD2 towers retained.",
+  "sources": [
+    {
+      "path": "../694_5342.tif",
+      "bytes": 2796026,
+      "sha256": "3355f0ca7ef991f6dd0d7942f90bb139fbdcf701ebd89fb5936f80097d2e9ca3"
+    },
+    {
+      "path": "../694_5343.tif",
+      "bytes": 2830754,
+      "sha256": "260526aef78bd3daab24b231c66d4ab2455f092b670ef41a2bd3712a14d31f12"
+    },
+    {
+      "path": "../694_5344.tif",
+      "bytes": 2864402,
+      "sha256": "42fbb8f7ffa1874686e73eee77f8625e8af2d63e17d797eb8f02292abb023a76"
+    },
+    {
+      "path": "../695_5342.tif",
+      "bytes": 2815480,
+      "sha256": "1afb94eb78f1f842f7385fa03944076df096357f58e4e415edc54845d56d4134"
+    },
+    {
+      "path": "../695_5343.tif",
+      "bytes": 3376274,
+      "sha256": "27872c45fcb9fdd776f150f407576f0bd576231ea290f0fa22186e88c216c140"
+    },
+    {
+      "path": "../695_5344.tif",
+      "bytes": 3362728,
+      "sha256": "7e3e1535fe40b3b8474e71f4d7edf6ab795ccdb945cbc3835f0cc4ef4ed0c996"
+    },
+    {
+      "path": "../696_5342.tif",
+      "bytes": 2976946,
+      "sha256": "b4be8c37228caffb06e0a917dfa42ce066b2b63f7760e7691f62662dfe8cbb5b"
+    },
+    {
+      "path": "../696_5343.tif",
+      "bytes": 2771958,
+      "sha256": "58aedc814e3dc0d1adf97a7d82ec6cfa19b3162f31b8b77973101f6d1050fb53"
+    },
+    {
+      "path": "../696_5344.tif",
+      "bytes": 2556652,
+      "sha256": "536901c3381296065b22e2887be280deaaa5258bf215ed9b956132f980b6e102"
+    },
+    {
+      "path": "../697_5342.tif",
+      "bytes": 2951762,
+      "sha256": "af36db3570f6c6f118e244f41b61e0839431bcb94fd1da0a6cb37a3d80310ce0"
+    },
+    {
+      "path": "../697_5343.tif",
+      "bytes": 3017646,
+      "sha256": "326ed2c72d1af0b41d945be460244157843a691d346566967ea62e2a495f1926"
+    },
+    {
+      "path": "../697_5344.tif",
+      "bytes": 2924836,
+      "sha256": "8db36098cc7e78bfbf3fcacdc7adb3e8fc5754a3b96acc2f0393d2cf23552d1b"
+    },
+    {
+      "path": "../694_5340.gml",
+      "bytes": 53303848,
+      "sha256": "7d30ed9c5c135364111cab41041e411f92d2bd238b6efeebfd719e9b9bdd905d"
+    },
+    {
+      "path": "../694_5342.gml",
+      "bytes": 26932196,
+      "sha256": "287e1cb360c497d75acebcdc62d57c045ef3f213aa8709fd660c450668d6315d"
+    },
+    {
+      "path": "../694_5344.gml",
+      "bytes": 2455860,
+      "sha256": "047555c1025f21eaaa2fd44dd50ca225dd982b9ab69b8f07c78a924ec3ce9133"
+    },
+    {
+      "path": "../696_5340.gml",
+      "bytes": 45785659,
+      "sha256": "8672013cf2078a1a8f6f39cda46f01f60717c00d39a952c33732365a7ae6ac2d"
+    },
+    {
+      "path": "../696_5342.gml",
+      "bytes": 6323780,
+      "sha256": "690a717b57eabe38f8e2ac0f742eae5675b1b4dbd564f5261acde4d21c48084b"
+    },
+    {
+      "path": "../696_5344.gml",
+      "bytes": 17693169,
+      "sha256": "4f88c87042a46477640f3f1901ac7330ce5df99d6c03938282273a8304d380f2"
+    }
+  ],
+  "missing_dgm1_tiles_for_full_lod2_grid": [
+    "694_5340.tif",
+    "694_5341.tif",
+    "694_5345.tif",
+    "695_5340.tif",
+    "695_5341.tif",
+    "695_5345.tif",
+    "696_5340.tif",
+    "696_5341.tif",
+    "696_5345.tif",
+    "697_5340.tif",
+    "697_5341.tif",
+    "697_5345.tif"
+  ],
+  "files": {
+    "dem": "terrain.tif",
+    "hillshade": "hillshade.tif",
+    "geometry": "geometry.gpkg"
+  },
+  "dlr_included": false,
+  "official_footprints": {
+    "provider": "Bayerische Vermessungsverwaltung",
+    "download": "091_Oberbayern_Hausumringe.zip",
+    "regional_feature_count": 2703736,
+    "selection": "Complete original polygons intersecting the study rectangle; no citywide layer loaded.",
+    "extent_filter_utm32": [
+      694000.0,
+      5342000.0,
+      698000.0,
+      5345000.0
+    ],
+    "feature_count": 3079,
+    "output": "footprints.gpkg",
+    "layer": "area_footprints",
+    "geometry": "Original 2D polygons; no height or extrusion added.",
+    "sha256": "6a941a82a204e3537c6511e6df9895225ec54de1ab922360b152060fec456e0b"
+  },
+  "boundary_policy": "Display complete buildings whose ground footprints fit within the available terrain; boundary candidates remain in the GeoPackage and original tiles.",
+  "height_review": {
+    "policy": "Preserve exact LoD2 Z and native DGM1 samples. No geometry lifting, flattening or offsets.",
+    "method": "Roof/deck boundary vertices and interpolated edge points spaced at most 1 m; bilinear sampling of native DGM1; threshold terrain minus source Z >0.30 m. This is a screening check, not full continuous surface-intersection validation.",
+    "objects_checked": 2983,
+    "sampled_boundary_points": 271289,
+    "flagged_objects": 26,
+    "flagged_bridges": 22,
+    "max_sampled_overlap_m": 5.078929443359357,
+    "output": "height_review.gpkg",
+    "objects": [
+      {
+        "building_id": "DEBY_LOD2_107638697",
+        "function": "53001_1800",
+        "overlap_m": 5.078929443359357,
+        "x": 695011.5179999999,
+        "y": 5343705.3475,
+        "source_z_m": 496.605,
+        "terrain_z_m": 501.6839294433594,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107644036",
+        "function": "53001_1800",
+        "overlap_m": 2.77256787109377,
+        "x": 694915.77,
+        "y": 5343428.835,
+        "source_z_m": 497.472,
+        "terrain_z_m": 500.24456787109375,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107798642",
+        "function": "53009_2050",
+        "overlap_m": 2.5674890136718886,
+        "x": 697674.5132702703,
+        "y": 5344971.711027027,
+        "source_z_m": 475.89,
+        "terrain_z_m": 478.4574890136719,
+        "source_tile": "696_5344.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107639487",
+        "function": "53001_1800",
+        "overlap_m": 2.2925439453125023,
+        "x": 694964.3454999999,
+        "y": 5343567.196500001,
+        "source_z_m": 498.565,
+        "terrain_z_m": 500.8575439453125,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107798641",
+        "function": "53009_2050",
+        "overlap_m": 2.0606091308593477,
+        "x": 696474.783,
+        "y": 5342761.462,
+        "source_z_m": 484.47,
+        "terrain_z_m": 486.5306091308594,
+        "source_tile": "696_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_108460063",
+        "function": "53001_1800",
+        "overlap_m": 1.3626567382812595,
+        "x": 694830.947,
+        "y": 5344025.544,
+        "source_z_m": 499.123,
+        "terrain_z_m": 500.48565673828125,
+        "source_tile": "694_5344.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_108462860",
+        "function": "53001_1800",
+        "overlap_m": 1.1739362792968677,
+        "x": 696957.7368085106,
+        "y": 5342760.583276596,
+        "source_z_m": 505.692,
+        "terrain_z_m": 506.8659362792969,
+        "source_tile": "696_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107634652",
+        "function": "53001_1800",
+        "overlap_m": 1.0970104980468705,
+        "x": 695363.5304,
+        "y": 5344875.0704666665,
+        "source_z_m": 497.37,
+        "terrain_z_m": 498.4670104980469,
+        "source_tile": "694_5344.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_108462859",
+        "function": "53001_1800",
+        "overlap_m": 1.0771206054687354,
+        "x": 695778.1148888889,
+        "y": 5343756.916444444,
+        "source_z_m": 499.259,
+        "terrain_z_m": 500.33612060546875,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_5149418",
+        "function": "31001_2000",
+        "overlap_m": 0.9270139160156532,
+        "x": 695390.4650000001,
+        "y": 5343115.9545,
+        "source_z_m": 496.631,
+        "terrain_z_m": 497.5580139160156,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_108462875",
+        "function": "53001_1800",
+        "overlap_m": 0.894622802734375,
+        "x": 697168.670751938,
+        "y": 5342560.41751938,
+        "source_z_m": 509.5,
+        "terrain_z_m": 510.3946228027344,
+        "source_tile": "696_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107627947",
+        "function": "53001_1800",
+        "overlap_m": 0.8608671874999914,
+        "x": 695594.8803529412,
+        "y": 5342646.157,
+        "source_z_m": 490.603,
+        "terrain_z_m": 491.4638671875,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107640431",
+        "function": "53001_1800",
+        "overlap_m": 0.8418029785156023,
+        "x": 695306.5937692308,
+        "y": 5344432.546923078,
+        "source_z_m": 498.6,
+        "terrain_z_m": 499.4418029785156,
+        "source_tile": "694_5344.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107646511",
+        "function": "53001_1800",
+        "overlap_m": 0.6586284179687709,
+        "x": 695566.5617964602,
+        "y": 5344075.456026549,
+        "source_z_m": 503.448,
+        "terrain_z_m": 504.10662841796875,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107651770",
+        "function": "53001_1800",
+        "overlap_m": 0.5690138183593945,
+        "x": 695411.0365,
+        "y": 5344459.7947,
+        "source_z_m": 499.6989,
+        "terrain_z_m": 500.2679138183594,
+        "source_tile": "694_5344.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107653794",
+        "function": "53001_1800",
+        "overlap_m": 0.4298459472656191,
+        "x": 694918.3272207791,
+        "y": 5343106.916,
+        "source_z_m": 500.281,
+        "terrain_z_m": 500.7108459472656,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107640271",
+        "function": "53001_1800",
+        "overlap_m": 0.3903669433593677,
+        "x": 696084.268,
+        "y": 5344248.826,
+        "source_z_m": 486.692,
+        "terrain_z_m": 487.0823669433594,
+        "source_tile": "696_5344.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_108462863",
+        "function": "53001_1800",
+        "overlap_m": 0.3475803222656282,
+        "x": 695807.1372222222,
+        "y": 5343831.471222223,
+        "source_z_m": 494.666,
+        "terrain_z_m": 495.0135803222656,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_108462861",
+        "function": "53001_1800",
+        "overlap_m": 0.3434985351562432,
+        "x": 696379.3872978723,
+        "y": 5343297.169702128,
+        "source_z_m": 496.68,
+        "terrain_z_m": 497.02349853515625,
+        "source_tile": "696_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107634970",
+        "function": "53001_1800",
+        "overlap_m": 0.34000244140622726,
+        "x": 695021.31,
+        "y": 5343745.712,
+        "source_z_m": 500.85,
+        "terrain_z_m": 501.19000244140625,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_108462864",
+        "function": "53001_1800",
+        "overlap_m": 0.3193354492187268,
+        "x": 695425.6687567568,
+        "y": 5344118.0114864865,
+        "source_z_m": 496.737,
+        "terrain_z_m": 497.05633544921875,
+        "source_tile": "694_5344.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_108462862",
+        "function": "53001_1800",
+        "overlap_m": 0.3179492187500159,
+        "x": 696205.677521739,
+        "y": 5343466.984478261,
+        "source_z_m": 495.33,
+        "terrain_z_m": 495.64794921875,
+        "source_tile": "696_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107640623",
+        "function": "53001_1800",
+        "overlap_m": 0.31500694444446253,
+        "x": 695049.2632222222,
+        "y": 5344261.970444445,
+        "source_z_m": 495.91155555555554,
+        "terrain_z_m": 496.2265625,
+        "source_tile": "694_5344.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_5283784",
+        "function": "31001_2000",
+        "overlap_m": 0.3124079589843518,
+        "x": 697993.537,
+        "y": 5344886.192,
+        "source_z_m": 487.987,
+        "terrain_z_m": 488.2994079589844,
+        "source_tile": "696_5344.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107653212",
+        "function": "53001_1800",
+        "overlap_m": 0.31095470797635016,
+        "x": 694747.2417096774,
+        "y": 5342520.625645162,
+        "source_z_m": 500.731129032258,
+        "terrain_z_m": 501.0420837402344,
+        "source_tile": "694_5342.gml"
+      },
+      {
+        "building_id": "DEBY_LOD2_107655873",
+        "function": "53001_1800",
+        "overlap_m": 0.3088586425781159,
+        "x": 694644.616,
+        "y": 5344494.9185999995,
+        "source_z_m": 496.24,
+        "terrain_z_m": 496.5488586425781,
+        "source_tile": "694_5344.gml"
+      }
+    ]
+  },
+  "validation": {
+    "source_input_sha256_verified": 19,
+    "dem_cells_exactly_equal": 12000000,
+    "dem_no_nodata_gaps": true,
+    "project_layers_valid": 26,
+    "displayed_lod2_objects": 2983,
+    "source_faces_exactly_equal": 33485,
+    "source_xyz_vertices_verified": 204215,
+    "official_footprint_polygons_exactly_equal": 3079,
+    "saved_3d_views": 1,
+    "height_offsets_applied": false,
+    "remaining_limitations": "Actual source terrain/roof-deck intersections flagged; no claim of watertight simulation geometry. Rotor geometry remains illustrative.",
+    "qgis_live_scene_ready": true,
+    "native_3d_screenshot": "Not obtained. The automatic export dialog helper hit a protected Qt method; helper disabled and dialog closed. Geometry and saved rendering settings were verified separately."
+  },
+  "source_snapshot": {
+    "project_sha256": "6e951ff009b5c7b60dde3dcb11908dd0296ecbf28d86b62a129493de8ad75f4e",
+    "note": "Source paths are relative to the original prepared-scene directory. Download hashes are provenance, not preview dependencies. Redownloads may be a different edition."
+  },
+  "packaged_files_sha256": {
+    "terrain.tif": "6fd7abf8b0d0c47fe29fb90db2f888cc2252da229341d2f30ab5887bd11768b0",
+    "hillshade.tif": "65acbb7273d0697df31437f676ef10536ed4afc7082b3433b8eb42ea135e94de",
+    "geometry.gpkg": "d5640ac56fde518fb3c23cb482961f2f9be82b1f8b82802353449ee040aab2b0",
+    "footprints.gpkg": "9828f7f90e0b1acd444e3b0fa66cf48cb52dcd2fd9fcdd8573c02a71ce91f30a",
+    "height_review.gpkg": "6dc4f9c0d909529f2e83875bfabd2f4374ec914aefb79171951024d2979f9dc3"
+  },
+  "packaging": {
+    "terrain": "All 12,000,000 elevation samples, CRS and transform checked equal to the source VRT; no resampling.",
+    "geometry": "SQLite backups of prepared GeoPackages; no geometry corrections.",
+    "display": "Structure edges enabled; 3D overview and directional light saved; raw tile layers omitted.",
+    "wind": "Retired pilot is separate; not needed to open this scene."
+  },
+  "geopackage_content_sha256": {
+    "geometry.gpkg": "6c5a4433434e624c12032b5cae0a2b2e1aa2d5ba73d58b40f8aa005e85a9e112",
+    "footprints.gpkg": "9f75e4ea40a9814dd214341cc16ef2c33c1548fa1e6d5312e58d825c2b9a8363",
+    "height_review.gpkg": "0a10e5415c5dd70279fc775b90a2410cefe6ca4270ebcb5dc3044db5bb6ac1fe"
+  }
+}

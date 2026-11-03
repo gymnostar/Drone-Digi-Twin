@@ -1,0 +1,98 @@
+{
+  "qgis_extent_xy_m": [
+    694680.717,
+    5343124.1535,
+    696060.717,
+    5343784.1535
+  ],
+  "local_extent_xy_m": [
+    -1319.283000000054,
+    -375.8464999999851,
+    60.71699999994598,
+    284.1535000000149
+  ],
+  "block_z_local_m": [
+    -50,
+    500
+  ],
+  "disk": {
+    "source_id": "DEBY_LOD2_5149447",
+    "qgis_xy_m": [
+      695400.717,
+      5343454.1535
+    ],
+    "diameter_m": 66.0,
+    "hub_height_above_dgm_m": 66.8,
+    "thickness_m": 10,
+    "provisional_Ct": 0.75,
+    "provisional_Cp": 0.5625,
+    "coefficient_note": "Ideal a=0.25 actuator-disk test values, not Enercon performance data.",
+    "centre_local_m": [
+      -599.283000000054,
+      -45.8464999999851,
+      128.7476318359375
+    ],
+    "ground_local_m": 61.9476318359375,
+    "ground_NH_m": 561.9476318359375,
+    "hub_NH_m": 628.7476318359375,
+    "area_m2": 3421.194399759285
+  },
+  "numerical_test": {
+    "nu_m2_s": 1.5e-05,
+    "k_m2_s2": 0.4374,
+    "omega_s-1": 0.12074767078498866,
+    "scheme": "bounded upwind; steady SIMPLE; kOmegaSST; smooth-wall functions; no layers",
+    "background_iterations": 150,
+    "disk_iterations": 600,
+    "base_cells": 63756,
+    "base_grid": [
+      69,
+      33,
+      28
+    ],
+    "max_snappy_cells": 600000,
+    "note": "Iteration completion is not evidence of convergence or physical validation.",
+    "residual_assessment_targets": {
+      "p": 0.001,
+      "U_components": 0.0001,
+      "k": 0.0001,
+      "omega": 0.0001,
+      "last_iterations": 50
+    }
+  },
+  "status": "Retired numerical pilot; scope review only",
+  "origin_utm32_dhhn2016_m": [
+    696000,
+    5343500,
+    500
+  ],
+  "wind_from_degrees": 270,
+  "inflow_m_s": 5.4,
+  "model": "steady simpleFoam / kOmegaSST / actuator disk",
+  "candidates_in_source_area": 229,
+  "volume_cells": 196568,
+  "surface_triangles": {
+    "terrain": 352406,
+    "buildings": 14322,
+    "bridges": 776,
+    "turbine_structure": 82
+  },
+  "limitations": [
+    "54 underdetermined and 6704 concave air cells in historical extended check.",
+    "No measurement/benchmark, grid or domain independence validation.",
+    "Uniform inflow, smooth walls and Ct/Cp are provisional.",
+    "No drone, route planner, live yaw, gusts or shelter classification."
+  ],
+  "data_sha256": {
+    "bridges.vtp": "121e4111981f10a5f37ccc9452608ccfede94e44a0720df22ddabbf628c6c0b8",
+    "buildings.vtp": "62e12bee6360dfe8d4030f1bf24f2fc39d4886c3342acb086057d4ac10177712",
+    "disk.vtp": "bdd2b7a38a863521aa0428d5f793bf5a0d0980c9beff20fd5790be82aba0e650",
+    "flow.vtu": "1ab2cc05f20b05041a7381b698173782391e5ebe8292bbe2cb68b0dfefa557c0",
+    "terrain.vtp": "7d79669925cb3ec3577a41cf4610f288573acea04f40992012da6f6fc2b25898",
+    "turbine_structure.vtp": "a0bbe1a6ce53dc225b5cbdf17a2e1cc1243cb093b962720c2bba86c69bd8927c"
+  },
+  "runtime_limits": {
+    "memory": "6g",
+    "cpus": 4
+  }
+}

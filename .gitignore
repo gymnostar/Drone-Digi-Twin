@@ -1,0 +1,14 @@
+# Private data, old reports and temporary outputs stay outside version control.
+/local/
+/FröttmaningFreimann/scene/raw/
+/FröttmaningFreimann/scene/rebuild/
+.venv*/
+__pycache__/
+*.py[cod]
+.DS_Store
+*.qgz~
+*.gpkg-wal
+*.gpkg-shm
+/FröttmaningFreimann/runs/
+/docs/
+/tmp/
