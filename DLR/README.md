@@ -2,9 +2,11 @@
 
 Henry's work on the DLR scene (`dlr_site_*_mm(1).stl` in the repo root). The site is DLR Oberpfaffenhofen, next to the EDMO airfield.
 
-![Wind at 35 m, west wind 5 m/s](results/2026-11-10_noturbine_extended_R882m.png)
+![Wind about 7 m above ground, west wind 5 m/s](results/2026-11-10_noturbine_slice_z26_7m_above_ground.png)
 
-*Steady wind at 35 m height, west wind at 5 m/s. The dark streaks are the wakes behind the buildings. No turbine yet.*
+*Steady wind about 7 m above ground (z = 26 m; z = 0 is not the ground, which sits at about 13–25 m). West wind at 5 m/s. Purple pockets are the sheltered and recirculating air behind the buildings. No turbine yet.*
+
+*The slice only affects how the result is viewed, not the simulation: `simpleFoam` computes the full 3D field. Change the height with `SLICE_Z=35 pvpython scripts/wind_view.py out.png`.*
 
 ## What is here
 
