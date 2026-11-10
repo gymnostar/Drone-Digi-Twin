@@ -1,0 +1,8 @@
+FoamFile { version 2.0; format ascii; class dictionary; object createPatchDict; }
+// Patches are built from the ORIGINAL mesh simultaneously, so each needs its own disjoint face set.
+pointSync false;
+patches
+(
+    { name inlet;  patchInfo { type patch; } constructFrom set; set inletFaces;  }
+    { name outlet; patchInfo { type patch; } constructFrom set; set outletFaces; }
+);

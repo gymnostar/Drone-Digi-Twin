@@ -1,0 +1,9 @@
+FoamFile { version 2.0; format ascii; class dictionary; object surfaceFeatureExtractDict; }
+// ESI (openfoam.com) equivalent of the .org surfaceFeaturesDict: keep sharp building edges.
+buildings.stl
+{
+    extractionMethod    extractFromSurface;
+    includedAngle       150;
+    subsetFeatures { nonManifoldEdges no; openEdges yes; }
+    writeObj            no;
+}

@@ -1,0 +1,10 @@
+FoamFile { version 2.0; format ascii; class dictionary; object topoSetDict; }
+// The cylinder's side wall is ONE patch. Split it by facing direction:
+// faces looking into the wind (west, -x) -> inlet; all other side faces -> outlet.
+actions
+(
+    { name inletFaces;  type faceSet; action new;      source patchToFace;  patch side; }
+    { name inletFaces;  type faceSet; action subset;   source normalToFace; normal (-1 0 0); cos 1.0; }
+    { name outletFaces; type faceSet; action new;      source patchToFace;  patch side; }
+    { name outletFaces; type faceSet; action subtract; source faceToFace;   set inletFaces; }
+);

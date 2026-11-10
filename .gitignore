@@ -12,3 +12,18 @@ __pycache__/
 /FröttmaningFreimann/runs/
 /docs/
 /tmp/
+# OpenFOAM generated outputs (regenerate with DLR/windCase/Allrun.noturbine)
+/DLR/windCase/*.stl
+/DLR/windCase/constant/polyMesh/
+/DLR/windCase/constant/triSurface/
+/DLR/windCase/constant/extendedFeatureEdgeMesh/
+/DLR/windCase/constant/fvOptions
+/DLR/windCase/[0-9]*/
+/DLR/windCase/log.*
+/DLR/windCase/*.foam
+/DLR/windCase/system/caseParams
+/DLR/windCase/system/topoSetDict
+!/DLR/windCase/0.orig/
+/DLR/windCase/processor*/
+/DLR/windCase/run.out
+/DLR/windCase/postProcessing/

@@ -1,0 +1,33 @@
+#!/bin/sh
+# DLR site, NO turbine: mesh + steady wind. Run inside the OpenFOAM shell with the .venv active.
+cd "${0%/*}" || exit 1
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+[ -f terrain_mm.stl ]   || cp "../../dlr_site_terrain_2m_mm(1).stl" terrain_mm.stl
+[ -f buildings_mm.stl ] || cp "../../dlr_site_buildings_LoD2_mm(1).stl" buildings_mm.stl
+
+# 0. extended terrain: Arthur's strip + flat ground to 1.8 x 1.8 km (see ../scripts/extend_terrain.py)
+[ -f terrain_ext_mm.stl ] || python3 ../scripts/extend_terrain.py terrain_mm.stl terrain_ext_mm.stl --side 1800 --dx 4
+
+# 1. case geometry (mm -> m, recentre, domain). make_case needs a turbine position;
+#    we give a 1 m dummy and delete its fvOptions, so no turbine acts on the air.
+python3 make_case.py --buildings buildings_mm.stl --terrain terrain_ext_mm.stl --scale 0.001 \
+    --dx0 16 --turbine-xy -335 279 --rotor-D 1 --hub-height 30 --wind-from 270 > log.make_case 2>&1 || { cat log.make_case; exit 1; }
+rm -f constant/fvOptions
+cat log.make_case
+
+# 2. mesh
+runApplication surfaceFeatureExtract
+runApplication blockMesh
+runApplication snappyHexMesh -overwrite
+runApplication -s inletOutlet topoSet -dict system/topoSetDict.inletOutlet
+runApplication createPatch -overwrite
+runApplication checkMesh
+
+# 3. wind
+rm -rf 0 processor* && cp -r 0.orig 0
+runApplication decomposePar            # split mesh + fields into processor0..5
+runParallel simpleFoam                 # mpirun -np 6 simpleFoam -parallel
+runApplication reconstructPar -latestTime   # glue the final result back together
+touch dlr.foam
+echo "Done. Open dlr.foam in ParaView."

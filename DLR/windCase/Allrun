@@ -1,0 +1,15 @@
+#!/bin/sh
+cd "${0%/*}" || exit 1
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# python3 make_case.py ...        (run once first: writes STLs, caseParams, topoSetDict, fvOptions)
+runApplication surfaceFeatureExtract
+runApplication blockMesh
+runApplication snappyHexMesh -overwrite
+runApplication checkMesh -allGeometry -allTopology
+runApplication topoSet                     # creates the turbine cellSet 'actuationDisk'
+
+# parallel alternative:  decomposePar; mpirun -np N snappyHexMesh -parallel -overwrite; reconstructParMesh -constant
+
+# optional: triangulated surface of the AS-MESHED buildings/terrain (patch names = buildings, terrain)
+# surfaceMeshTriangulate -patches '(buildings terrain)' meshedSurface.obj

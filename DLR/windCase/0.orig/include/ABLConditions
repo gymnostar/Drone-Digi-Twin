@@ -1,0 +1,7 @@
+// Atmospheric inflow (log-law profile). Placeholder values until EDMO data is pulled.
+Uref     5.0;          // wind speed [m/s] at height Zref above the lowest inlet ground
+Zref     10;           // 10 m = standard weather-mast height
+zDir     (0 0 1);      // "up"
+flowDir  (1 0 0);      // wind blows towards +x (east) = wind FROM the west (270 deg)
+z0       uniform 0.1;  // ground roughness [m]: ~0.1 grass/sparse buildings
+d        uniform 0.0;  // displacement height

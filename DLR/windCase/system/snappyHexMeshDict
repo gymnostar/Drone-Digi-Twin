@@ -1,0 +1,98 @@
+FoamFile { version 2.0; format ascii; class dictionary; object snappyHexMeshDict; }
+
+#include "caseParams"
+
+castellatedMesh true;
+snap            true;
+addLayers       false;      // set true only if you use low-Re wall treatment; with wall functions it is usually not needed
+
+geometry
+{
+    buildings.stl { type triSurfaceMesh; name buildings; }
+    terrain.stl   { type triSurfaceMesh; name terrain; }
+    siteRefine    { type searchableBox;    min $siteMin; max $siteMax; }
+    turbineRefine { type searchableSphere; centre $turbineHub; radius $turbineRefR; }  // sphere => valid for any yaw
+}
+
+castellatedMeshControls
+{
+    maxLocalCells        5000000;
+    maxGlobalCells       60000000;
+    minRefinementCells   10;
+    maxLoadUnbalance     0.10;
+    nCellsBetweenLevels  3;
+
+    features ( { file "buildings.eMesh"; level 3; } );
+
+    // level = dx0 / 2^level  (dx0 = 8 m -> L2 = 2 m, L3 = 1 m, L4 = 0.5 m)
+    refinementSurfaces
+    {
+        buildings { level (3 3); patchInfo { type wall; } }
+        terrain   { level (2 2); patchInfo { type wall; } }
+    }
+    resolveFeatureAngle 30;
+
+    refinementRegions
+    {
+        siteRefine    { mode inside; levels ((1e15 2)); }
+        turbineRefine { mode inside; levels ((1e15 4)); }   // keep = --levTurb in make_case.py
+    }
+
+    locationInMesh $locationInMesh;     // must be in AIR, away from any face
+    allowFreeStandingZoneFaces true;
+}
+
+snapControls
+{
+    nSmoothPatch 3;
+    tolerance 2.0;
+    nSolveIter 100;
+    nRelaxIter 5;
+    nFeatureSnapIter 10;
+    implicitFeatureSnap false;
+    explicitFeatureSnap true;
+    multiRegionFeatureSnap false;
+}
+
+addLayersControls
+{
+    relativeSizes true;
+    layers { buildings { nSurfaceLayers 3; } terrain { nSurfaceLayers 3; } }
+    expansionRatio 1.2;
+    finalLayerThickness 0.4;
+    minThickness 0.05;
+    nGrow 0;
+    featureAngle 130;
+    slipFeatureAngle 30;
+    nRelaxIter 5;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals 3;
+    nSmoothThickness 10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedialAxisAngle 90;
+    nBufferCellsNoExtrude 0;
+    nLayerIter 50;
+    nRelaxedIter 20;
+}
+
+meshQualityControls
+{
+    maxNonOrtho 65;
+    maxBoundarySkewness 20;
+    maxInternalSkewness 4;
+    maxConcave 80;
+    minVol 1e-13;
+    minTetQuality 1e-15;
+    minArea -1;
+    minTwist 0.02;
+    minDeterminant 0.001;
+    minFaceWeight 0.05;
+    minVolRatio 0.01;
+    minTriangleTwist -1;
+    nSmoothScale 4;
+    errorReduction 0.75;
+    relaxed { maxNonOrtho 75; }
+}
+
+mergeTolerance 1e-6;

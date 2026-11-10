@@ -1,0 +1,4 @@
+FoamFile { version 2.0; format ascii; class dictionary; object decomposeParDict; }
+// Split the mesh into 6 pieces, one per CPU core, so the wind solve runs ~4-5x faster.
+numberOfSubdomains 6;
+method scotch;          // automatic partitioning that keeps the cut surfaces small

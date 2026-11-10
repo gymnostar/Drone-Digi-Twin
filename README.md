@@ -106,3 +106,12 @@ Fausto contributed the `FröttmaningFreimann/` folder:
 - [FröttmaningFreimann/scene/scripts/](FröttmaningFreimann/scene/scripts/): scripts to rebuild the geographic scene from raw data.
 - [FröttmaningFreimann/wind-review/](FröttmaningFreimann/wind-review/): the retired wind test. View `review.png`, or use `Open Review.command` on macOS for ParaView.
 - [FröttmaningFreimann/NOTES.md](FröttmaningFreimann/NOTES.md): Fausto's Project 3 outline, work review, assumptions and next steps.
+
+## DLR work
+
+Henry contributed the `DLR/` folder:
+
+- [DLR/README.md](DLR/README.md): what was done, how to run it, assumptions and open points.
+- [DLR/windCase/](DLR/windCase/): OpenFOAM v2306 case for the DLR Oberpfaffenhofen scene (no turbine yet). Run `Allrun.noturbine`.
+- [DLR/wind-data/](DLR/wind-data/README.md): 2016–2025 wind reports from the EDMO airfield, plus the DLR weather station as a validation candidate.
+- [DLR/results/](DLR/results/): wind pictures. For the 3D view, use `DLR/Open Wind View.command` on macOS with ParaView 6.2.

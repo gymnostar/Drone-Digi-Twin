@@ -1,0 +1,39 @@
+FoamFile { version 2.0; format ascii; class dictionary; object blockMeshDict; }
+
+#include "caseParams"
+
+convertToMeters 1;
+
+// O-grid cylinder: 1 core block + 4 ring blocks, axis along z
+vertices
+(
+    ($mAin $mAin $zBot) ($Ain $mAin $zBot) ($Ain $Ain $zBot) ($mAin $Ain $zBot)       // 0-3  inner bottom
+    ($mBout $mBout $zBot) ($Bout $mBout $zBot) ($Bout $Bout $zBot) ($mBout $Bout $zBot) // 4-7  outer bottom
+    ($mAin $mAin $zTop) ($Ain $mAin $zTop) ($Ain $Ain $zTop) ($mAin $Ain $zTop)       // 8-11 inner top
+    ($mBout $mBout $zTop) ($Bout $mBout $zTop) ($Bout $Bout $zTop) ($mBout $Bout $zTop) // 12-15 outer top
+);
+
+blocks
+(
+    hex (0 1 2 3 8 9 10 11)    ($nI $nI $nz) simpleGrading (1 1 1)
+    hex (4 5 1 0 12 13 9 8)    ($nI $nR $nz) simpleGrading (1 1 1)
+    hex (5 6 2 1 13 14 10 9)   ($nI $nR $nz) simpleGrading (1 1 1)
+    hex (6 7 3 2 14 15 11 10)  ($nI $nR $nz) simpleGrading (1 1 1)
+    hex (7 4 0 3 15 12 8 11)   ($nI $nR $nz) simpleGrading (1 1 1)
+);
+
+edges
+(
+    arc 4 5   (0 $mRdom $zBot)   arc 5 6   ($Rdom 0 $zBot)
+    arc 6 7   (0 $Rdom $zBot)    arc 7 4   ($mRdom 0 $zBot)
+    arc 12 13 (0 $mRdom $zTop)   arc 13 14 ($Rdom 0 $zTop)
+    arc 14 15 (0 $Rdom $zTop)    arc 15 12 ($mRdom 0 $zTop)
+);
+
+boundary
+(
+    side   { type patch; faces ((4 5 13 12) (5 6 14 13) (6 7 15 14) (7 4 12 15)); }
+    top    { type patch; faces ((8 9 10 11) (12 13 9 8) (13 14 10 9) (14 15 11 10) (15 12 8 11)); }
+    // below the terrain: all of this is removed by snappyHexMesh (patch ends up empty)
+    bottom { type patch; faces ((0 3 2 1) (0 1 5 4) (1 2 6 5) (2 3 7 6) (3 0 4 7)); }
+);
