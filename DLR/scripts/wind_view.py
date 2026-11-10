@@ -11,7 +11,8 @@ try:
 except NameError:
     here = os.path.join(os.getcwd(), 'scripts')
 case = os.path.join(here, '..', 'windCase', 'dlr.foam')
-SLICE_Z = 35.0          # slice height in metres (local frame; ground is ~12-25 m)
+# slice height in metres, local frame: z=0 is NOT the ground (ground ~13-25 m, flat part 19.2 m)
+SLICE_Z = float(os.environ.get('SLICE_Z', 35.0))
 
 r = OpenFOAMReader(registrationName='DLR wind (dlr.foam)', FileName=case)
 r.MeshRegions = ['internalMesh', 'patch/buildings', 'patch/terrain']
