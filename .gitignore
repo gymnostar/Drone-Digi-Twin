@@ -27,3 +27,11 @@ __pycache__/
 /DLR/windCase/processor*/
 /DLR/windCase/run.out
 /DLR/windCase/postProcessing/
+/DLR/meshStudy/*/
+/DLR/meshStudy/run.log
+# Mesh study: generated cases (rebuild with DLR/meshStudy/setup.py); only scripts + results are tracked
+/DLR/meshStudy/coarse/
+/DLR/meshStudy/medium/
+/DLR/meshStudy/fine/
+/DLR/meshStudy/run_all.out
+/DLR/meshStudy/site_map.npz
