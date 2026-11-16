@@ -25,7 +25,7 @@ LEVELS = {"coarse": 2, "medium": 3, "fine": 4}
 
 # Cluster box: station building + its eastern neighbour + the gap + the wake (x, y, z in m)
 BOX_MIN = (50.0, 145.0, 12.0)
-BOX_MAX = (235.0, 255.0, 60.0)
+BOX_MAX = (235.0, 262.0, 60.0)
 
 # Probe locations: Arthur's 4 regions. Each one is a vertical line (heights above local ground).
 # Wind blows from the west (270 deg), i.e. towards +x.
