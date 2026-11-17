@@ -1,0 +1,22 @@
+// Monitoring points (case coordinates in m; ground is at z ~ 19-20 m here). Wind blows +x.
+// Read with: postProcessing/probes/0/{U,p,k}. Order matters: the report uses these indices.
+probes
+{
+    type            probes;
+    libs            (sampling);
+    writeControl    timeStep;
+    writeInterval   1;              // every iteration -> also shows iterative convergence
+    fields          (U p k);
+    probeLocations
+    (
+        (-200  -5  27.2)   // 0 upstream of the campus, 7 m above ground (control: outside focus box)
+        ( -62   2  24.0)   // 1 in front of the diagonal building, 5 m above ground (for pressure drop)
+        ( -52 -22  24.7)   // 2 between buildings: narrow gap, 5 m above ground
+        ( -32   0  21.3)   // 3 behind the building (wake), vertical profile: 2 m above ground
+        ( -32   0  24.3)   // 4                                               5 m
+        ( -32   0  29.3)   // 5                                              10 m
+        ( -32   0  34.3)   // 6                                              15 m
+        ( -32   0  44.3)   // 7                                              25 m
+        ( -50   0  60.0)   // 8 above the campus at fixed height z = 60 m (control: outside focus box)
+    );
+}

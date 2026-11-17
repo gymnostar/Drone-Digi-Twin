@@ -1,0 +1,17 @@
+#!/bin/sh
+# One mesh-study case: mesh -> check -> solve. Copied into coarse/ medium/ fine/ by setup.py.
+cd "${0%/*}" || exit 1
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+runApplication surfaceFeatureExtract
+runApplication blockMesh
+runApplication snappyHexMesh -overwrite
+runApplication -s inletOutlet topoSet -dict system/topoSetDict.inletOutlet
+runApplication createPatch -overwrite
+runApplication checkMesh -writeSets vtk     # -writeSets: saves WHERE the bad cells are (open in ParaView)
+
+rm -rf 0 processor* && cp -r 0.orig 0
+runApplication decomposePar
+runParallel simpleFoam
+runApplication reconstructPar -latestTime && rm -rf processor*   # free disk: the copies per core are no longer needed
+touch case.foam

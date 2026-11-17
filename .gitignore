@@ -37,12 +37,10 @@ __pycache__/
 /DLR/meshStudy/run_all.out
 /DLR/meshStudy/site_map.npz
 
-# Wind study: generated runs, source downloads and local evidence.
+# Wind study: generated runs, downloads and dense sampled arrays.
 /scenes/*/data/raw/
 /scenes/*/runs/
 /scenes/*/results/**/samples.json
-/review-export/.qa/
-
-# Dense sampled arrays are reproducible local evidence; publish compact metrics.
 /scenes/*/results/**/*.npz
 /scenes/*/results/**/matched_mean_bins.csv
+/review-export/.qa/
