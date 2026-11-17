@@ -1,0 +1,38 @@
+{
+  "joint-baseline": {
+    "source_case": "scenes/joint/runs/poc-N-baseline-common",
+    "saved_SIMPLE_iteration": 364.0,
+    "cells": 422894,
+    "U_magnitude_range_m_s": [
+      0.026436774738306683,
+      11.312269246480321
+    ],
+    "volume_file": "joint-baseline.vtu",
+    "volume_bytes": 20256969,
+    "display": "Actual saved velocity fields; slices and streamlines interpolate the steady mean flow. Source disk is a location marker, not blade geometry."
+  },
+  "turbine-cheap": {
+    "source_case": "scenes/turbine/runs/poc-studio-development-strict-cheap",
+    "saved_SIMPLE_iteration": 191.0,
+    "cells": 112206,
+    "U_magnitude_range_m_s": [
+      4.465962059508526,
+      10.415740309200125
+    ],
+    "volume_file": "turbine-cheap.vtu",
+    "volume_bytes": 4832729,
+    "display": "Actual saved velocity fields; slices and streamlines interpolate the steady mean flow. Source disk is a location marker, not blade geometry."
+  },
+  "turbine-reference": {
+    "source_case": "scenes/turbine/runs/poc-studio-development-reference",
+    "saved_SIMPLE_iteration": 464.0,
+    "cells": 359334,
+    "U_magnitude_range_m_s": [
+      4.483750670393193,
+      10.415747937958422
+    ],
+    "volume_file": "turbine-reference.vtu",
+    "volume_bytes": 14035167,
+    "display": "Actual saved velocity fields; slices and streamlines interpolate the steady mean flow. Source disk is a location marker, not blade geometry."
+  }
+}
