@@ -107,7 +107,7 @@ def gci(f3, f2, f1):
 fmt = lambda v, f="{:.2f}": "–" if v is None else f.format(v)
 md = ["# DLR mesh-independence study", "",
       "West wind 5 m/s @ 10 m, steady RANS k-ε (simpleFoam). The 3 meshes differ **only** in the cell size inside a "
-      "185 × 110 × 48 m box around the DLR weather-station building (4 → 2 → 1 m, ratio 2).", ""]
+      "185 × 117 × 48 m box around the DLR weather-station building (4 → 2 → 1 m, ratio 2).", ""]
 
 md += ["## 1. Mesh quality", "",
        "| Mesh | Box cells | Total cells | Max skewness (bad faces) | Non-ortho max / avg | Max aspect ratio | Failed checks |",

@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DLR mesh study, explained (for the 10:00 meeting)</title>
+<script>
+// If a picture does not exist yet, show a grey box that says where it will come from.
+function missing(img){
+  var d = document.createElement('div');
+  d.className = 'placeholder';
+  d.innerHTML = '<b>Picture not there yet.</b> ' + img.alt + '<br><code>' + img.getAttribute('src') + '</code>' +
+                (img.dataset.how ? '<br>' + img.dataset.how : '');
+  img.replaceWith(d);
+}
+</script>
+<style>
+:root{--ink:#1f2937;--soft:#4b5563;--line:#e5e7eb;--bg:#ffffff;--card:#f8fafc;--blue:#1d4ed8;
+      --up:#059669;--gap:#d97706;--wake:#7c3aed;--st:#dc2626;--warn:#b45309;--bad:#b91c1c;--good:#047857}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:28px 22px 80px}
+h1{font-size:2.0rem;line-height:1.2;margin:.2em 0 .1em}
+h2{font-size:1.5rem;margin:2.4em 0 .5em;padding-top:.6em;border-top:2px solid var(--line)}
+h2 .n{display:inline-block;min-width:1.7em;height:1.7em;line-height:1.7em;text-align:center;border-radius:50%;
+      background:var(--blue);color:#fff;font-size:.8em;margin-right:.4em;vertical-align:.1em}
+h3{font-size:1.18rem;margin:1.7em 0 .4em}
+p{margin:.55em 0}
+a{color:var(--blue)}
+code{background:#f1f5f9;border-radius:4px;padding:.05em .35em;font-size:.88em}
+pre{background:#0f172a;color:#e2e8f0;border-radius:8px;padding:12px 14px;overflow:auto;font-size:.85em;line-height:1.5}
+pre code{background:none;color:inherit;padding:0}
+small,.small{font-size:.86em;color:var(--soft)}
+.sub{color:var(--soft);font-size:1.05rem;margin-bottom:1em}
+.banner{border-radius:10px;padding:14px 18px;margin:16px 0;background:#fff7ed;border:1px solid #fed7aa}
+.banner b{color:var(--warn)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0}
+.why{border-left:5px solid var(--blue);background:#eff6ff;padding:10px 16px;border-radius:0 8px 8px 0;margin:14px 0}
+.why::before{content:"Why? ";font-weight:700;color:var(--blue)}
+.note{border-left:5px solid #f59e0b;background:#fffbeb;padding:10px 16px;border-radius:0 8px 8px 0;margin:14px 0}
+.honest{border-left:5px solid var(--bad);background:#fef2f2;padding:10px 16px;border-radius:0 8px 8px 0;margin:14px 0}
+.honest::before{content:"Be honest about this: ";font-weight:700;color:var(--bad)}
+.ok{border-left:5px solid var(--good);background:#ecfdf5;padding:10px 16px;border-radius:0 8px 8px 0;margin:14px 0}
+.big{font-size:1.2rem;font-weight:600;line-height:1.45}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.93em}
+th,td{border:1px solid var(--line);padding:7px 10px;vertical-align:top;text-align:left}
+th{background:#f1f5f9}
+td.num{white-space:nowrap}
+figure{margin:18px 0}
+figure img{max-width:100%;border:1px solid var(--line);border-radius:8px;display:block}
+figcaption{font-size:.88em;color:var(--soft);margin-top:6px}
+svg.draw{width:100%;height:auto;display:block;margin:10px auto;font-family:-apple-system,Helvetica,Arial,sans-serif}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+.placeholder{border:2px dashed #cbd5e1;border-radius:8px;padding:22px;color:var(--soft);background:#f8fafc;font-size:.92em}
+nav.toc{columns:2;column-gap:28px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 20px;margin:18px 0}
+nav.toc a{display:block;text-decoration:none;padding:2px 0}
+@media (max-width:640px){nav.toc{columns:1}}
+.tag{display:inline-block;border-radius:6px;padding:0 .45em;color:#fff;font-weight:600;font-size:.9em}
+.t-up{background:var(--up)}.t-gap{background:var(--gap)}.t-wake{background:var(--wake)}.t-st{background:var(--st)}.t-box{background:var(--blue)}
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:12px 0}
+ol.steps>li{counter-increment:s;position:relative;margin:0 0 10px 0;padding:10px 14px 10px 54px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+ol.steps>li::before{content:counter(s);position:absolute;left:14px;top:10px;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;text-align:center;line-height:28px;font-weight:700;font-size:.9em}
+ol.steps .tool{font-family:ui-monospace,Menlo,monospace;font-weight:700}
+ol.steps .w{color:var(--soft);font-size:.92em}
+.blank{background:#fde68a;border-radius:4px;padding:0 .3em;font-weight:600}
+.talk li{margin:.45em 0}
+details{border:1px solid var(--line);border-radius:8px;margin:8px 0;background:#fff}
+details>summary{cursor:pointer;padding:9px 14px;font-weight:600;list-style-position:inside}
+details[open]>summary{border-bottom:1px solid var(--line);background:var(--card)}
+details>div{padding:8px 16px 12px}
+.vv{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vv>div{border-radius:10px;padding:14px 16px;border:1px solid var(--line)}
+.vv .ver{background:#eff6ff;border-color:#bfdbfe}.vv .val{background:#f5f3ff;border-color:#ddd6fe}
+@media (max-width:640px){.vv{grid-template-columns:1fr}}
+iframe{width:100%;height:900px;border:1px solid var(--line);border-radius:8px}
+.gloss{columns:2;column-gap:30px;font-size:.93em}
+.gloss p{break-inside:avoid;margin:0 0 .55em}
+@media (max-width:700px){.gloss{columns:1}}
+.formula{font-family:ui-monospace,Menlo,monospace;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:10px 0;font-size:.95em;line-height:1.8}
+footer{margin-top:50px;border-top:1px solid var(--line);padding-top:12px;font-size:.85em;color:var(--soft)}
+@media print{nav.toc{display:none} details{break-inside:avoid} details>div{display:block} h2{break-before:auto}}
+</style>
+</head>
+<body>
+<main>
+
+<h1>The DLR mesh study, explained</h1>
+<div class="sub">For Henry, for the 10:00 meeting with Arthur and the professors. Written 17 Nov 2026, at night, while the simulation runs.</div>
+
+<div class="banner">
+<b>Status right now:</b> the three simulations run one after the other overnight (coarse, then medium, then fine), and should finish around <b>06:00</b>.
+The real numbers are therefore <b>not</b> on this page yet. Section 8 shows them once you run, from the repo root:
+<pre><code>.venv/bin/python DLR/meshStudy/make_table.py</code></pre>
+Then reload this page. Until then, the pictures in section 8 come from a test at 00:56 (coarse mesh only, the first 15 iterations), so ignore them.
+</div>
+
+<div class="card">
+<b>Three things to remember</b>
+<ol>
+<li>I ran the <b>same</b> wind simulation three times. The only thing that changes is the cell size inside one box around the weather-station building: <b>4 m, then 2 m, then 1 m</b>.</li>
+<li><b>19 virtual sensors</b> on <b>4 vertical lines</b> show whether the answer stops changing when the cells get smaller.</li>
+<li>If the change from medium to fine is below about <b>2 to 5 %</b>, the mesh no longer drives the answer. That is <i>verification</i>. Checking the model against the real wind (<i>validation</i>) comes later, with the sensor data.</li>
+</ol>
+</div>
+
+<nav class="toc">
+<a href="#goal">1. The goal, and Arthur's requests</a>
+<a href="#mesh">2. What a mesh is, and why cell size matters</a>
+<a href="#box">3. The three meshes and the box</a>
+<a href="#probes">4. The probes: 19 virtual anemometers</a>
+<a href="#pipeline">5. The pipeline, step by step</a>
+<a href="#tables">6. Arthur's tables, column by column</a>
+<a href="#expect">7. What I expect to see, and how to read it</a>
+<a href="#results">8. Results (appear in the morning)</a>
+<a href="#talk">9. What to say in the meeting</a>
+<a href="#qa">10. Likely questions, short answers</a>
+<a href="#limits">11. Limits and next steps</a>
+<a href="#gloss">12. Glossary</a>
+</nav>
+
+<!-- ============================================================ 1 -->
+<h2 id="goal"><span class="n">1</span>The goal, and Arthur's requests</h2>
+
+<p class="big">The goal: show that our simulated wind around one group of DLR buildings no longer depends on the size of the mesh cells, down to drone scale (1 m), so we can trust it as a flight cost map.</p>
+
+<p>Some context. The project is a digital twin for drones at the DLR Oberpfaffenhofen campus. A <b>digital twin</b> is a computer copy of a real place. We simulate the wind there with <b>OpenFOAM</b>, a free program for <b>CFD</b> (Computational Fluid Dynamics: computing how air or water moves). Later, the wind field becomes a <b>flight cost map</b>: a 3D map that tells a drone path planner where flying is hard (strong headwind, gusts) and where it is easy.</p>
+
+<p>Arthur, our supervisor, asked for a <b>mesh refinement study</b>. In his words:</p>
+<div class="card small">
+"the mesh needs to be refined so that the wind flow is observed at the scale of a drone that would be 1x1m max. Try to do it for a couple buildings so that an airflow is still observed but also not crash your pc. And we should be able to observe some differences in flow in the vertical axis."<br>
+Plus a table with: (1) mesh quality: skewness, non-orthogonality, aspect ratio, invalid cells; (2) convergence: residuals and continuity error; (3) mesh independence: velocity at fixed monitoring points and pressure drop, at points upstream of the campus, between buildings, behind a building (wake), and above the campus at a fixed height.
+</div>
+
+<table>
+<tr><th>Arthur asked for</th><th>What I did</th><th>Where on this page</th></tr>
+<tr><td>Cells at drone scale (1 × 1 m max)</td><td>The fine mesh has 1 m cells inside the box.</td><td><a href="#box">3</a></td></tr>
+<tr><td>A couple of buildings; airflow still visible; don't crash the PC</td><td>One box of 185 × 117 × 48 m around the weather-station building, its tall neighbour, the gap between them and the wake. Outside the box the mesh is unchanged. Fine mesh: about 2 million cells (my estimate), instead of about 45 million for 1 m everywhere on campus.</td><td><a href="#mesh">2</a>, <a href="#box">3</a></td></tr>
+<tr><td>Differences in the vertical axis</td><td>Every probe location is a vertical line, from 2 m up to 40 m above the ground. One plot shows wind speed against height for each mesh.</td><td><a href="#probes">4</a>, <a href="#results">8</a></td></tr>
+<tr><td>Table 1: mesh quality</td><td>Read from <code>checkMesh</code> for each mesh.</td><td><a href="#t1">6</a></td></tr>
+<tr><td>Table 2: convergence</td><td>Read from the <code>simpleFoam</code> log, plus a "probe drift" check.</td><td><a href="#t2">6</a></td></tr>
+<tr><td>Table 3: mesh independence</td><td>Wind speed at 7 key probes for each mesh, the change in %, an error band (GCI), and the pressure drop from upstream to the wake.</td><td><a href="#t3">6</a></td></tr>
+</table>
+
+<!-- ============================================================ 2 -->
+<h2 id="mesh"><span class="n">2</span>What a mesh is, and why cell size matters</h2>
+
+<p>A computer cannot compute the wind at every one of the infinitely many points in the air. So we cut the air into many small boxes, called <b>cells</b>. All the cells together are the <b>mesh</b> (or grid). The solver then computes <b>one value per cell</b>: one wind speed and direction, one pressure, one turbulence level. That value is an average over the whole cell.</p>
+
+<p>Consequence: <b>anything smaller than a cell is blurred out</b>. Look at the picture. It uses a made-up flow behind a 12 m building (not our simulation), so you can see the effect clearly.</p>
+
+<figure>
+<img src="../results/explainer_fig/fig_cells.png" alt="Illustration: a made-up flow behind a building, averaged over 4 m, 2 m and 1 m cells, with a 1 m drone drawn in each panel" onerror="missing(this)" data-how="Made by DLR/results/explainer_fig/make_figs.py">
+<figcaption>Illustration with a made-up flow. With 4 m cells, the slow and reversed air right behind the building becomes a few blocky averages. The 1 × 1 m drone (red square) is much smaller than one cell, so the mesh cannot tell it what wind it really meets. With 1 m cells, one cell is the size of the drone. On the right: the same vertical line seen by each mesh. Big cells turn the smooth curve into big steps.</figcaption>
+</figure>
+
+<div class="why">The drone feels the wind averaged over its own size, about 1 m. For the cost map to say anything useful at that scale, the cells must not be much bigger than 1 m where the drone flies. That is why Arthur asked for 1 m.</div>
+
+<h3>Why not simply use 1 m cells everywhere?</h3>
+
+<p>Because the number of cells explodes. When you halve the cell size, each cube splits into 2 × 2 × 2 = <b>8</b> smaller cubes.</p>
+
+<svg class="draw" viewBox="0 0 560 195" style="max-width:640px" role="img" aria-label="One cube splits into 8 when the cell size is halved">
+  <g stroke="#1d4ed8" stroke-width="1.6" fill="#eef4ff">
+    <polygon points="20,70 120,70 120,170 20,170"/>
+    <polygon points="20,70 120,70 160,40 60,40" fill="#dbe7ff"/>
+    <polygon points="120,70 160,40 160,140 120,170" fill="#c7d8ff"/>
+  </g>
+  <text x="90" y="190" text-anchor="middle" font-size="13">1 cube, 16 m</text>
+  <text x="205" y="100" text-anchor="middle" font-size="26" fill="#111">→</text>
+  <text x="205" y="125" text-anchor="middle" font-size="11" fill="#4b5563">halve</text>
+  <g stroke="#1d4ed8" stroke-width="1.6" fill="#eef4ff">
+    <polygon points="250,70 350,70 350,170 250,170"/>
+    <polygon points="250,70 350,70 390,40 290,40" fill="#dbe7ff"/>
+    <polygon points="350,70 390,40 390,140 350,170" fill="#c7d8ff"/>
+  </g>
+  <g stroke="#1d4ed8" stroke-width="1.2">
+    <line x1="300" y1="70" x2="300" y2="170"/><line x1="250" y1="120" x2="350" y2="120"/>
+    <line x1="300" y1="70" x2="340" y2="40"/><line x1="270" y1="55" x2="370" y2="55"/>
+    <line x1="350" y1="120" x2="390" y2="90"/><line x1="370" y1="55" x2="370" y2="155"/>
+  </g>
+  <text x="320" y="190" text-anchor="middle" font-size="13">8 cubes, 8 m</text>
+  <g font-size="13" fill="#111">
+    <text x="420" y="45" font-weight="700">cells in one 16 m cube</text>
+    <text x="420" y="70">16 m cells: 1</text>
+    <text x="420" y="92">8 m cells: 8</text>
+    <text x="420" y="114">4 m cells: 64</text>
+    <text x="420" y="136">2 m cells: 512</text>
+    <text x="420" y="158" font-weight="700" fill="#dc2626">1 m cells: 4,096</text>
+  </g>
+</svg>
+
+<p>Going from 4 m to 1 m multiplies the cells by 8 × 8 = <b>64</b>. Our campus box (the zone already at 4 m: about 740 m × 730 m, up to 106 m high) holds about 44 million cubic metres of air. At 1 m that is roughly <b>45 million cells</b>. Today's whole coarse mesh has <b>1.19 million</b>.</p>
+
+<p>A common rule of thumb for this kind of solver is about 1 GB of memory per million cells. So 45 million cells would need tens of GB. The laptop has 16 GB. It would also take days instead of hours.</p>
+
+<div class="why">So I refine only a small box where it matters. That keeps the fine mesh at about 2 million cells, which a laptop can solve overnight. This is exactly Arthur's "a couple of buildings ... not crash your pc".</div>
+
+<p class="small">How I got the estimates: the air volume comes from the building and ground heights in <code>site_map.npz</code>. They are rough (the map has small holes). The real cell counts of medium and fine will be in Table 1 tomorrow.</p>
+
+<!-- ============================================================ 3 -->
+<h2 id="box"><span class="n">3</span>The three meshes and the box</h2>
+
+<h3>Refinement levels</h3>
+<p>The mesh starts as a background grid of <b>16 m cubes</b>. The meshing tool (snappyHexMesh, see section 5) counts refinement in <b>levels</b>. Each level halves the cell size. Drawn to scale:</p>
+
+<svg class="draw" viewBox="0 0 560 175" style="max-width:640px" role="img" aria-label="Cell sizes of refinement levels 0 to 4, drawn to scale">
+  <g fill="#eef4ff" stroke="#1d4ed8" stroke-width="1.5">
+    <rect x="20" y="28" width="112" height="112"/>
+    <rect x="165" y="84" width="56" height="56"/>
+    <rect x="250" y="112" width="28" height="28"/>
+    <rect x="305" y="126" width="14" height="14"/>
+    <rect x="345" y="133" width="7" height="7"/>
+  </g>
+  <rect x="395" y="133" width="7" height="7" fill="none" stroke="#ff2d55" stroke-width="2"/>
+  <g font-size="12" text-anchor="middle" fill="#111">
+    <text x="76" y="20">16 m</text><text x="193" y="76">8 m</text><text x="264" y="104">4 m</text>
+    <text x="312" y="118">2 m</text><text x="348" y="125">1 m</text>
+    <text x="398" y="125" fill="#ff2d55">drone</text>
+    <text x="76" y="158" fill="#4b5563">level 0</text><text x="193" y="158" fill="#4b5563">1</text>
+    <text x="264" y="158" fill="#4b5563">2</text><text x="312" y="158" fill="#4b5563">3</text><text x="348" y="158" fill="#4b5563">4</text>
+  </g>
+  <text x="440" y="60" font-size="12" fill="#4b5563">size = 16 m ÷ 2<tspan baseline-shift="super" font-size="9">level</tspan></text>
+</svg>
+
+<table>
+<tr><th>Level</th><th>Cell size</th><th>Where it is used</th></tr>
+<tr><td>0</td><td>16 m</td><td>Background grid, far from the campus</td></tr>
+<tr><td>1</td><td>8 m</td><td>Transition zone</td></tr>
+<tr><td>2</td><td>4 m</td><td>The whole campus box, and the ground. Our box in the <b>coarse</b> mesh.</td></tr>
+<tr><td>3</td><td>2 m</td><td>Next to every building wall (all meshes). Our box in the <b>medium</b> mesh.</td></tr>
+<tr><td>4</td><td>1 m</td><td>Our box in the <b>fine</b> mesh.</td></tr>
+</table>
+
+<h3>The three meshes</h3>
+
+<table>
+<tr><th></th><th>coarse</th><th>medium</th><th>fine</th></tr>
+<tr><td>Cell size inside the box</td><td>4 m</td><td>2 m</td><td>1 m</td></tr>
+<tr><td>Level inside the box</td><td>2</td><td>3</td><td>4</td></tr>
+<tr><td>Total cells</td><td class="num">1,190,168 (measured)</td><td class="num">≈ 1.3 million (estimate)</td><td class="num">≈ 2.1 million (estimate)</td></tr>
+<tr><td>Everything else: domain, inflow, physics, solver settings, 1000 iterations, the 19 probes</td><td colspan="3" style="text-align:center">identical in all three</td></tr>
+</table>
+
+<div class="why">If only one thing changes, any difference in the results must come from that one thing: the mesh. That is the whole logic of the study.</div>
+
+<p>A detail that matters. In all three meshes, cells touching a building wall are already 2 m (level 3), and the ground is 4 m (level 2). So in the <b>coarse</b> mesh the box asks for 4 m, which is already there: it adds nothing. The coarse case is therefore exactly the original simulation from 10 November. In the <b>medium</b> mesh, all the air in the box becomes 2 m, including next to the ground. In the <b>fine</b> mesh, everything in the box is 1 m. Around the box, snappyHexMesh keeps at least 3 cells of each size, so the size changes gradually (no sudden jump from 1 m to 4 m).</p>
+
+<div class="ok"><b>A good sign:</b> the first coarse run reproduced the original mesh exactly. Same 1,190,168 cells, same worst skewness (8.61), same worst non-orthogonality (64.6°), same worst aspect ratio (11.5). This shows the new setup builds the same case as before. Only the box is new.</div>
+
+<p>Two more reasons for the choices:</p>
+<ul>
+<li><b>Why three meshes?</b> With two meshes you only see one change; you can't tell if it is still shrinking. With three, you see whether the change shrinks from coarse→medium to medium→fine. Three is also the minimum for the standard error band, the GCI (section 6).</li>
+<li><b>Why halve each time?</b> A constant <b>refinement ratio</b> (here r = 2) makes the three meshes comparable, and the GCI formula needs it. It also matches how snappyHexMesh works (one level = half the size).</li>
+</ul>
+
+<h3>Where the box is, and why there</h3>
+
+<figure style="max-width:720px">
+<img src="../results/explainer_fig/fig_site_campus.png" alt="Top view of the whole campus with the cluster box, the weather station, the upstream probe and the 5 skewed faces" onerror="missing(this)" data-how="Made by DLR/results/explainer_fig/make_figs.py">
+<figcaption>Whole campus, top view. Grey = buildings (darker = taller). Blue box = the refined zone. Red dashed square = where the weather station could be (±50 m). Green dot = the upstream control line, far outside the box. Orange crosses = the 5 bad faces of the coarse mesh (section 6).</figcaption>
+</figure>
+<figure>
+<img src="../results/explainer_fig/fig_site_zoom.png" alt="Zoom on the cluster box with the station building, the taller block, and the station, wake and gap probe lines" onerror="missing(this)" data-how="Made by DLR/results/explainer_fig/make_figs.py">
+<figcaption>Zoom on the box. The long diagonal building (about 10 to 13 m tall) is the station building. The red star is the station position. The taller block to the east is about 16 to 21 m tall.</figcaption>
+</figure>
+
+<p>Box size, in case coordinates: <b>x 50 → 235 m, y 145 → 262 m, z 12 → 60 m</b>, so 185 × 117 × 48 m. The ground inside the box is at z ≈ 13.5 to 19 m, so the box reaches about 41 to 46 m above the ground. The tallest building in it is about 21 m.</p>
+
+<p><b>Why this place:</b> the DLR campus has a weather station with a wind sensor. If the refined box sits on that station, the <b>same mesh</b> can later be compared with real measurements. The station position is only known to about <b>±50 m</b>, so the box covers that whole square (dashed). Inside the box there are also all the flow types Arthur listed: a gap between buildings, a wake, and air above the roofs.</p>
+
+<div class="card">
+<b>How the station lands at case (122, 206): the coordinate chain</b>
+<ol class="small" style="margin:.3em 0">
+<li>Station on the DLR web plots: <b>48.087 N, 11.280 E</b> (three decimals, hence about ±50 m).</li>
+<li>In UTM zone 32 (a flat map grid in metres): E 669787, N 5328485.</li>
+<li>The scene's terrain file has its origin at E 670000, N 5328000. So in scene coordinates: x = −213 m, y = +485 m.</li>
+<li><code>make_case.py</code> moves the scene so that the terrain centre is at (0, 0), because huge UTM numbers hurt OpenFOAM's precision. The shift is (−335, 279) m, subtracted: <b>case = scene + (335, −279)</b>.</li>
+<li>So the station is at case x = −213 + 335 = <b>122</b>, y = 485 − 279 = <b>206</b>. Here x points east and y points north.</li>
+</ol>
+Note: z = 0 is not the ground. The ground in the case sits at about z = 13 to 25 m. At the station it is at z ≈ 17 m.
+</div>
+
+<p>The side view shows the same box from the side, along the wind:</p>
+<figure>
+<img src="../results/explainer_fig/fig_section.png" alt="Side view along the wind through the station: ground, station building, taller block, the box and the probe heights" onerror="missing(this)" data-how="Made by DLR/results/explainer_fig/make_figs.py">
+<figcaption>Side view along the wind, cut through the station (y = 206 m). The heights are stretched 3 times so you can see them. The station position falls just next to the building on this cut (the building ends at x ≈ 112 m). The gap line is 24 m south of this cut; it is drawn here so you can see its heights.</figcaption>
+</figure>
+
+<!-- ============================================================ 4 -->
+<h2 id="probes"><span class="n">4</span>The probes: 19 virtual anemometers</h2>
+
+<p>An <b>anemometer</b> is a wind sensor. A <b>probe</b> is a virtual one: a fixed point where OpenFOAM writes down the wind velocity (U), the pressure (p) and the turbulence (k) after <b>every</b> iteration. We compare the probes between the three meshes. Each location is a vertical line of points, so we also see how the wind changes with height.</p>
+
+<table>
+<tr><th>Line</th><th>Position (case x, y)</th><th>Heights above ground</th><th>What kind of air</th><th>Why here</th></tr>
+<tr><td><span class="tag t-up">upstream</span></td><td>(−150, 206): open field, 200 m west of the box</td><td>2, 5, 10, 20, 40 m</td><td>The incoming wind, not yet disturbed</td><td><b>Control.</b> The mesh here is the same in all three runs, so the values should not change. If they do, something else changed. Also Arthur's "upstream of the campus".</td></tr>
+<tr><td><span class="tag t-gap">gap</span></td><td>(172, 182): between the end of the station building and the taller block</td><td>2, 5, 10, 20, 40 m</td><td>Squeezed between buildings, so faster</td><td>Arthur's "between buildings". How fast the air goes through depends on how many cells fit across the gap.</td></tr>
+<tr><td><span class="tag t-wake">wake</span></td><td>(140, 210): about 18 m downwind (east) of the station</td><td>2, 5, 10, 20, 40 m</td><td>Sheltered, slow, possibly turning back</td><td>Arthur's "behind a building". The most mesh-sensitive place: big cells blur it the most.</td></tr>
+<tr><td><span class="tag t-st">station</span></td><td>(122, 206): the weather-station position</td><td>15, 20, 25, 40 m</td><td>Above the roofs (roof ≈ 10 to 13 m)</td><td>Arthur's "above the campus at a fixed height", and the place we will later compare with the real sensor.</td></tr>
+</table>
+
+<p>That is 5 + 5 + 5 + 4 = <b>19 probes</b>. Their exact coordinates are in <code>DLR/meshStudy/probes_index.csv</code>. All 19 were found inside the coarse mesh (the solver lists them in its output).</p>
+
+<div class="why">The heights cover where a drone flies. 2 m and 5 m are low flight next to buildings, where the flow is most complex. 40 m is above everything. The station line starts at 15 m because the roof is at about 10 to 13 m, and we don't know how high the real sensor mast is. Vertical lines answer Arthur's "differences in flow in the vertical axis".</div>
+
+<div class="note">Because the full 3D wind field is saved at the end of each run, we can add more probes later without running again. These 19 are the ones written at every iteration, which we need to check convergence.</div>
+
+<!-- ============================================================ 5 -->
+<h2 id="pipeline"><span class="n">5</span>The pipeline, step by step</h2>
+
+<p>Before the night, <code>setup.py</code> made three copies of the original case (<code>DLR/windCase</code>), one per mesh, and changed only the box level, the iteration count and the probes. Then <code>run_all.sh</code> runs this pipeline (<code>Allrun.case</code>) for coarse, then medium, then fine:</p>
+
+<ol class="steps">
+<li><span class="tool">surfaceFeatureExtract</span>: finds the sharp edges of the buildings in the 3D building file (STL).<br><span class="w">Why: so the mesh can keep corners sharp instead of rounding them off.</span></li>
+<li><span class="tool">blockMesh</span>: builds the background grid. It is a cylinder (radius 882 m, about 240 m high) filled with 16 m cubes, about 88,000 cells.<br><span class="w">Why: snappyHexMesh needs a simple grid to start cutting from. A cylinder works for any wind direction.</span></li>
+<li><span class="tool">snappyHexMesh</span>: (a) splits cubes where we ask (campus 4 m, building walls 2 m, our box 4, 2 or 1 m); (b) removes the cells inside buildings and under the ground; (c) "snaps" the stair-step edges onto the real surfaces.<br><span class="w">Why: it makes a mesh automatically from the building and terrain files.</span>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 160" class="draw" style="max-width:640px" role="img" aria-label="snappyHexMesh in three steps">
+<style>.sx-cl{fill:#eef4ff;stroke:#1d4ed8;stroke-width:1}.sx-bld{fill:#9ca3af}.sx-t{font:12px sans-serif;fill:#111}</style>
+<g transform="translate(0,0)">
+<rect x="5" y="5" width="40" height="40" class="sx-cl"/>
+<rect x="5" y="45" width="40" height="40" class="sx-cl"/>
+<rect x="5" y="85" width="40" height="40" class="sx-cl"/>
+<rect x="45" y="5" width="40" height="40" class="sx-cl"/>
+<rect x="45" y="45" width="40" height="40" class="sx-cl"/>
+<rect x="45" y="85" width="40" height="40" class="sx-cl"/>
+<rect x="85" y="5" width="40" height="40" class="sx-cl"/>
+<rect x="85" y="45" width="40" height="40" class="sx-cl"/>
+<rect x="85" y="85" width="40" height="40" class="sx-cl"/>
+<rect x="125" y="5" width="40" height="40" class="sx-cl"/>
+<rect x="125" y="45" width="40" height="40" class="sx-cl"/>
+<rect x="125" y="85" width="40" height="40" class="sx-cl"/>
+<polygon points="50,125 165,35 165,125" class="sx-bld" opacity=".75"/>
+<text x="85" y="148" text-anchor="middle" class="sx-t">1. blockMesh: big cubes</text></g>
+<text x="183" y="70" class="sx-t" font-size="22">→</text>
+<g transform="translate(195,0)">
+<polygon points="50,125 165,35 165,125" class="sx-bld"/>
+<polygon points="5,5 45,5 45,45 5,45" class="sx-cl"/>
+<polygon points="5,45 45,45 45,85 5,85" class="sx-cl"/>
+<polygon points="5,85 45,85 45,125 5,125" class="sx-cl"/>
+<polygon points="45,5 85,5 85,45 45,45" class="sx-cl"/>
+<polygon points="45,45 85,45 85,85 45,85" class="sx-cl"/>
+<polygon points="45.0,85.0 65.0,85.0 65.0,105.0 45.0,105.0" class="sx-cl"/>
+<polygon points="45.0,105.0 65.0,105.0 65.0,125.0 45.0,125.0" class="sx-cl"/>
+<polygon points="65.0,85.0 85.0,85.0 85.0,105.0 65.0,105.0" class="sx-cl"/>
+<polygon points="85,5 125,5 125,45 85,45" class="sx-cl"/>
+<polygon points="85.0,45.0 105.0,45.0 105.0,65.0 85.0,65.0" class="sx-cl"/>
+<polygon points="85.0,65.0 105.0,65.0 105.0,85.0 85.0,85.0" class="sx-cl"/>
+<polygon points="105.0,45.0 125.0,45.0 125.0,65.0 105.0,65.0" class="sx-cl"/>
+<polygon points="125.0,5.0 145.0,5.0 145.0,25.0 125.0,25.0" class="sx-cl"/>
+<polygon points="125.0,25.0 145.0,25.0 145.0,45.0 125.0,45.0" class="sx-cl"/>
+<polygon points="145.0,5.0 165.0,5.0 165.0,25.0 145.0,25.0" class="sx-cl"/>
+<polygon points="145.0,25.0 165.0,25.0 165.0,45.0 145.0,45.0" class="sx-cl"/>
+<polygon points="125.0,45.0 145.0,45.0 145.0,65.0 125.0,65.0" class="sx-cl"/>
+<text x="85" y="148" text-anchor="middle" class="sx-t">2. split + cut out</text></g>
+<text x="378" y="70" class="sx-t" font-size="22">→</text>
+<g transform="translate(390,0)">
+<polygon points="50,125 165,35 165,125" class="sx-bld"/>
+<polygon points="5,5 45,5 45,45 5,45" class="sx-cl"/>
+<polygon points="5,45 45,45 45,85 5,85" class="sx-cl"/>
+<polygon points="5,85 45,85 45,125 5,125" class="sx-cl"/>
+<polygon points="45,5 85,5 85,45 45,45" class="sx-cl"/>
+<polygon points="45,45 85,45 91.1,92.8 45,85" class="sx-cl"/>
+<polygon points="45.0,85.0 65.0,85.0 69.0,110.1 45.0,105.0" class="sx-cl"/>
+<polygon points="45.0,105.0 69.0,110.1 59.3,117.7 45.0,125.0" class="sx-cl"/>
+<polygon points="65.0,85.0 91.1,92.8 81.4,100.4 69.0,110.1" class="sx-cl"/>
+<polygon points="85,5 125,5 125,45 85,45" class="sx-cl"/>
+<polygon points="85.0,45.0 105.0,45.0 113.2,75.5 85.0,65.0" class="sx-cl"/>
+<polygon points="85.0,65.0 113.2,75.5 103.5,83.1 91.1,92.8" class="sx-cl"/>
+<polygon points="105.0,45.0 125.0,45.0 125.6,65.8 113.2,75.5" class="sx-cl"/>
+<polygon points="125.0,5.0 145.0,5.0 145.0,25.0 125.0,25.0" class="sx-cl"/>
+<polygon points="125.0,25.0 145.0,25.0 147.7,48.5 125.0,45.0" class="sx-cl"/>
+<polygon points="145.0,5.0 165.0,5.0 165.0,25.0 145.0,25.0" class="sx-cl"/>
+<polygon points="145.0,25.0 165.0,25.0 160.1,38.8 147.7,48.5" class="sx-cl"/>
+<polygon points="125.0,45.0 147.7,48.5 138.0,56.1 125.6,65.8" class="sx-cl"/>
+<text x="85" y="148" text-anchor="middle" class="sx-t">3. snap onto the wall</text></g>
+</svg>
+<span class="w">Snapping bends the cells next to the walls. That is where badly shaped cells (high skewness) come from.</span></li>
+<li><span class="tool">topoSet</span> + <span class="tool">createPatch</span>: split the side of the cylinder into an <b>inlet</b> (the half facing west, where the wind comes in) and an <b>outlet</b> (the east half).<br><span class="w">Why: the solver must know where air enters and leaves.</span></li>
+<li><span class="tool">checkMesh -writeSets vtk</span>: checks the shape of every cell and face, and saves the bad ones to a file you can open in ParaView.<br><span class="w">Why: this gives Table 1 (mesh quality).</span></li>
+<li><span class="tool">cp -r 0.orig 0</span>: copies the starting values and the <b>boundary conditions</b> (the rules at the edges: incoming wind profile, walls, outlet).<br><span class="w">Why: every run must start from the same state.</span></li>
+<li><span class="tool">decomposePar</span>: cuts the mesh into 8 pieces, one per processor core.<br><span class="w">Why: 8 cores then work at the same time. The laptop's i9 has 8 real cores (extra "hyperthreads" don't speed up CFD).</span></li>
+<li><span class="tool">simpleFoam</span> (8 processes): the solver. It runs 1000 iterations and writes the probes and residuals after each one.<br><span class="w">Why: this is the actual wind computation. It gives Tables 2 and 3.</span></li>
+<li><span class="tool">reconstructPar</span>: glues the 8 pieces back into one result, then deletes the pieces.<br><span class="w">Why: one result to open in ParaView, and the pieces would fill the disk.</span></li>
+</ol>
+
+<p>The three meshes run <b>one after the other</b>, not at the same time, because each run uses all 8 cores and a lot of the 16 GB of memory. Progress is written to <code>DLR/meshStudy/run_all.out</code>. In the morning, <code>make_table.py</code> reads all the logs and writes the three tables and two plots.</p>
+
+<h3>What the solver actually computes</h3>
+<p><b>simpleFoam</b> solves the equations of air flow for a <b>steady</b> wind (an average wind that doesn't change in time). It uses <b>RANS</b> (Reynolds-Averaged Navier–Stokes): instead of computing every gust, it computes the average flow and adds a model for the effect of turbulence. The model is <b>k-ε</b> ("k-epsilon"): it tracks <b>k</b>, the energy of the turbulent gusts, and <b>ε</b>, how fast that energy dies away. "SIMPLE" is the name of the method: it guesses, corrects and repeats. Each repetition is one <b>iteration</b>. After enough iterations the answer stops changing. It has <b>converged</b>.</p>
+<p>The incoming wind: from the <b>west</b> (270°), <b>5 m/s at 10 m height</b>, faster higher up (a "log law" profile over ground with roughness 0.1 m). No wind turbine yet. Software: OpenFOAM v2306.</p>
+
+<!-- ============================================================ 6 -->
+<h2 id="tables"><span class="n">6</span>Arthur's tables, column by column</h2>
+
+<p><code>make_table.py</code> writes three tables. Here is what every column means, why it matters, and what a good value looks like.</p>
+
+<h3 id="t1">Table 1: mesh quality (from checkMesh)</h3>
+<p>A cell's <b>faces</b> are its walls. Two neighbouring cells share one face. The solver computes how much air flows through each face, using the values at the two <b>cell centres</b>. That works best when the cells are regular boxes. These columns measure how far the cells are from that.</p>
+
+<table>
+<tr><th>Column</th><th>Meaning</th><th>Good value</th><th>Coarse (measured)</th></tr>
+<tr><td>Box cells</td><td>Cell size in the refined box</td><td>—</td><td>4 m</td></tr>
+<tr><td>Total cells</td><td>Number of cells in the whole mesh</td><td>—</td><td class="num">1,190,168</td></tr>
+<tr><td>Max skewness (bad faces)</td><td>Worst skewness, and how many faces are above the limit</td><td>below 4</td><td class="num">8.61 (5 faces)</td></tr>
+<tr><td>Non-ortho max / avg</td><td>Worst and average non-orthogonality</td><td>max below 70°</td><td class="num">64.6° / 10.6°</td></tr>
+<tr><td>Max aspect ratio</td><td>The most stretched cell</td><td>checkMesh complains above 1000</td><td class="num">11.5</td></tr>
+<tr><td>Failed checks</td><td>How many of checkMesh's tests failed. Includes <b>invalid cells</b>: cells with zero or negative volume, or turned inside out.</td><td>0</td><td class="num">1 (the skewness test). No invalid cells: "Cell volumes OK", "Face pyramids OK".</td></tr>
+</table>
+
+<p><b>Skewness.</b> Draw a line between the centres of two neighbouring cells. It should cross their shared face in the middle. Skewness measures how far it misses the middle, in units of "half a face width". 0 = right in the middle. 1 = at the edge of the face. Above 4, checkMesh flags the face.</p>
+<svg class="draw" viewBox="0 0 540 212" style="max-width:640px" role="img" aria-label="Skewness: good and skewed cells">
+  <g fill="#eef4ff" stroke="#1d4ed8" stroke-width="1.5">
+    <rect x="30" y="50" width="90" height="90"/><rect x="120" y="50" width="90" height="90"/>
+    <polygon points="300,40 390,95 390,135 300,170"/><polygon points="390,95 510,10 510,50 390,135"/>
+  </g>
+  <line x1="120" y1="50" x2="120" y2="140" stroke="#111" stroke-width="3.5"/>
+  <line x1="390" y1="95" x2="390" y2="135" stroke="#111" stroke-width="3.5"/>
+  <line x1="75" y1="95" x2="165" y2="95" stroke="#2563eb" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <line x1="345" y1="110" x2="450" y2="72.5" stroke="#2563eb" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <line x1="390" y1="93.9" x2="390" y2="115" stroke="#dc2626" stroke-width="3"/>
+  <g fill="#2563eb"><circle cx="75" cy="95" r="4.5"/><circle cx="165" cy="95" r="4.5"/><circle cx="345" cy="110" r="4.5"/><circle cx="450" cy="72.5" r="4.5"/></g>
+  <circle cx="120" cy="95" r="4" fill="#111"/><circle cx="390" cy="115" r="4" fill="#111"/>
+  <g font-size="12" fill="#111">
+    <text x="60" y="88">centre</text><text x="150" y="88">centre</text>
+    <text x="126" y="122">face middle</text>
+    <text x="384" y="128" text-anchor="end">face middle</text>
+    <text x="396" y="100" fill="#dc2626" font-weight="700">miss</text>
+    <text x="120" y="170" text-anchor="middle">Good: hits the middle → skewness 0</text>
+    <text x="405" y="188" text-anchor="middle">Skewed: misses the middle (red)</text>
+    <text x="405" y="203" text-anchor="middle">→ skewness ≈ 1 in this drawing</text>
+  </g>
+</svg>
+<div class="why">The solver assumes the value on the face is a mix of the two centres. If the line misses the face, that mix is taken at the wrong place, so the flow through the face is less accurate. Our worst faces (8.6) miss by more than 8 half-widths: the line passes well outside the face.</div>
+
+<p><b>Non-orthogonality.</b> The angle between the centre-to-centre line and the face <b>normal</b> (the arrow standing straight out of the face). 0° = perfect. checkMesh warns above 70°.</p>
+<svg class="draw" viewBox="0 0 540 190" style="max-width:640px" role="img" aria-label="Non-orthogonality: angle between centre line and face normal">
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#059669"/></marker></defs>
+  <g fill="#eef4ff" stroke="#1d4ed8" stroke-width="1.5">
+    <rect x="30" y="45" width="90" height="100"/><rect x="120" y="45" width="90" height="100"/>
+    <polygon points="300,45 372,45 428,145 300,145"/><polygon points="372,45 510,45 510,145 428,145"/>
+  </g>
+  <line x1="120" y1="45" x2="120" y2="145" stroke="#111" stroke-width="3.5"/>
+  <line x1="372" y1="45" x2="428" y2="145" stroke="#111" stroke-width="3.5"/>
+  <line x1="75" y1="95" x2="165" y2="95" stroke="#2563eb" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <line x1="350" y1="95" x2="455" y2="95" stroke="#2563eb" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <line x1="120" y1="95" x2="160" y2="95" stroke="#059669" stroke-width="3" marker-end="url(#ah)"/>
+  <line x1="400" y1="95" x2="448" y2="68.1" stroke="#059669" stroke-width="3" marker-end="url(#ah)"/>
+  <path d="M432,95 A32,32 0 0,0 427.9,79.4" fill="none" stroke="#dc2626" stroke-width="2"/>
+  <g fill="#2563eb"><circle cx="75" cy="95" r="4.5"/><circle cx="165" cy="95" r="4.5"/><circle cx="350" cy="95" r="4.5"/><circle cx="455" cy="95" r="4.5"/></g>
+  <g font-size="12" fill="#111">
+    <text x="436" y="88" fill="#dc2626" font-weight="700">θ</text>
+    <text x="128" y="84" fill="#059669">normal</text><text x="440" y="62" fill="#059669">normal</text>
+    <text x="120" y="170" text-anchor="middle">Good: normal along the line → 0°</text>
+    <text x="405" y="170" text-anchor="middle">Tilted face: angle θ ≈ 30° here</text>
+  </g>
+</svg>
+<div class="why">The solver computes the push of pressure across a face from the difference between the two centres. That is exact only if the line between them points straight through the face. A tilted face needs a correction, which gets less accurate and less stable as the angle grows. Ours: worst 64.6°, average 10.6°. Fine.</div>
+
+<p><b>Aspect ratio.</b> Roughly: the longest side of a cell divided by its shortest side. 1 = a perfect cube.</p>
+<svg class="draw" viewBox="0 0 540 105" style="max-width:640px" role="img" aria-label="Aspect ratio: a cube versus a stretched cell">
+  <rect x="30" y="20" width="60" height="60" fill="#eef4ff" stroke="#1d4ed8" stroke-width="1.5"/>
+  <rect x="170" y="45" width="230" height="20" fill="#eef4ff" stroke="#1d4ed8" stroke-width="1.5"/>
+  <g font-size="12" fill="#111">
+    <text x="60" y="98" text-anchor="middle">1 : 1 (ideal)</text>
+    <text x="285" y="88" text-anchor="middle">about 11.5 : 1 (our most stretched cell)</text>
+    <text x="420" y="60">limit: 1000 : 1</text>
+  </g>
+</svg>
+<div class="why">Very stretched cells make the equations harder to solve and less accurate when the flow crosses them the long way. 11.5 is far from any problem.</div>
+
+<div class="honest">The coarse mesh fails one check: <b>5 faces</b> have skewness up to <b>8.6</b> (limit 4). But that is 5 faces out of 3,708,464. I looked up where they are (checkMesh saved them): 4 spots, marked with orange crosses on the campus map. Three are at the edge of a roof, one (2 faces) is on the ground next to a building. Three spots are at the south-west end of the campus; one is north of the box. Roof edges and wall corners are exactly where snapping bends the cells most. <b>None is inside the box. The nearest is about 28 m north of the box and about 80 m from the nearest probe.</b> So they should not affect our probes. The medium and fine meshes may have a different set of bad faces: check Table 1.</div>
+
+<h3 id="t2">Table 2: convergence (from the simpleFoam log)</h3>
+<p>Converged means: more iterations would not change the answer. If a run is not converged, comparing meshes is pointless, because the differences could just be "not finished yet".</p>
+
+<table>
+<tr><th>Column</th><th>Meaning</th><th>Good value</th></tr>
+<tr><td>Iterations</td><td>How many SIMPLE iterations ran</td><td>1000 for all three (the stop criterion is set so low that it never stops early, so all meshes get the same number)</td></tr>
+<tr><td>Final residuals Ux / p / k</td><td>The <b>residual</b> is a number that says how far each equation is from being balanced at the start of an iteration. Ux = wind along x, p = pressure, k = turbulence energy. Shown for the last iteration.</td><td>Fallen by at least 1000 times (3 "orders of magnitude") and then flat. The original run reached about 1e-6 to 1e-8.</td></tr>
+<tr><td>Continuity error (sum local)</td><td>Air can't appear or vanish. This measures how much air is created or lost per cell, on average, because the equations are not yet perfectly balanced.</td><td>Small, and falling or flat at the end. Compare the three meshes.</td></tr>
+<tr><td>Max probe drift, last 100 it</td><td>For each probe: how much its wind speed moved during the last 100 iterations, in % of its final value. The table shows the worst probe.</td><td>Below about 0.5 %</td></tr>
+<tr><td>Wall time</td><td>Real time the solver took</td><td>— (shows the cost of each mesh)</td></tr>
+</table>
+
+<svg class="draw" viewBox="0 0 540 240" style="max-width:640px" role="img" aria-label="Sketch of residuals falling and flattening, versus a stuck run">
+  <g stroke="#9ca3af" stroke-width="1"><line x1="60" y1="20" x2="60" y2="205"/><line x1="60" y1="205" x2="505" y2="205"/></g>
+  <g stroke="#eef0f3" stroke-width="1"><line x1="60" y1="65" x2="505" y2="65"/><line x1="60" y1="110" x2="505" y2="110"/><line x1="60" y1="155" x2="505" y2="155"/><line x1="60" y1="200" x2="505" y2="200"/></g>
+  <g font-size="11" fill="#4b5563" text-anchor="end"><text x="54" y="24">1</text><text x="54" y="69">1e-2</text><text x="54" y="114">1e-4</text><text x="54" y="159">1e-6</text><text x="54" y="204">1e-8</text></g>
+  <g font-size="11" fill="#4b5563" text-anchor="middle"><text x="60" y="220">0</text><text x="280" y="220">500</text><text x="500" y="220">1000 iterations</text></g>
+  <path d="M60,20 C120,90 200,140 280,155 S420,165 500,166" fill="none" stroke="#2563eb" stroke-width="2.2"/>
+  <path d="M60,20 C140,80 220,120 300,135 S440,143 500,144" fill="none" stroke="#dc2626" stroke-width="2.2"/>
+  <path d="M60,30 C110,100 190,160 280,172 S430,178 500,178" fill="none" stroke="#059669" stroke-width="2.2"/>
+  <path d="M60,20 C100,60 150,72 200,74 L220,68 L240,78 L260,68 L280,78 L300,68 L320,78 L340,68 L360,78 L380,68 L400,78 L420,68 L440,78 L460,68 L480,78 L500,70" fill="none" stroke="#9ca3af" stroke-width="2" stroke-dasharray="5 4"/>
+  <g font-size="12"><text x="505" y="140" fill="#dc2626">p</text><text x="505" y="163" fill="#2563eb">Ux</text><text x="505" y="183" fill="#059669">k</text></g>
+  <text x="230" y="52" font-size="12" fill="#6b7280">grey: stuck and wobbling = NOT converged</text>
+  <text x="270" y="120" font-size="12" fill="#111">falls more than 1000× then flat = converged</text>
+</svg>
+
+<div class="why">Residuals alone can mislead: they can be small while a probe is still slowly moving. That's why there is also a probe-drift column, and a plot of each probe against iteration. Flat lines at the end mean the answer has settled.</div>
+
+<h3 id="t3">Table 3: mesh independence (the key table)</h3>
+<p><b>Mesh independence</b> means: making the cells smaller no longer changes the answer (much). The table shows the wind speed |U| (in m/s) at 7 key probes for each mesh, and the pressure drop.</p>
+
+<table>
+<tr><th>Column</th><th>Meaning</th></tr>
+<tr><td>Probe</td><td>Location and height above ground. Rows: upstream 10 m; gap 5 and 20 m; wake 5 and 20 m; station 20 and 40 m.</td></tr>
+<tr><td>coarse / medium / fine</td><td>Wind speed at that probe at the end of the run, in m/s.</td></tr>
+<tr><td>coarse→medium</td><td>Change in % when the box goes from 4 m to 2 m cells.</td></tr>
+<tr><td><b>medium→fine</b></td><td><b>The most important column.</b> Change in % from 2 m to 1 m cells. Small (below about 2 to 5 %) = the medium mesh is already good enough.</td></tr>
+<tr><td>GCI fine</td><td>An error band on the fine value (explained below).</td></tr>
+<tr><td>Δp upstream→wake, 5 m (Pa)</td><td>The <b>pressure drop</b>: pressure at the upstream probe minus pressure at the wake probe, both 5 m above ground, in pascals. It sums up how strongly the buildings brake the wind. Only differences of pressure mean something here, which is why we use a drop and not one value. (simpleFoam stores pressure divided by air density, so the script multiplies by 1.2 kg/m³.)</td></tr>
+</table>
+
+<p>All 19 probes are in the profile plot (section 8). The table shows only 7 to stay readable.</p>
+
+<h3>The GCI (Grid Convergence Index), in plain words</h3>
+<p>When the cells get smaller, the answer usually moves towards a limit: the answer you would get with infinitely small cells. If every halving shrinks the change by the same factor, you can estimate that limit from three meshes. (This trick is called <b>Richardson extrapolation</b>.) The GCI is the distance from the fine answer to that estimated limit, in %, times a safety factor of 1.25. Think of it as: "the fine value is probably within ± GCI of the perfect-mesh value, for this physics model".</p>
+
+<svg class="draw" viewBox="0 0 540 275" style="max-width:640px" role="img" aria-label="Example of three mesh values converging to an extrapolated value">
+  <g stroke="#9ca3af" stroke-width="1"><line x1="60" y1="20" x2="60" y2="230"/><line x1="60" y1="230" x2="500" y2="230"/></g>
+  <g font-size="11" fill="#4b5563" text-anchor="end"><text x="54" y="198">3.0</text><text x="54" y="148">3.2</text><text x="54" y="97">3.4</text><text x="54" y="46">3.6</text></g>
+  <text x="18" y="130" font-size="11" fill="#4b5563" transform="rotate(-90 18 130)" text-anchor="middle">probe wind speed (m/s)</text>
+  <polyline points="60,59.5 107.7,61.6 155.5,67.9 203.2,78.4 250.9,93.2 298.6,112.2 346.4,135.4 394.1,162.9 441.8,194.5 470.4,215.6" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4 4"/>
+  <line x1="155.5" y1="57.3" x2="155.5" y2="78.5" stroke="#dc2626" stroke-width="2"/>
+  <line x1="149" y1="57.3" x2="162" y2="57.3" stroke="#dc2626" stroke-width="2"/><line x1="149" y1="78.5" x2="162" y2="78.5" stroke="#dc2626" stroke-width="2"/>
+  <circle cx="441.8" cy="194.5" r="7" fill="#9ca3af"/><circle cx="250.9" cy="93.2" r="7" fill="#2563eb"/><circle cx="155.5" cy="67.9" r="7" fill="#dc2626"/>
+  <circle cx="60" cy="59.5" r="6" fill="#fff" stroke="#111" stroke-width="2"/>
+  <g font-size="11" fill="#111" text-anchor="middle">
+    <text x="441.8" y="248">4 m (coarse)</text><text x="250.9" y="248">2 m (medium)</text><text x="155.5" y="248">1 m (fine)</text><text x="66" y="248">0</text>
+    <text x="280" y="268" fill="#4b5563">cell size in the box</text>
+  </g>
+  <g font-size="12" fill="#111">
+    <text x="455" y="185">3.00</text><text x="262" y="88">3.40</text><text x="168" y="64">3.50</text>
+    <text x="70" y="40">limit ≈ 3.53 (extrapolated)</text>
+    <text x="300" y="160" fill="#4b5563">coarse→medium: +0.40 m/s</text>
+    <text x="215" y="125" fill="#4b5563">medium→fine: +0.10 m/s</text>
+    <text x="100" y="102" fill="#dc2626">GCI band ±1.2 %</text>
+  </g>
+</svg>
+<p class="small">Made-up example numbers, to show the method only.</p>
+
+<div class="formula">
+f3 = coarse, f2 = medium, f1 = fine, r = 2 (each mesh halves the cells)<br>
+observed order&nbsp; p = ln( |f3 − f2| / |f2 − f1| ) / ln(r)<br>
+GCI (fine) = 1.25 × |(f2 − f1) / f1| / (r<sup>p</sup> − 1)
+</div>
+<p>In words: <b>p</b> says how fast the answer settles. If the change shrinks 2 times per halving, p = 1. If it shrinks 4 times, p = 2. <code>make_table.py</code> keeps p between 0.5 and 2 (a common safeguard against silly values).</p>
+<ul>
+<li><b>Example A</b> (the picture): 3.00 → 3.40 → 3.50. The change shrinks from 0.40 to 0.10, 4 times, so p = 2. GCI = 1.25 × (0.10 / 3.50) / (4 − 1) ≈ <b>1.2 %</b>.</li>
+<li><b>Example B</b>: 3.00 → 3.40 → 3.60. The change shrinks only from 0.40 to 0.20, so p = 1. GCI = 1.25 × (0.20 / 3.60) / (2 − 1) ≈ <b>6.9 %</b>. Slower settling, so a wider band.</li>
+</ul>
+<p>Handy rule for our case: when p is about 1, <b>GCI ≈ 1.25 × the medium→fine change</b>.</p>
+<div class="note">The GCI only works if the three values move in one direction (for example up, up). If they go up and then down, <code>make_table.py</code> writes <b>"oscillating (not monotonic)"</b> and gives no GCI. That happens in complex flows. Then report the spread between the three values instead, and say it honestly.</div>
+
+<div class="vv">
+<div class="ver"><b>Verification</b> (this study)<br>"Are we solving the equations right?"<br>Is the grid distorting the answer? We check by changing the mesh and seeing if the answer stays put.</div>
+<div class="val"><b>Validation</b> (later)<br>"Are we solving the right equations?"<br>Does the model match the real wind? We check by comparing with measurements: the DLR weather station, and the EDMO airfield station for the incoming wind.</div>
+</div>
+<p class="small">Verification comes first. If the mesh still changed the answer, a match with reality could be pure luck.</p>
+
+<!-- ============================================================ 7 -->
+<h2 id="expect"><span class="n">7</span>What I expect to see, and how to read it</h2>
+
+<figure>
+<img src="../results/explainer_fig/fig_expected.png" alt="Sketch of the expected plots: upstream curves overlapping, wake curves splitting near the ground, probes flattening over the iterations" onerror="missing(this)" data-how="Made by DLR/results/explainer_fig/make_figs.py">
+<figcaption>A sketch with invented curves, not results. Use it to recognise the real plots in section 8.</figcaption>
+</figure>
+
+<p>My expectations, location by location:</p>
+<ul>
+<li><span class="tag t-up">upstream</span> <b>Nearly identical</b> on the three meshes (well under 1 %). The mesh there doesn't change, and the nearest building is more than 100 m away (about 180 m straight downwind).</li>
+<li><span class="tag t-st">station</span> and every line at <b>40 m</b>: <b>small changes</b>. High above the roofs the flow is smooth, so cell size matters less. Changes should get smaller with height.</li>
+<li><span class="tag t-gap">gap</span>: <b>moderate changes</b>, mostly low down. The 4 m mesh has only a few cells across the gap; the 1 m mesh has many.</li>
+<li><span class="tag t-wake">wake</span> at 2 and 5 m: <b>the largest changes</b>. Behind a building the air slows down, maybe turns back, and changes quickly from place to place. Big cells blur it the most (see the picture in section 2).</li>
+<li><b>Near the ground in general</b> (2 m): bigger changes too. On the coarse mesh, a probe 2 m above the ground sits inside the very first 4 m cell, where the value comes from a wall formula, not from the computed flow.</li>
+<li><b>Shrinking differences.</b> The coarse→medium change should be bigger than the medium→fine change (about 2 to 4 times bigger if things behave well). Our method for the wind transport (called "first-order upwind") has a formal order of 1, so a halving of the change per step (p ≈ 1) would be normal. Real flows around buildings are often less regular.</li>
+<li><b>Convergence plot:</b> all lines flat at the end. The fine mesh may need more iterations to settle. If a wake probe keeps wobbling, it is probably because the real flow there is unsteady (eddies breaking off the building), which a steady solver can't settle.</li>
+<li><b>Pressure drop:</b> should be positive (higher pressure upstream than in the sheltered wake). For scale, the "dynamic pressure" ½ρU² of a 4 to 5 m/s wind is about 10 to 15 Pa. Like the speeds, it should change less from medium to fine than from coarse to medium.</li>
+</ul>
+
+<h3>How to decide, in the morning</h3>
+<table>
+<tr><th>If you see…</th><th>It means…</th><th>Say…</th></tr>
+<tr><td>Upstream changes by more than about 1 %</td><td>Red flag: something other than the mesh changed, or a run is not converged.</td><td>Check Table 2 first. Don't claim mesh independence.</td></tr>
+<tr><td>Probe drift above 0.5 % on some mesh</td><td>That run hasn't settled.</td><td>"Needs more iterations." Compare with care.</td></tr>
+<tr><td>medium→fine below 2 % at all probes</td><td>Medium is mesh-independent.</td><td>"Medium is enough. We can use it (cheaper). Fine only adds detail."</td></tr>
+<tr><td>medium→fine 2 to 5 %</td><td>Acceptable, borderline.</td><td>"Medium is acceptable; for drone-scale detail near the station we use fine."</td></tr>
+<tr><td>Above 5 % in the wake or near the ground, but shrinking</td><td>Not yet independent there.</td><td>"The wake needs the fine mesh. An extra level in a smaller box would confirm it."</td></tr>
+<tr><td>"oscillating" in the GCI column</td><td>No clear trend at that probe.</td><td>Report the spread; probably unsteady flow or the near-wall cell. Steady RANS has limits there.</td></tr>
+</table>
+
+<div class="note"><b>Mesh independence and Arthur's 1 m request are two different questions.</b> Independence says which mesh gives a trustworthy answer. The 1 m request is about how much detail the cost map has. If medium is already independent, fine is not "more correct": it gives the same answer with more detail, at about 8 times the cells in the box. That can still be worth it for a 1 m drone.</div>
+
+<!-- ============================================================ 8 -->
+<h2 id="results"><span class="n">8</span>Results (appear in the morning)</h2>
+
+<div class="banner">
+<b>Morning checklist</b>
+<ol style="margin:.3em 0">
+<li>Open <code>DLR/meshStudy/run_all.out</code>. The last line should say <code>ALL DONE ...</code>, with no <code>!!! ... FAILED</code> line.</li>
+<li>From the repo root, run <code>.venv/bin/python DLR/meshStudy/make_table.py</code> (a few seconds).</li>
+<li>Reload this page (Cmd + R; if a plot still looks old, Cmd + Shift + R). The two plots and the tables below update.</li>
+<li>Fill the yellow blanks of the talk track (section 9) with the real numbers.</li>
+<li>If fine failed or is still running: the script works with whatever exists. Present coarse vs medium and say fine is still running.</li>
+</ol>
+</div>
+
+<h3>Convergence: each probe against iteration</h3>
+<figure>
+<img src="../results/mesh_study_convergence.png" alt="Convergence plot: wind speed at 4 probes against iteration, one line per mesh" onerror="missing(this)" data-how="Appears after running .venv/bin/python DLR/meshStudy/make_table.py">
+<figcaption>Wind speed at upstream 5 m, gap 5 m, wake 5 m and station 20 m, against iteration. Grey = coarse, blue = medium, red = fine. Flat at the end = converged.</figcaption>
+</figure>
+
+<h3>Vertical profiles: wind speed against height, per mesh</h3>
+<figure>
+<img src="../results/mesh_study_profiles.png" alt="Vertical profiles: wind speed against height at the 4 probe lines, one curve per mesh" onerror="missing(this)" data-how="Appears after running .venv/bin/python DLR/meshStudy/make_table.py">
+<figcaption>All 19 probes. One panel per location. This is the "vertical axis" picture: how the wind changes with height, and how much each mesh disagrees. Curves on top of each other = mesh-independent there.</figcaption>
+</figure>
+
+<h3>The three tables</h3>
+<p>Open them in their own page: <a href="../results/mesh_study.html">DLR/results/mesh_study.html</a> (also as Markdown: <a href="../results/mesh_study.md">mesh_study.md</a>). They are shown here too:</p>
+<iframe src="../results/mesh_study.html" title="Tables written by make_table.py" loading="lazy"></iframe>
+<p class="small">One known glitch: the first line of the generated page says the box is "185 × 110 × 48 m". The real box is <b>185 × 117 × 48 m</b>: it was extended to y = 262 to cover the ±50 m around the station, and that sentence in <code>make_table.py</code> was not updated. The numbers in the tables are not affected.</p>
+
+<h3>Pictures of the meshes</h3>
+<p>These are made separately and show up here once they exist.</p>
+<figure>
+<img src="../results/mesh_fig/box_topview.png" alt="Top view of the refined box on the campus" onerror="missing(this)" data-how="Being produced into DLR/results/mesh_fig/">
+<figcaption>Top view of the box on the campus.</figcaption>
+</figure>
+<div class="grid2">
+<figure><img src="../results/mesh_fig/mesh_slice_coarse.png" alt="Mesh slice, coarse: 4 m cells in the box" onerror="missing(this)" data-how="Being produced into DLR/results/mesh_fig/"><figcaption>Coarse mesh: 4 m cells in the box.</figcaption></figure>
+<figure><img src="../results/mesh_fig/mesh_slice_medium.png" alt="Mesh slice, medium: 2 m cells in the box" onerror="missing(this)" data-how="Being produced into DLR/results/mesh_fig/"><figcaption>Medium mesh: 2 m cells in the box.</figcaption></figure>
+</div>
+<div class="grid2">
+<figure><img src="../results/mesh_fig/mesh_slice_fine.png" alt="Mesh slice, fine: 1 m cells in the box" onerror="missing(this)" data-how="Being produced into DLR/results/mesh_fig/"><figcaption>Fine mesh: 1 m cells in the box.</figcaption></figure>
+<div></div>
+</div>
+<div class="grid2">
+<figure><img src="../results/mesh_fig/mesh_vertical_coarse.png" alt="Vertical cut through the coarse mesh" onerror="missing(this)" data-how="Being produced into DLR/results/mesh_fig/"><figcaption>Coarse mesh, vertical cut.</figcaption></figure>
+<figure><img src="../results/mesh_fig/mesh_vertical_fine.png" alt="Vertical cut through the fine mesh" onerror="missing(this)" data-how="Being produced into DLR/results/mesh_fig/"><figcaption>Fine mesh, vertical cut: how the cells get smaller towards the box.</figcaption></figure>
+</div>
+
+<h3>For reference: the wind from the original run</h3>
+<figure>
+<img src="../results/2026-11-10_noturbine_slice_z26_7m_above_ground.png" alt="Wind speed 7 m above ground from the original run, west wind 5 m/s" onerror="missing(this)">
+<figcaption>Original run (= the coarse mesh), 10 Nov: wind speed about 7 m above the ground (z = 26 m). Purple = slow, sheltered air behind the buildings. This is what the probes sample, in numbers.</figcaption>
+</figure>
+
+<!-- ============================================================ 9 -->
+<h2 id="talk"><span class="n">9</span>What to say in the meeting</h2>
+<p>About one minute. Fill the yellow blanks in the morning.</p>
+<ol class="talk">
+<li>Arthur asked for a mesh refinement study at drone scale, so I refined the air around one group of buildings, the DLR weather-station building and its neighbour, down to 1 m cells.</li>
+<li>I ran three meshes that are identical except inside that box, with 4 m, 2 m and 1 m cells, so any change in the result comes from the mesh alone.</li>
+<li>I put the box around the weather station on purpose, and made it cover the station's ±50 m position uncertainty, so the same mesh can later be checked against the real sensor.</li>
+<li>To compare the meshes I placed 19 virtual sensors on four vertical lines, from 2 to 40 m above the ground: upstream as a control, in the gap between buildings, in the wake, and above the station.</li>
+<li>On mesh quality, <span class="blank">[all three pass / the coarse mesh has 5 skewed faces out of 3.7 million, all outside the box; medium: __; fine: __]</span>.</li>
+<li>All runs converged: residuals dropped to about <span class="blank">[__]</span> and no probe moved more than <span class="blank">[__] %</span> in the last 100 iterations.</li>
+<li>The key result: from medium to fine, the wind speed changes by at most <span class="blank">[__] %</span>, at <span class="blank">[which probe]</span>, with a GCI of <span class="blank">[__] %</span>; upstream it changes by only <span class="blank">[__] %</span>. So <span class="blank">[the medium mesh is already mesh-independent / the wake needs the fine mesh]</span>.</li>
+<li>That's verification. The next steps are validation against the DLR station data, and then adding the turbine.</li>
+</ol>
+<div class="card"><b>The one-breath version:</b> "Same simulation three times, only the cell size around the weather-station building changes, 4, 2 and 1 m; 19 virtual sensors show whether the answer stops changing; from medium to fine it changes by <span class="blank">[__] %</span>, so <span class="blank">[medium/fine]</span> is the mesh we keep."</div>
+
+<!-- ============================================================ 10 -->
+<h2 id="qa"><span class="n">10</span>Likely questions, short answers</h2>
+
+<details><summary>Why only three meshes?</summary><div>Three is the minimum to see whether the change is shrinking, and to compute the GCI. A fourth mesh (0.5 m) would need about 8 times the cells of the fine box: roughly 7 million cells in the box alone. That is too much for the laptop. Paper 2 of our lit review (Veiga-Piñeiro et al.) did the same with three meshes, 3.1, 8.4 and 54 million cells, and used the middle one, whose drag error against the finest was 1.8 %.</div></details>
+
+<details><summary>Why halve the cells each time (ratio 2)?</summary><div>A constant ratio makes the comparison clean and is what the GCI formula assumes. Guidelines ask for a ratio of at least about 1.3, so 2 is comfortable. It is also how snappyHexMesh refines: one level = half the size.</div></details>
+
+<details><summary>You only refined a box. Is that a real mesh-independence study?</summary><div>It is a <b>local</b> study. It checks the answer in the region we care about (around the station, where the drone flies and where we will validate). Outside the box, the mesh is the same in all three runs, so any error out there is the same in all three and this study doesn't measure it. The upstream control line checks that the outside region behaves the same. A full study would also refine the background grid. That is a possible next step, but expensive.</div></details>
+
+<details><summary>What exactly changed between the meshes?</summary><div>Only one number: the refinement level inside the box (2, 3, 4, which means 4, 2, 1 m). Domain, inflow, turbulence model, schemes, solver settings, 1000 iterations and probe positions are identical. The coarse case even reproduced the original mesh cell for cell: 1,190,168 cells.</div></details>
+
+<details><summary>Why is the box where it is?</summary><div>The DLR weather station is at case (122, 206), on or right next to the long diagonal building (about 10 to 13 m tall). Refining there means the same mesh can be compared with the sensor later. The position is only known to ±50 m, so the box covers that whole square. The box also contains a gap, a wake and roofs, the flow types Arthur asked for.</div></details>
+
+<details><summary>Which turbulence model, and what are its limits?</summary><div>Standard k-ε, steady RANS, taken from the OpenFOAM "turbineSiting" tutorial. Paper 2 of our lit review uses the same model. It is robust and cheap. It is known to be weak around buildings: it tends to overestimate turbulence where the wind hits a wall, and it doesn't get the size of the recirculation zones behind and on top of buildings right. It also gives only the average wind, not the gusts. Those limits are about <i>validation</i>; this study is about <i>verification</i>.</div></details>
+
+<details><summary>Which numerical schemes? (how the equations are turned into numbers)</summary><div>For the transport of wind and turbulence: first-order "upwind" (bounded Gauss upwind), as in the tutorial. It is very stable, but it smears sharp changes a bit ("numerical diffusion"), which itself depends on the cell size. So it can make results more mesh-dependent, and the observed order p would be around 1. A good follow-up: rerun the chosen mesh with a second-order scheme (linearUpwind) and see if the answer moves.</div></details>
+
+<details><summary>What about the wall treatment / y+?</summary><div>We use <b>wall functions</b>: formulas that model the thin layer of air right at the ground and walls instead of computing it. For rough ground, they work with the <b>roughness length</b> z0 = 0.1 m (grass and sparse buildings) instead of y+. The rule is that the first cell must be taller than z0. Even on the fine mesh the first cell centre is about 0.5 m up, well above 0.1 m.</div></details>
+
+<details><summary>How do you know a run converged?</summary><div>Three checks: residuals fell by several orders of magnitude and flattened; the continuity error is small; and every probe moved less than 0.5 % in the last 100 iterations (the "probe drift" column). The automatic stop is set to 1e-12, so it never triggers: all three meshes run exactly 1000 iterations.</div></details>
+
+<details><summary>Why a steady simulation, not a time-dependent one?</summary><div>Cost. The cost map needs the average wind for many directions and speeds, and a steady run gives that in about 75 minutes on the coarse mesh. Real wakes are unsteady (eddies break off). LES, the time-dependent "virtual wind tunnel" (paper 4 of the lit review), costs orders of magnitude more. A steady run gives the average flow plus k, which tells us how gusty it is on average.</div></details>
+
+<details><summary>Do 1 m cells mean you see 1 m gusts?</summary><div>No. You need several cells (roughly 5 to 10) across a flow feature to capture it, so 1 m cells resolve structures of about 5 to 10 m: the gap jet, the wake, the flow over a roof edge. And RANS doesn't compute gusts at all: their effect is in k (turbulence energy). For the cost map, that's useful: mean wind for the energy cost, k for "how bumpy it is".</div></details>
+
+<details><summary>What about the skewness failure?</summary><div>5 faces out of 3.7 million, worst 8.6 (limit 4), on the coarse mesh. They sit at 4 spots: three roof edges and one patch of ground next to a building, mostly at the south-west end of the campus. None is inside the box; the nearest is about 28 m from the box and about 80 m from the nearest probe. They could be fixed with more snapping iterations or by cleaning the building file. Check Table 1 for the medium and fine meshes.</div></details>
+
+<details><summary>Why a west wind at 5 m/s?</summary><div>It's a placeholder that keeps things simple: the wind is along the x axis. The EDMO airfield data (2016 to 2025) say the most common directions are south-west (23.5 % of the time) and west (17.4 %), and these are also the strongest. Mean speed: 3.2 m/s. Next is to run the south-west case on the chosen mesh.</div></details>
+
+<details><summary>Is the station really there? When can you validate?</summary><div>The position comes from the DLR website plots, with three decimals, so about ±50 m. The mast height, and whether it is on a roof, are unknown. The site only publishes pictures of the data, and the wind plot stopped on 28 Oct 2024 (showing about 0 m/s, so the sensor may be broken). We need the raw data and mast details from DLR (Prof. Rini).</div></details>
+
+<details><summary>How long does it take, on what machine?</summary><div>An Intel MacBook (i9, 8 cores, 16 GB). The coarse run does about 4.5 seconds per iteration on 8 cores, so about 75 minutes for 1000 iterations. Medium and fine take longer. The real times are in the "wall time" column of Table 2.</div></details>
+
+<details><summary>How does this become a flight cost map?</summary><div>We sample the wind (and k) from the chosen mesh on a regular 3D grid, for example every 1 m around the station. Then a cost is attached to each point or path segment, for example the extra thrust needed against the wind. Paper 1 of the lit review (Huang et al.) does exactly that with an OpenFOAM field. The mesh study tells us which mesh is trustworthy enough to sample from.</div></details>
+
+<details><summary>And the wind turbine?</summary><div>Not done yet. Planned after validation: choose a turbine model and position, model it as an "actuator disk" (a disc that takes thrust out of the wind, without meshing the blades), and compare its wake with published data.</div></details>
+
+<!-- ============================================================ 11 -->
+<h2 id="limits"><span class="n">11</span>Limits and next steps</h2>
+
+<h3>Limits (say them before someone else does)</h3>
+<ul>
+<li><b>Local study only.</b> Only the box was refined. The error outside the box is the same in all three runs and is not measured.</li>
+<li><b>First-order scheme</b> for the wind transport: stable but slightly smeared, and itself mesh-dependent.</li>
+<li><b>Steady RANS, k-ε:</b> average wind only; known weaknesses in the separated flow around buildings.</li>
+<li><b>One inflow case:</b> west, 5 m/s at 10 m. A placeholder; the most common wind is south-west at about 3 m/s.</li>
+<li><b>Invented terrain</b> outside the original terrain strip: flat ground at the median height. Real terrain data (DGM1) would replace it.</li>
+<li><b>Coarse mesh skewness:</b> 5 faces above the limit (outside the box).</li>
+<li><b>Sensor:</b> position only ±50 m, mast height unknown, no raw data yet.</li>
+<li><b>Fixed 1000 iterations:</b> if a probe still drifts on the fine mesh, it needs more.</li>
+<li><b>Cell counts</b> for medium and fine on this page are my estimates until Table 1 is generated.</li>
+<li><b>Not done yet:</b> the wind turbine, and the comparison of its wake with published data.</li>
+</ul>
+
+<h3>Next steps</h3>
+<ol>
+<li>Read Table 3. Choose the mesh: medium if medium→fine is below 2 to 5 % everywhere, otherwise fine.</li>
+<li>Ask DLR (Prof. Rini) for the raw station data, the exact position and the mast height. Then <b>validate</b>.</li>
+<li>Run the south-west wind (the most common one) on the chosen mesh.</li>
+<li>Optional check: rerun the chosen mesh with a second-order scheme to see how much the scheme matters.</li>
+<li>Add the turbine (actuator disk) and compare its wake with published data.</li>
+<li>Export wind speed and k on a regular grid for the flight cost map.</li>
+</ol>
+
+<!-- ============================================================ 12 -->
+<h2 id="gloss"><span class="n">12</span>Glossary</h2>
+<div class="gloss">
+<p><b>CFD</b>: Computational Fluid Dynamics: computing how air or water flows.</p>
+<p><b>OpenFOAM</b>: Free, open-source CFD software. We use version v2306.</p>
+<p><b>Mesh / grid, cell, face</b>: The air cut into small boxes (cells). A face is a wall between two cells. The solver keeps one value per cell.</p>
+<p><b>Refinement level</b>: How many times a 16 m cube has been halved. Level 2 = 4 m, 3 = 2 m, 4 = 1 m.</p>
+<p><b>Refinement ratio (r)</b>: How much smaller the cells get from one mesh to the next. Here r = 2.</p>
+<p><b>blockMesh / snappyHexMesh</b>: OpenFOAM's tools to build the background grid and then refine, cut and snap it to the buildings and ground.</p>
+<p><b>checkMesh</b>: OpenFOAM's tool that checks cell shapes (Table 1).</p>
+<p><b>Skewness</b>: How far the line between two cell centres misses the middle of their shared face (0 = perfect, flagged above 4).</p>
+<p><b>Non-orthogonality</b>: Angle between the centre-to-centre line and the face normal (0° = perfect, warning above 70°).</p>
+<p><b>Aspect ratio</b>: How stretched a cell is: longest side ÷ shortest side, roughly.</p>
+<p><b>Invalid cell</b>: A cell with zero or negative volume, or turned inside out. The solver can't use it.</p>
+<p><b>simpleFoam, SIMPLE</b>: OpenFOAM's solver for steady flow; SIMPLE is its guess-correct-repeat method.</p>
+<p><b>Iteration</b>: One guess-correct round of the solver.</p>
+<p><b>Steady</b>: The wind doesn't change in time; we compute the average flow.</p>
+<p><b>RANS</b>: Reynolds-Averaged Navier–Stokes: equations for the average flow, with a model for turbulence.</p>
+<p><b>k-ε (k-epsilon)</b>: The turbulence model. k = energy of the gusts (turbulent kinetic energy), ε = how fast it dies away.</p>
+<p><b>Residual</b>: How far an equation is from being balanced. Falling and flat = converged.</p>
+<p><b>Continuity error</b>: How much air is wrongly created or lost per cell. Should be small.</p>
+<p><b>Converged</b>: More iterations would not change the answer.</p>
+<p><b>Probe</b>: A virtual anemometer: a point where the solver records U, p and k after every iteration.</p>
+<p><b>U, |U|, p</b>: Wind velocity (a vector), wind speed (its size, in m/s), pressure.</p>
+<p><b>Wake</b>: The sheltered, slow, swirling air behind a building.</p>
+<p><b>Recirculation</b>: Air that turns back towards the building, inside the wake.</p>
+<p><b>Pressure drop (Δp)</b>: Pressure upstream minus pressure in the wake. Shows how much the buildings brake the wind.</p>
+<p><b>Mesh independence</b>: Smaller cells no longer change the answer (much).</p>
+<p><b>GCI</b>: Grid Convergence Index (Roache): an error band on the fine-mesh value, from three meshes.</p>
+<p><b>Richardson extrapolation</b>: Estimating the answer for infinitely small cells from the trend of three meshes.</p>
+<p><b>Observed order (p)</b>: How fast the answer settles when the cells shrink. p = 1: the change halves each step; p = 2: it shrinks 4 times.</p>
+<p><b>Verification / validation</b>: Solving the equations right (the grid is not distorting the answer) / solving the right equations (the model matches reality).</p>
+<p><b>Wall function, roughness length z0</b>: A formula for the air right at a wall instead of computing it; z0 = 0.1 m describes how rough the ground is.</p>
+<p><b>Log law</b>: The usual shape of wind near the ground: slow at the bottom, faster higher up.</p>
+<p><b>Inlet / outlet, boundary conditions</b>: Where the wind enters and leaves the domain, and the rules applied at all the edges.</p>
+<p><b>Upwind scheme (first-order)</b>: A simple, stable way to compute how the wind carries things along; slightly smeared.</p>
+<p><b>Case coordinates</b>: The positions used in the simulation: scene coordinates + (335, −279) m. x = east, y = north, z = up (z = 0 is not the ground).</p>
+</div>
+
+<footer>
+<b>Where every number comes from.</b>
+Box, levels, probes, iterations, cores: <code>DLR/meshStudy/setup.py</code> and <code>probes_index.csv</code>.
+Pipeline: <code>DLR/meshStudy/Allrun.case</code>, <code>run_all.sh</code>.
+Table columns, GCI, drift, Δp: <code>DLR/meshStudy/make_table.py</code>.
+Coarse mesh quality, cell count, the 5 skewed faces: <code>DLR/meshStudy/coarse/log.checkMesh</code> and <code>coarse/postProcessing/constant/skewFaces/</code>; identical to <code>DLR/windCase/log.checkMesh</code>.
+16 m base cell and the shift: <code>DLR/windCase/system/caseParams</code>, <code>log.make_case</code>.
+Inflow, roughness, schemes, turbulence model: <code>DLR/windCase/0.orig</code>, <code>system/fvSchemes</code>, <code>constant/turbulenceProperties</code>.
+Station and EDMO facts: <code>DLR/wind-data/README.md</code>. Lit-review papers: <i>Lit review — wind and UAV papers.md</i> in the project folder.
+Building heights and the estimates: <code>DLR/meshStudy/site_map.npz</code>. Pictures on this page: <code>DLR/results/explainer_fig/make_figs.py</code>.<br>
+<b>Ignore</b> <code>DLR/meshStudy/report.html</code>, <code>DLR/meshStudy/probes</code> and <code>DLR/scripts/mesh_study_*</code>: they are from an earlier draft (a different box, 2/1/0.5 m cells, 9 probes) and don't match this study.
+</footer>
+
+</main>
+</body>
+</html>
