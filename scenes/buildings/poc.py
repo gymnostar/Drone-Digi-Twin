@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-PROTOCOL = ROOT.parents[1]/'scene-selection/poc-protocol.json'
+PROTOCOL = ROOT.parent/'poc-protocol.json'
 IMAGE = 'sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289'
 DIRECTIONS = {'N':0., 'NE':45., 'NW':315., 'E':90., 'S':180., 'W':270.}
 

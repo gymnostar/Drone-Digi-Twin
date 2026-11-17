@@ -9,7 +9,7 @@ from paraview.simple import *
 # The ParaView GUI executes --script without defining __file__.
 ROOT=(Path(os.environ['DRONE_VIEW_DIR']).resolve() if 'DRONE_VIEW_DIR' in os.environ
       else Path(globals().get('__file__', 'view.py')).resolve().parent)
-PROJECT=ROOT.parent
+PROJECT=ROOT.parents[1]
 SCENES={
     'joint-baseline':('scenes/joint/runs/poc-N-baseline-common',True),
     'turbine-cheap':('scenes/turbine/runs/poc-studio-development-strict-cheap',False),

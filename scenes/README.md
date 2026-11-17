@@ -20,7 +20,7 @@ An iteration is one numerical update of this solution. It is not one second of s
 
 Before testing, we fixed provisional targets: at least **2× faster**, vector RMSE ≤**5%** of incoming speed, P95 ≤**15%**, and ≥**95%** coverage. RMSE (root mean square error) measures typical differences and penalises large ones. Vector error includes direction and speed. P95 is the error below which 95% of sampled errors fall, not a maximum or confidence interval. Coverage counts common valid samples against reference-valid points. These are proof-of-concept targets, not agreed drone tolerances.
 
-Runs use three CPUs, 5 GiB, ten-minute mesh/solve limits and bounded repairs. The [frozen protocol](../scene-selection/poc-protocol.json) records conditions, thresholds and budgets; it has not been edited retrospectively. Failed trials remain in the structured evidence.
+Runs use three CPUs, 5 GiB, ten-minute mesh/solve limits and bounded repairs. The [frozen protocol](poc-protocol.json) records conditions, thresholds and budgets; it has not been edited retrospectively. Failed trials remain in the structured evidence.
 
 ### Main implementation choices
 
@@ -188,4 +188,4 @@ The ParaView filters above are post-processing (looking at a calculation after i
 
 The coupled scene uses a wind from north flowing toward negative y; the isolated turbine uses a wind-aligned x axis pointing downstream. Their camera orientations and coordinate axes therefore differ. Compare the numerical values and the downstream direction, rather than assuming the same screen direction means the same world direction.
 
-[Scripts and metrics](./) · [3D viewer](../review-export/Open3D.command) · [Frozen protocol](../scene-selection/poc-protocol.json)
+[Scripts and metrics](./) · [3D viewer](review-export/Open3D.command) · [Frozen protocol](poc-protocol.json)

@@ -31,7 +31,7 @@ def main(name='baseline-v2', level=2, iterations=600, empty=False, base=13.5, sc
         raise ValueError('Run name must be one directory name.')
     protocol = None
     if poc_role is not None:
-        protocol_path = ROOT.parents[1] / 'scene-selection/poc-protocol.json'
+        protocol_path = ROOT.parent / 'poc-protocol.json'
         protocol = json.loads(protocol_path.read_text())
         if closure != protocol['common_toy_closure']['model']:
             raise ValueError('POC role must use the frozen common toy closure.')

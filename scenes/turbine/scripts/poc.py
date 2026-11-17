@@ -13,7 +13,7 @@ NUMBER = r'[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?'
 
 
 def prepare_pair(prefix, uhub, roughness, condition_role, empty):
-    protocol = json.loads((ROOT.parents[1]/'scene-selection/poc-protocol.json').read_text())
+    protocol = json.loads((ROOT.parent/'poc-protocol.json').read_text())
     closure = protocol['common_toy_closure']['model']
     for role, level in [('reference',3),('cheap',1)]:
         prepare.main(name=prefix+'-'+role, level=level, iterations=2000,
@@ -91,7 +91,7 @@ def diagnostics(case, params, np):
     terminal_log=re.split(r'^Time = ',log,flags=re.M)[-1]
     for field,value in re.findall(r'Solving for (p|Ux|Uy|Uz|k|epsilon), Initial residual = ('+NUMBER+')',terminal_log):
         last_residuals[field]=max(last_residuals.get(field,0.),float(value))
-    protocol=json.loads((ROOT.parents[1]/'scene-selection/poc-protocol.json').read_text())
+    protocol=json.loads((ROOT.parent/'poc-protocol.json').read_text())
     normalized=float(changes.max()/params['Uhub_m_s'])
     limits=params['poc_study']['residual_control']
     residual_checks={field: all(last_residuals.get(component, float('inf'))<=bound for component in (['Ux','Uy','Uz'] if field=='U' else [field])) for field,bound in limits.items()}
@@ -148,8 +148,8 @@ def compare(reference, cheap, output):
     for stage in ['mesh','solve','study']:
         for key in ['host_model','architecture','image','container_cpu_limit','container_memory_limit_bytes']:
             assert costs[0]['stages'][stage][key]==costs[1]['stages'][stage][key],key
-    protocol=json.loads((ROOT.parents[1]/'scene-selection/poc-protocol.json').read_text())
-    assert hashlib.sha256((ROOT.parents[1]/'scene-selection/poc-protocol.json').read_bytes()).hexdigest()==rp['poc_study']['protocol_sha256'],'Protocol changed after preparation'
+    protocol=json.loads((ROOT.parent/'poc-protocol.json').read_text())
+    assert hashlib.sha256((ROOT.parent/'poc-protocol.json').read_bytes()).hexdigest()==rp['poc_study']['protocol_sha256'],'Protocol changed after preparation'
     targets=protocol['targets'];regions={}
     for region in ['wakeROI','background']:
         xyz,ref=query_field(rc,region,np);cxyz,method=query_field(cc,region,np)

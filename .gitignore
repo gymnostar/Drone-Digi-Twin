@@ -43,4 +43,6 @@ __pycache__/
 /scenes/*/results/**/samples.json
 /scenes/*/results/**/*.npz
 /scenes/*/results/**/matched_mean_bins.csv
-/review-export/.qa/
+/scenes/review-export/.qa/
+
+/scenes/local/
