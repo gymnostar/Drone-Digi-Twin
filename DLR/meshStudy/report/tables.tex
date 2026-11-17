@@ -34,17 +34,17 @@ Failed checkMesh checks & 0 & \textbf{1} & \textbf{1} & \textbf{1} \\
 Quantity & coarse (4\,m) & medium (2\,m) & fine (1\,m) \\
 \midrule
 Status & finished & finished & finished \\
-Iterations done & 1000 & 1000 & 1000 \\
-Initial residual $U_x$ & $2.4\times10^{-9}$ & $2.4\times10^{-6}$ & $3.9\times10^{-7}$ \\
-Initial residual $U_y$ & $2.4\times10^{-8}$ & $5.3\times10^{-5}$ & $5.1\times10^{-6}$ \\
-Initial residual $U_z$ & $2.7\times10^{-8}$ & $1.8\times10^{-5}$ & $3.2\times10^{-6}$ \\
-Initial residual $p$ & $3.0\times10^{-6}$ & $8.1\times10^{-4}$ & $2.4\times10^{-5}$ \\
-Initial residual $k$ & $1.2\times10^{-7}$ & $1.0\times10^{-4}$ & $4.2\times10^{-6}$ \\
-Initial residual $\varepsilon$ & $1.1\times10^{-8}$ & $4.8\times10^{-6}$ & $3.2\times10^{-7}$ \\
-Continuity error, sum local & $3.1\times10^{-11}$ & $1.8\times10^{-8}$ & $7.9\times10^{-10}$ \\
+Iterations done & 1000 & 1000 & 2000 \\
+Initial residual $U_x$ & $2.4\times10^{-9}$ & $2.4\times10^{-6}$ & $4.9\times10^{-9}$ \\
+Initial residual $U_y$ & $2.4\times10^{-8}$ & $5.3\times10^{-5}$ & $2.6\times10^{-8}$ \\
+Initial residual $U_z$ & $2.7\times10^{-8}$ & $1.8\times10^{-5}$ & $3.2\times10^{-8}$ \\
+Initial residual $p$ & $3.0\times10^{-6}$ & $8.1\times10^{-4}$ & $6.0\times10^{-6}$ \\
+Initial residual $k$ & $1.2\times10^{-7}$ & $1.0\times10^{-4}$ & $5.4\times10^{-8}$ \\
+Initial residual $\varepsilon$ & $1.1\times10^{-8}$ & $4.8\times10^{-6}$ & $1.1\times10^{-8}$ \\
+Continuity error, sum local & $3.1\times10^{-11}$ & $1.8\times10^{-8}$ & $8.2\times10^{-11}$ \\
 Continuity error, cumulative & $3.9\times10^{-5}$ & $4.9\times10^{-6}$ & $-1.2\times10^{-5}$ \\
-Max probe drift, last 100 it.\ (\%) & $<0.01$ & $<0.01$ & 0.32 \\
-Wall-clock time (h) & 1.4 & 0.8 & 1.4 \\
+Max probe drift, last 100 it.\ (\%) & $<0.01$ & $<0.01$ & $<0.01$ \\
+Wall-clock time (h) & 1.4 & 0.8 & 1.3 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -60,15 +60,15 @@ Wall-clock time (h) & 1.4 & 0.8 & 1.4 \\
 \cmidrule(lr){2-4}\cmidrule(lr){5-6}
 Probe (height above ground) & coarse (4\,m) & medium (2\,m) & fine (1\,m) & c.$\to$m. & m.$\to$f. & $p$ & GCI$_\mathrm{fine}$ (\%) \\
 \midrule
-upstream, 10\,m (control) & 4.98 & 4.98 & 4.98 & $-0.0$ & $-0.0$ & -0.25 & 0.0 \\
-gap, 5\,m & 2.39 & 2.27 & 2.29 & $-4.9$ & $+0.7$ & -- & osc. \\
-gap, 20\,m & 4.84 & 4.62 & 4.41 & $-4.7$ & $-4.5$ & 0.15 & \textbf{14.1} \\
-wake, 5\,m & 1.91 & 1.65 & 1.66 & $-13.4$ & $+0.4$ & -- & osc. \\
-wake, 20\,m & 5.40 & 5.34 & 5.33 & $-1.2$ & $-0.1$ & 4.13 & 0.0 \\
-station, 20\,m & 5.48 & 5.41 & 5.40 & $-1.3$ & $-0.3$ & 2.15 & 0.1 \\
+upstream, 10\,m (control) & 4.98 & 4.98 & 4.98 & $-0.0$ & $-0.0$ & -0.30 & 0.0 \\
+gap, 5\,m & 2.39 & 2.27 & 2.28 & $-4.9$ & $+0.6$ & -- & osc. \\
+gap, 20\,m & 4.84 & 4.62 & 4.40 & $-4.7$ & $-4.8$ & 0.05 & \textbf{15.1} \\
+wake, 5\,m & 1.91 & 1.65 & 1.66 & $-13.4$ & $+0.3$ & -- & osc. \\
+wake, 20\,m & 5.40 & 5.34 & 5.33 & $-1.2$ & $-0.1$ & 3.66 & 0.0 \\
+station, 20\,m & 5.48 & 5.41 & 5.40 & $-1.3$ & $-0.3$ & 2.03 & 0.1 \\
 station, 40\,m & 6.59 & 6.57 & 6.56 & $-0.4$ & $-0.1$ & 1.49 & 0.1 \\
 \midrule
-$\Delta p$ upstream$\to$wake, 5\,m (Pa) & 0.172 & 0.460 & 0.713 & $+167.4$ & $+55.0$ & 0.19 & \textbf{107.1} \\
+$\Delta p$ upstream$\to$wake, 5\,m (Pa) & 0.172 & 0.460 & 0.716 & $+167.4$ & $+55.6$ & 0.17 & \textbf{107.8} \\
 \bottomrule
 \end{tabular}
 \end{table}
