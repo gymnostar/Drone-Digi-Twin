@@ -40,6 +40,7 @@ def build(name):
     clip.ClipType.Length=[440,690,110] if joint else [210,80,80]
     clip.Invert=1
     view=CreateView('RenderView');view.ViewSize=[1440,1000]
+    AssignViewToLayout(view, CreateLayout(name='Simulation'))
     view.Background=[.96,.97,.99];view.UseColorPaletteForBackground=0
     view.OrientationAxesVisibility=1
     horizontal=Slice(registrationName='Velocity at rotor height',Input=clip)
@@ -104,5 +105,9 @@ else:
     name=os.environ.get('DRONE_VIEW','joint-baseline')
     if name not in SCENES:raise ValueError('Choose joint-baseline, turbine-cheap or turbine-reference')
     LoadState(str(ROOT/f'{name}.pvsm'),data_directory=str(ROOT),restrict_to_data_directory=True)
+    # A view can render offscreen yet remain absent from the GUI workspace.
+    for view in GetRenderViews():
+        if GetLayout(view) is None:
+            AssignViewToLayout(view, CreateLayout(name='Simulation'))
     RenderAllViews()
     print(f"Loaded 3D simulation: {name}", flush=True)
