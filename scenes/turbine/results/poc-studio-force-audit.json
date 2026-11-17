@@ -1,0 +1,149 @@
+{
+  "scope": "Logged native variableScaling integrated thrust versus source formula; exact spatial support checked separately",
+  "runs": [
+    {
+      "case": "poc-studio-development-reference",
+      "physical_thrust_N": 17024.778826679998,
+      "formula_relative_error": 2.3915120486430807e-11,
+      "upstream_velocity_m_s": [
+        8.7058240349,
+        -0.0085274329648,
+        0.012257060054
+      ],
+      "disk_velocity_m_s": [
+        6.63143687,
+        9.7136065819e-10,
+        -0.024546729936
+      ],
+      "momentum_sink": true
+    },
+    {
+      "case": "poc-studio-development-strict-cheap",
+      "physical_thrust_N": 17020.040757360002,
+      "formula_relative_error": 1.7634249937185584e-11,
+      "upstream_velocity_m_s": [
+        8.7046110678,
+        -0.0092859191377,
+        0.012312953163
+      ],
+      "disk_velocity_m_s": [
+        6.653971237,
+        1.4310654724e-07,
+        -0.024507972555
+      ],
+      "momentum_sink": true
+    },
+    {
+      "case": "poc-studio-domain-reference",
+      "physical_thrust_N": 16967.24183436,
+      "formula_relative_error": 2.904906650812102e-11,
+      "upstream_velocity_m_s": [
+        8.6910901474,
+        -0.0091151428975,
+        0.014739502098
+      ],
+      "disk_velocity_m_s": [
+        6.6066968415,
+        1.484222595e-09,
+        -0.023227588887
+      ],
+      "momentum_sink": true
+    },
+    {
+      "case": "poc-studio-holdout1-reference",
+      "physical_thrust_N": 15133.998637319999,
+      "formula_relative_error": 8.911265226790084e-12,
+      "upstream_velocity_m_s": [
+        8.000114044,
+        -0.0083605695263,
+        0.012538987524
+      ],
+      "disk_velocity_m_s": [
+        5.96886532,
+        2.2669381584e-10,
+        -0.021366397192
+      ],
+      "momentum_sink": true
+    },
+    {
+      "case": "poc-studio-holdout1-cheap",
+      "physical_thrust_N": 15130.29418602,
+      "formula_relative_error": 8.984938056481453e-12,
+      "upstream_velocity_m_s": [
+        7.9991342503,
+        -0.0090889038497,
+        0.012387014866
+      ],
+      "disk_velocity_m_s": [
+        5.9917623633,
+        1.264643072e-07,
+        -0.021437551083
+      ],
+      "momentum_sink": true
+    },
+    {
+      "case": "poc-studio-holdout2-reference",
+      "physical_thrust_N": 19060.45576476,
+      "formula_relative_error": 8.373297041474015e-12,
+      "upstream_velocity_m_s": [
+        9.5123334436,
+        -0.0086227606801,
+        0.011854535017
+      ],
+      "disk_velocity_m_s": [
+        7.4142331474,
+        1.6998802196e-09,
+        -0.026636044756
+      ],
+      "momentum_sink": true
+    },
+    {
+      "case": "poc-studio-holdout2-cheap",
+      "physical_thrust_N": 19054.670488980002,
+      "formula_relative_error": 2.5768607473052455e-11,
+      "upstream_velocity_m_s": [
+        9.5108878595,
+        -0.0094034120418,
+        0.01213249928
+      ],
+      "disk_velocity_m_s": [
+        7.4358726822,
+        1.3551938618e-07,
+        -0.026544052158
+      ],
+      "momentum_sink": true
+    },
+    {
+      "case": "poc-studio-holdout3-reference",
+      "physical_thrust_N": 17046.86753154,
+      "formula_relative_error": 2.727578253079944e-11,
+      "upstream_velocity_m_s": [
+        8.7114934838,
+        -0.0085950057197,
+        0.012403317167
+      ],
+      "disk_velocity_m_s": [
+        6.648105901,
+        9.8122584968e-10,
+        -0.029117553788
+      ],
+      "momentum_sink": true
+    },
+    {
+      "case": "poc-studio-holdout3-cheap",
+      "physical_thrust_N": 17041.32353268,
+      "formula_relative_error": 6.506352788802594e-12,
+      "upstream_velocity_m_s": [
+        8.7100731419,
+        -0.0093651197527,
+        0.012754752434
+      ],
+      "disk_velocity_m_s": [
+        6.672172228,
+        1.5883318349e-07,
+        -0.028810678582
+      ],
+      "momentum_sink": true
+    }
+  ]
+}

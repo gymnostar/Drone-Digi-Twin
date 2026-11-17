@@ -1,0 +1,851 @@
+{
+  "status": "suitable_for_neutral_mean_wake_benchmark_preparation",
+  "cfd_run": false,
+  "source_lock_sha256": "9777c4b0026910194eb62868b542e45a6c19e81e582bf0104e59b921601b8885",
+  "versions": {
+    "python": "3.12.11",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1"
+  },
+  "csv": [
+    {
+      "file": "upstream/met_data/swift_neutral_evolution_00_SONIC_32m.csv",
+      "rows": 59782,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.99,
+      "median_dt_s": 0.009999999999990905,
+      "expected_slots_between_first_and_last": 60000,
+      "gaps_over_1p5_dt": 3,
+      "finite_per_column": {
+        "u": 59782,
+        "v": 59782,
+        "w": 59782
+      }
+    },
+    {
+      "file": "upstream/met_data/swift_neutral_evolution_01_SONIC_32m.csv",
+      "rows": 59985,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.99,
+      "median_dt_s": 0.009999999999990905,
+      "expected_slots_between_first_and_last": 60000,
+      "gaps_over_1p5_dt": 4,
+      "finite_per_column": {
+        "u": 59985,
+        "v": 59985,
+        "w": 59985
+      }
+    },
+    {
+      "file": "upstream/met_data/swift_neutral_evolution_02_SONIC_32m.csv",
+      "rows": 59987,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.99,
+      "median_dt_s": 0.009999999999990905,
+      "expected_slots_between_first_and_last": 60000,
+      "gaps_over_1p5_dt": 2,
+      "finite_per_column": {
+        "u": 59987,
+        "v": 59987,
+        "w": 59987
+      }
+    },
+    {
+      "file": "upstream/met_data/swift_neutral_evolution_03_SONIC_32m.csv",
+      "rows": 59999,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.98,
+      "median_dt_s": 0.009999999999990905,
+      "expected_slots_between_first_and_last": 59999,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "u": 59999,
+        "v": 59999,
+        "w": 59999
+      }
+    },
+    {
+      "file": "upstream/met_data/swift_neutral_evolution_04_SONIC_32m.csv",
+      "rows": 59994,
+      "first_relative_s": 0.0,
+      "last_relative_s": 600.0,
+      "median_dt_s": 0.009999999999990905,
+      "expected_slots_between_first_and_last": 60001,
+      "gaps_over_1p5_dt": 1,
+      "finite_per_column": {
+        "u": 59994,
+        "v": 59994,
+        "w": 59994
+      }
+    },
+    {
+      "file": "upstream/met_data/swift_neutral_evolution_05_SONIC_32m.csv",
+      "rows": 60001,
+      "first_relative_s": 0.0,
+      "last_relative_s": 600.0,
+      "median_dt_s": 0.009999999999990905,
+      "expected_slots_between_first_and_last": 60001,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "u": 60001,
+        "v": 60001,
+        "w": 60001
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_00_WTGa1.csv",
+      "rows": 30000,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.99,
+      "median_dt_s": 0.01999999999999602,
+      "expected_slots_between_first_and_last": 30001,
+      "gaps_over_1p5_dt": 13,
+      "finite_per_column": {
+        "GenPwr": 30000,
+        "GenTq": 30000,
+        "rotorRPM": 30000
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_01_WTGa1.csv",
+      "rows": 29999,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.96,
+      "median_dt_s": 0.01999999999999602,
+      "expected_slots_between_first_and_last": 29999,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "GenPwr": 29999,
+        "GenTq": 29999,
+        "rotorRPM": 29999
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_02_WTGa1.csv",
+      "rows": 30000,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.99,
+      "median_dt_s": 0.01999999999999602,
+      "expected_slots_between_first_and_last": 30001,
+      "gaps_over_1p5_dt": 24,
+      "finite_per_column": {
+        "GenPwr": 30000,
+        "GenTq": 30000,
+        "rotorRPM": 30000
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_03_WTGa1.csv",
+      "rows": 30000,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.99,
+      "median_dt_s": 0.01999999999999602,
+      "expected_slots_between_first_and_last": 30001,
+      "gaps_over_1p5_dt": 8,
+      "finite_per_column": {
+        "GenPwr": 30000,
+        "GenTq": 30000,
+        "rotorRPM": 30000
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_04_WTGa1.csv",
+      "rows": 29999,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.96,
+      "median_dt_s": 0.01999999999999602,
+      "expected_slots_between_first_and_last": 29999,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "GenPwr": 29999,
+        "GenTq": 29999,
+        "rotorRPM": 29999
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_05_WTGa1.csv",
+      "rows": 30000,
+      "first_relative_s": 0.0,
+      "last_relative_s": 599.99,
+      "median_dt_s": 0.01999999999999602,
+      "expected_slots_between_first_and_last": 30001,
+      "gaps_over_1p5_dt": 8,
+      "finite_per_column": {
+        "GenPwr": 30000,
+        "GenTq": 30000,
+        "rotorRPM": 30000
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_00.csv",
+      "rows": 6001,
+      "first_relative_s": 0.0,
+      "last_relative_s": 600.0,
+      "median_dt_s": 0.10000000000000142,
+      "expected_slots_between_first_and_last": 6001,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "generator_power_[kW]": 6001,
+        "generator_torque_[N_m]": 6001,
+        "rotor_speed_[rpm]": 6001,
+        "blade_root_flap_moment_[N_m]": 0,
+        "u_32m_[m_s-1]": 5982,
+        "v_32m_[m_s-1]": 5982,
+        "w_32m_[m_s-1]": 5982
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_01.csv",
+      "rows": 6001,
+      "first_relative_s": 0.0,
+      "last_relative_s": 600.0,
+      "median_dt_s": 0.10000000000000142,
+      "expected_slots_between_first_and_last": 6001,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "generator_power_[kW]": 6000,
+        "generator_torque_[N_m]": 6000,
+        "rotor_speed_[rpm]": 6000,
+        "blade_root_flap_moment_[N_m]": 6000,
+        "u_32m_[m_s-1]": 6001,
+        "v_32m_[m_s-1]": 6001,
+        "w_32m_[m_s-1]": 6001
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_02.csv",
+      "rows": 6001,
+      "first_relative_s": 0.0,
+      "last_relative_s": 600.0,
+      "median_dt_s": 0.10000000000000142,
+      "expected_slots_between_first_and_last": 6001,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "generator_power_[kW]": 6000,
+        "generator_torque_[N_m]": 6000,
+        "rotor_speed_[rpm]": 6000,
+        "blade_root_flap_moment_[N_m]": 6000,
+        "u_32m_[m_s-1]": 6000,
+        "v_32m_[m_s-1]": 6000,
+        "w_32m_[m_s-1]": 6000
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_03.csv",
+      "rows": 6001,
+      "first_relative_s": 0.0,
+      "last_relative_s": 600.0,
+      "median_dt_s": 0.10000000000000142,
+      "expected_slots_between_first_and_last": 6001,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "generator_power_[kW]": 6001,
+        "generator_torque_[N_m]": 6001,
+        "rotor_speed_[rpm]": 6001,
+        "blade_root_flap_moment_[N_m]": 6000,
+        "u_32m_[m_s-1]": 6000,
+        "v_32m_[m_s-1]": 6000,
+        "w_32m_[m_s-1]": 6000
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_04.csv",
+      "rows": 6001,
+      "first_relative_s": 0.0,
+      "last_relative_s": 600.0,
+      "median_dt_s": 0.10000000000000142,
+      "expected_slots_between_first_and_last": 6001,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "generator_power_[kW]": 6000,
+        "generator_torque_[N_m]": 6000,
+        "rotor_speed_[rpm]": 6000,
+        "blade_root_flap_moment_[N_m]": 6000,
+        "u_32m_[m_s-1]": 6001,
+        "v_32m_[m_s-1]": 6001,
+        "w_32m_[m_s-1]": 6001
+      }
+    },
+    {
+      "file": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_05.csv",
+      "rows": 6001,
+      "first_relative_s": 0.0,
+      "last_relative_s": 600.0,
+      "median_dt_s": 0.10000000000000142,
+      "expected_slots_between_first_and_last": 6001,
+      "gaps_over_1p5_dt": 0,
+      "finite_per_column": {
+        "generator_power_[kW]": 6000,
+        "generator_torque_[N_m]": 6000,
+        "rotor_speed_[rpm]": 6000,
+        "blade_root_flap_moment_[N_m]": 6000,
+        "u_32m_[m_s-1]": 6001,
+        "v_32m_[m_s-1]": 6001,
+        "w_32m_[m_s-1]": 6001
+      }
+    }
+  ],
+  "inflow": [
+    {
+      "index": "00",
+      "rows": 59782,
+      "mean_u_m_s": 8.1192431075017,
+      "mean_horizontal_speed_m_s": 8.183138039729062,
+      "detrended_sigma_uvw_m_s": [
+        1.0078590662251703,
+        0.9837935643132436,
+        0.6182139867718588
+      ],
+      "streamwise_TI_percent": 12.413214543286319,
+      "horizontal_TI_percent": 12.226712238796061,
+      "detrended_k_from_three_components_m2_s2": 1.182909103998392
+    },
+    {
+      "index": "01",
+      "rows": 59985,
+      "mean_u_m_s": 8.94502284987538,
+      "mean_horizontal_speed_m_s": 8.96859196915439,
+      "detrended_sigma_uvw_m_s": [
+        1.0326894356383498,
+        0.638232377545472,
+        0.46107456518342455
+      ],
+      "streamwise_TI_percent": 11.544849610448333,
+      "horizontal_TI_percent": 11.455749168925296,
+      "detrended_k_from_three_components_m2_s2": 0.8431888964427418
+    },
+    {
+      "index": "02",
+      "rows": 59987,
+      "mean_u_m_s": 8.602517880416983,
+      "mean_horizontal_speed_m_s": 8.634841230092452,
+      "detrended_sigma_uvw_m_s": [
+        0.8084077839141052,
+        0.7163868185280875,
+        0.4703568363100775
+      ],
+      "streamwise_TI_percent": 9.397339187802046,
+      "horizontal_TI_percent": 9.348812541324909,
+      "detrended_k_from_three_components_m2_s2": 0.6939843861586673
+    },
+    {
+      "index": "03",
+      "rows": 59999,
+      "mean_u_m_s": 8.519624372343035,
+      "mean_horizontal_speed_m_s": 8.546691098246123,
+      "detrended_sigma_uvw_m_s": [
+        0.8648242198256313,
+        0.6686235061102944,
+        0.4638338389060218
+      ],
+      "streamwise_TI_percent": 10.150966545345298,
+      "horizontal_TI_percent": 10.102232927963191,
+      "detrended_k_from_three_components_m2_s2": 0.7050600771172659
+    },
+    {
+      "index": "04",
+      "rows": 59994,
+      "mean_u_m_s": 8.735568957607631,
+      "mean_horizontal_speed_m_s": 8.764591251595718,
+      "detrended_sigma_uvw_m_s": [
+        0.8541066655311014,
+        0.6471943066138968,
+        0.46958258194150243
+      ],
+      "streamwise_TI_percent": 9.777344437162032,
+      "horizontal_TI_percent": 9.738402251971591,
+      "detrended_k_from_three_components_m2_s2": 0.6844332339404735
+    },
+    {
+      "index": "05",
+      "rows": 60001,
+      "mean_u_m_s": 9.027554493259435,
+      "mean_horizontal_speed_m_s": 9.06484852490899,
+      "detrended_sigma_uvw_m_s": [
+        0.8451034029906205,
+        0.805015567380821,
+        0.535240023169316
+      ],
+      "streamwise_TI_percent": 9.361376922417213,
+      "horizontal_TI_percent": 9.368113871765877,
+      "detrended_k_from_three_components_m2_s2": 0.8243658539370412
+    }
+  ],
+  "lidar": [
+    {
+      "file": "lidar.z01.b0.20170123.225000.mat",
+      "scans": 271,
+      "first_sample_utc": "2017-01-23T22:50:02.406312+00:00",
+      "last_sample_utc": "2017-01-23T22:59:59.149324+00:00",
+      "released_flag_rejections": 0,
+      "direction_from_deg": {
+        "mean": 219.60656697329154,
+        "min": 205.06203142771233,
+        "max": 238.7088610716096
+      },
+      "yaw_heading_deg": {
+        "mean": 216.0305789817634,
+        "min": 213.01836157063337,
+        "max": 218.96700959043653
+      },
+      "smoothed_yaw_offset_deg": {
+        "mean": 3.6029025430105963,
+        "min": -4.145952552487984,
+        "max": 13.172834136218057
+      },
+      "by_focus": [
+        {
+          "focus_D": 1.0,
+          "scans": 10,
+          "sample_slots": 9844,
+          "finite_velocity_xyz_projection": 9478,
+          "finite_after_released_scan_flags": 9478
+        },
+        {
+          "focus_D": 2.0,
+          "scans": 10,
+          "sample_slots": 9844,
+          "finite_velocity_xyz_projection": 8997,
+          "finite_after_released_scan_flags": 8997
+        },
+        {
+          "focus_D": 3.0,
+          "scans": 10,
+          "sample_slots": 9844,
+          "finite_velocity_xyz_projection": 8053,
+          "finite_after_released_scan_flags": 8053
+        },
+        {
+          "focus_D": 4.0,
+          "scans": 10,
+          "sample_slots": 9843,
+          "finite_velocity_xyz_projection": 7557,
+          "finite_after_released_scan_flags": 7557
+        },
+        {
+          "focus_D": 5.0,
+          "scans": 231,
+          "sample_slots": 227393,
+          "finite_velocity_xyz_projection": 169302,
+          "finite_after_released_scan_flags": 169302
+        }
+      ]
+    },
+    {
+      "file": "lidar.z01.b0.20170622.012000.mat",
+      "scans": 167,
+      "first_sample_utc": "2017-06-22T01:21:39.775563+00:00",
+      "last_sample_utc": "2017-06-22T01:29:58.750084+00:00",
+      "released_flag_rejections": 0,
+      "direction_from_deg": {
+        "mean": 143.82873827747287,
+        "min": 134.2231518061933,
+        "max": 151.89318431381128
+      },
+      "yaw_heading_deg": {
+        "mean": 143.05272449113053,
+        "min": 135.34409424390188,
+        "max": 153.56955959043663
+      },
+      "smoothed_yaw_offset_deg": {
+        "mean": 0.5591584014013086,
+        "min": -10.702867594074974,
+        "max": 10.11724600326869
+      },
+      "by_focus": [
+        {
+          "focus_D": 1.0,
+          "scans": 24,
+          "sample_slots": 23628,
+          "finite_velocity_xyz_projection": 22754,
+          "finite_after_released_scan_flags": 22754
+        },
+        {
+          "focus_D": 1.5,
+          "scans": 27,
+          "sample_slots": 26581,
+          "finite_velocity_xyz_projection": 25759,
+          "finite_after_released_scan_flags": 25759
+        },
+        {
+          "focus_D": 2.0,
+          "scans": 22,
+          "sample_slots": 21655,
+          "finite_velocity_xyz_projection": 20062,
+          "finite_after_released_scan_flags": 20062
+        },
+        {
+          "focus_D": 2.5,
+          "scans": 24,
+          "sample_slots": 23619,
+          "finite_velocity_xyz_projection": 20597,
+          "finite_after_released_scan_flags": 20597
+        },
+        {
+          "focus_D": 3.0,
+          "scans": 22,
+          "sample_slots": 21652,
+          "finite_velocity_xyz_projection": 18043,
+          "finite_after_released_scan_flags": 18043
+        },
+        {
+          "focus_D": 4.0,
+          "scans": 24,
+          "sample_slots": 23628,
+          "finite_velocity_xyz_projection": 18254,
+          "finite_after_released_scan_flags": 18254
+        },
+        {
+          "focus_D": 5.0,
+          "scans": 24,
+          "sample_slots": 23628,
+          "finite_velocity_xyz_projection": 17495,
+          "finite_after_released_scan_flags": 17495
+        }
+      ]
+    },
+    {
+      "file": "lidar.z01.b0.20170622.013000.mat",
+      "scans": 198,
+      "first_sample_utc": "2017-06-22T01:30:00.767393+00:00",
+      "last_sample_utc": "2017-06-22T01:39:57.510817+00:00",
+      "released_flag_rejections": 0,
+      "direction_from_deg": {
+        "mean": 148.11887414189812,
+        "min": 137.08476344982392,
+        "max": 158.8770268954528
+      },
+      "yaw_heading_deg": {
+        "mean": 149.602734351413,
+        "min": 131.62455959043658,
+        "max": 165.28061959043623
+      },
+      "smoothed_yaw_offset_deg": {
+        "mean": -1.4955195554881495,
+        "min": -20.931798766830184,
+        "max": 13.674846672986746
+      },
+      "by_focus": [
+        {
+          "focus_D": 1.0,
+          "scans": 28,
+          "sample_slots": 27559,
+          "finite_velocity_xyz_projection": 26585,
+          "finite_after_released_scan_flags": 26585
+        },
+        {
+          "focus_D": 1.5,
+          "scans": 28,
+          "sample_slots": 27558,
+          "finite_velocity_xyz_projection": 26714,
+          "finite_after_released_scan_flags": 26714
+        },
+        {
+          "focus_D": 2.0,
+          "scans": 28,
+          "sample_slots": 27561,
+          "finite_velocity_xyz_projection": 25811,
+          "finite_after_released_scan_flags": 25811
+        },
+        {
+          "focus_D": 2.5,
+          "scans": 28,
+          "sample_slots": 27566,
+          "finite_velocity_xyz_projection": 24065,
+          "finite_after_released_scan_flags": 24065
+        },
+        {
+          "focus_D": 3.0,
+          "scans": 30,
+          "sample_slots": 29535,
+          "finite_velocity_xyz_projection": 24591,
+          "finite_after_released_scan_flags": 24591
+        },
+        {
+          "focus_D": 4.0,
+          "scans": 28,
+          "sample_slots": 27566,
+          "finite_velocity_xyz_projection": 21349,
+          "finite_after_released_scan_flags": 21349
+        },
+        {
+          "focus_D": 5.0,
+          "scans": 28,
+          "sample_slots": 27564,
+          "finite_velocity_xyz_projection": 20480,
+          "finite_after_released_scan_flags": 20480
+        }
+      ]
+    },
+    {
+      "file": "lidar.z01.b0.20170622.014000.mat",
+      "scans": 200,
+      "first_sample_utc": "2017-06-22T01:39:59.528097+00:00",
+      "last_sample_utc": "2017-06-22T01:50:00.306109+00:00",
+      "released_flag_rejections": 0,
+      "direction_from_deg": {
+        "mean": 150.89534174082706,
+        "min": 138.451292489855,
+        "max": 160.6898424415959
+      },
+      "yaw_heading_deg": {
+        "mean": 148.15586578944658,
+        "min": 137.83955959043675,
+        "max": 154.57862889736816
+      },
+      "smoothed_yaw_offset_deg": {
+        "mean": 2.6507733249500642,
+        "min": -6.015966800852766,
+        "max": 14.236004620545458
+      },
+      "by_focus": [
+        {
+          "focus_D": 1.0,
+          "scans": 28,
+          "sample_slots": 27566,
+          "finite_velocity_xyz_projection": 26625,
+          "finite_after_released_scan_flags": 26625
+        },
+        {
+          "focus_D": 1.5,
+          "scans": 31,
+          "sample_slots": 30519,
+          "finite_velocity_xyz_projection": 29588,
+          "finite_after_released_scan_flags": 29588
+        },
+        {
+          "focus_D": 2.0,
+          "scans": 26,
+          "sample_slots": 25593,
+          "finite_velocity_xyz_projection": 23946,
+          "finite_after_released_scan_flags": 23946
+        },
+        {
+          "focus_D": 2.5,
+          "scans": 28,
+          "sample_slots": 27560,
+          "finite_velocity_xyz_projection": 24079,
+          "finite_after_released_scan_flags": 24079
+        },
+        {
+          "focus_D": 3.0,
+          "scans": 28,
+          "sample_slots": 27560,
+          "finite_velocity_xyz_projection": 23057,
+          "finite_after_released_scan_flags": 23057
+        },
+        {
+          "focus_D": 4.0,
+          "scans": 30,
+          "sample_slots": 29528,
+          "finite_velocity_xyz_projection": 22937,
+          "finite_after_released_scan_flags": 22937
+        },
+        {
+          "focus_D": 5.0,
+          "scans": 29,
+          "sample_slots": 28548,
+          "finite_velocity_xyz_projection": 21314,
+          "finite_after_released_scan_flags": 21314
+        }
+      ]
+    },
+    {
+      "file": "lidar.z01.b0.20170622.015000.mat",
+      "scans": 199,
+      "first_sample_utc": "2017-06-22T01:50:00.308171+00:00",
+      "last_sample_utc": "2017-06-22T01:59:59.066843+00:00",
+      "released_flag_rejections": 0,
+      "direction_from_deg": {
+        "mean": 147.8261772673706,
+        "min": 137.3642501474528,
+        "max": 158.75678684940462
+      },
+      "yaw_heading_deg": {
+        "mean": 149.5009839588132,
+        "min": 137.16155959043675,
+        "max": 170.3915595904365
+      },
+      "smoothed_yaw_offset_deg": {
+        "mean": -1.6367441813293941,
+        "min": -19.07223060660567,
+        "max": 13.39432071193832
+      },
+      "by_focus": [
+        {
+          "focus_D": 1.0,
+          "scans": 29,
+          "sample_slots": 28544,
+          "finite_velocity_xyz_projection": 27526,
+          "finite_after_released_scan_flags": 27526
+        },
+        {
+          "focus_D": 1.5,
+          "scans": 28,
+          "sample_slots": 27560,
+          "finite_velocity_xyz_projection": 26714,
+          "finite_after_released_scan_flags": 26714
+        },
+        {
+          "focus_D": 2.0,
+          "scans": 28,
+          "sample_slots": 27564,
+          "finite_velocity_xyz_projection": 25866,
+          "finite_after_released_scan_flags": 25866
+        },
+        {
+          "focus_D": 2.5,
+          "scans": 28,
+          "sample_slots": 27566,
+          "finite_velocity_xyz_projection": 24204,
+          "finite_after_released_scan_flags": 24204
+        },
+        {
+          "focus_D": 3.0,
+          "scans": 28,
+          "sample_slots": 27563,
+          "finite_velocity_xyz_projection": 23219,
+          "finite_after_released_scan_flags": 23219
+        },
+        {
+          "focus_D": 4.0,
+          "scans": 31,
+          "sample_slots": 30513,
+          "finite_velocity_xyz_projection": 23863,
+          "finite_after_released_scan_flags": 23863
+        },
+        {
+          "focus_D": 5.0,
+          "scans": 27,
+          "sample_slots": 26575,
+          "finite_velocity_xyz_projection": 19907,
+          "finite_after_released_scan_flags": 19907
+        }
+      ]
+    },
+    {
+      "file": "lidar.z01.b0.20170703.141000.mat",
+      "scans": 198,
+      "first_sample_utc": "2017-07-03T14:10:01.758142+00:00",
+      "last_sample_utc": "2017-07-03T14:19:58.501345+00:00",
+      "released_flag_rejections": 0,
+      "direction_from_deg": {
+        "mean": 151.2329820624096,
+        "min": 135.9251213977856,
+        "max": 164.4309429820571
+      },
+      "yaw_heading_deg": {
+        "mean": 151.39442196267387,
+        "min": 139.2175595904369,
+        "max": 164.19986652113002
+      },
+      "smoothed_yaw_offset_deg": {
+        "mean": -0.15492073367999992,
+        "min": -11.647409133268866,
+        "max": 15.623192330705592
+      },
+      "by_focus": [
+        {
+          "focus_D": 1.0,
+          "scans": 28,
+          "sample_slots": 27566,
+          "finite_velocity_xyz_projection": 26585,
+          "finite_after_released_scan_flags": 26585
+        },
+        {
+          "focus_D": 1.5,
+          "scans": 28,
+          "sample_slots": 27565,
+          "finite_velocity_xyz_projection": 26692,
+          "finite_after_released_scan_flags": 26692
+        },
+        {
+          "focus_D": 2.0,
+          "scans": 30,
+          "sample_slots": 29530,
+          "finite_velocity_xyz_projection": 28302,
+          "finite_after_released_scan_flags": 28302
+        },
+        {
+          "focus_D": 2.5,
+          "scans": 28,
+          "sample_slots": 27558,
+          "finite_velocity_xyz_projection": 24635,
+          "finite_after_released_scan_flags": 24635
+        },
+        {
+          "focus_D": 3.0,
+          "scans": 28,
+          "sample_slots": 27559,
+          "finite_velocity_xyz_projection": 23639,
+          "finite_after_released_scan_flags": 23639
+        },
+        {
+          "focus_D": 4.0,
+          "scans": 28,
+          "sample_slots": 27563,
+          "finite_velocity_xyz_projection": 21865,
+          "finite_after_released_scan_flags": 21865
+        },
+        {
+          "focus_D": 5.0,
+          "scans": 28,
+          "sample_slots": 27566,
+          "finite_velocity_xyz_projection": 20749,
+          "finite_after_released_scan_flags": 20749
+        }
+      ]
+    }
+  ],
+  "turbine_model_candidates": {
+    "v1": {
+      "source": "upstream/wt_data/v1/Simulated_data/RotorPerformances_OF2.csv",
+      "Uref_m_s": 8.7,
+      "interpolated_AeroCt": 0.62273,
+      "interpolated_AeroCp": 0.44069,
+      "pitch_deg": 1.6659,
+      "source_kind": "OpenFAST simulated performance, not measured thrust"
+    },
+    "v2": {
+      "source": "upstream/wt_data/v2/Simulated_data/RotorPerformances_OF2.csv",
+      "Uref_m_s": 8.7,
+      "interpolated_AeroCt": 0.60589,
+      "interpolated_AeroCp": 0.43681000000000003,
+      "pitch_deg": 2.0,
+      "source_kind": "OpenFAST simulated performance, not measured thrust"
+    },
+    "v3": {
+      "source": "upstream/wt_data/v3/Simulated_data/RotorPerformances_OF2.csv",
+      "Uref_m_s": 8.7,
+      "interpolated_AeroCt": 0.76927,
+      "interpolated_AeroCp": 0.48146,
+      "pitch_deg": -0.75,
+      "source_kind": "OpenFAST simulated performance, not measured thrust"
+    }
+  },
+  "ensemble_recomputed": {
+    "mean_u_m_s": 8.658255276834028,
+    "mean_horizontal_speed_m_s": 8.693783685621122,
+    "streamwise_TI_percent": 10.440848541076873,
+    "horizontal_TI_percent": 10.373337166791154,
+    "detrended_k_from_three_components_m2_s2": 0.8223235919324302
+  },
+  "limitations": [
+    "Six selected periods, not a wind-climate archive or a generalization dataset.",
+    "CSV indices follow release order; exact UTC pairing not encoded in CSV headers.",
+    "Released vlos is a scalar LOS observation; its projection factor is dimensionless.",
+    "Finite sample counts measure availability; no new SNR threshold or gap filling applied.",
+    "1D field of view is small; publisher processing excludes <=1.5D and 2.5D.",
+    "Steady RANS can compare fixed-frame mean wakes, not wake meandering or gust dynamics.",
+    "Documentation still names v1; 2020 paper section 2.3 supports v3 (-0.75 deg pitch). No OpenFOAM forcing configured.",
+    "Higher-level raw mast profiles, exact mast survey and instrumental uncertainty remain incomplete."
+  ],
+  "wake_preview": {
+    "method": "linear interpolation, vlos/projection, per-period means equally weighted",
+    "displayed_mask": "finite in all six period means",
+    "extrapolation": false,
+    "CFD": false,
+    "wake_tracking": false,
+    "artifact": "wake-data-preview.png"
+  }
+}

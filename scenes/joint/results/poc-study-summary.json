@@ -1,0 +1,307 @@
+{
+  "status": "Stopped after candidate mesh at user request to prioritize presentation; candidate solve/evaluation not run. Coupled baseline and provisional reference retained.",
+  "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+  "hypothetical_placement": {
+    "rotor_m": [
+      0,
+      -280,
+      32.1
+    ],
+    "monitor_m": [
+      0,
+      -215,
+      32.1
+    ],
+    "D_m": 27,
+    "wind": "N8.7m/s at32.1m, z0.01158m",
+    "global_closure": "realizableKE"
+  },
+  "baseline_case": "poc-N-baseline-common",
+  "reference_case": "poc-N-reference-fixed",
+  "candidate_case": "poc-N-candidate-common",
+  "candidate_status": "Mesh accepted422894cells; exact source support matches reference/baseline. Solve not started.",
+  "reference_checked": false,
+  "baseline_checked_at_cheap_thresholds": true,
+  "baseline_recorded_pipeline_elapsed_s": 306.76279937598883,
+  "reference_recorded_pipeline_elapsed_s": 736.1441216260064,
+  "timing_limit": "Historical reference/baseline lack automated host support-audit overhead; recorded totals are lower bounds. No certified speedup. Candidate would include instrumented host checks.",
+  "baseline_vs_provisional_reference": {
+    "reference": "poc-N-reference-fixed",
+    "reference_checked": false,
+    "support_exact_match": true,
+    "regions": {
+      "city": {
+        "reference_valid": 30504,
+        "common_valid": 30504,
+        "coverage": 1.0,
+        "vector_RMSE_over_Uref": 0.0008508974108610361,
+        "P95_over_Uref": 0.0016863576731828592,
+        "targets_pass": true
+      },
+      "building_wake": {
+        "reference_valid": 6354,
+        "common_valid": 6354,
+        "coverage": 1.0,
+        "vector_RMSE_over_Uref": 0.001233200039110602,
+        "P95_over_Uref": 0.002446534359502881,
+        "targets_pass": true
+      },
+      "rotor_wake": {
+        "reference_valid": 24200,
+        "common_valid": 24200,
+        "coverage": 1.0,
+        "vector_RMSE_over_Uref": 0.0051187337256103265,
+        "P95_over_Uref": 0.011671401564457274,
+        "targets_pass": true
+      },
+      "flight": {
+        "reference_valid": 2961,
+        "common_valid": 2961,
+        "coverage": 1.0,
+        "vector_RMSE_over_Uref": 0.0035241744109310337,
+        "P95_over_Uref": 0.008896576414585506,
+        "targets_pass": true
+      },
+      "domain": {
+        "reference_valid": 4906,
+        "common_valid": 4906,
+        "coverage": 1.0,
+        "vector_RMSE_over_Uref": 0.0009030827104872435,
+        "P95_over_Uref": 0.0009503331564606134,
+        "targets_pass": true
+      }
+    },
+    "speedup": null,
+    "elapsed_ratio_descriptive": 2.3997177073734397,
+    "all_declared_ROI_targets_pass": true,
+    "overall_target_pass": false
+  },
+  "mesh_transfer_result": "Different wake meshes changed source-cell coordinates by millimetres from snappy smoothing despite equal count/nominal volume. Rejected exact-support mismatch. Shared identical reference mesh retained; coarser mesh method failed transfer and cheap150k target missed.",
+  "support": {
+    "configuration_sha256": "07990ce42b35b1477bd090fa22208878243614faf12867189febd7bcd61d1b5f",
+    "selected_cells": 2184,
+    "spatial_cell_vertices_sha256": "ae965b6d2d21da7d816404ea8a62181d8cbf3a02ba57a609a518a5d8454e67d9",
+    "selected_refinement_levels": [
+      4
+    ],
+    "all_selected_cells_at_fixed_level": true,
+    "interpretation": "Same axis-aligned base lattice/refinement box and uniform selected level establish the intended common support; compare selected counts as well as total force.",
+    "nominal_selected_volume_m3": 4265.625,
+    "nominal_volume_over_geometric_cylinder": 1.1037265524586555,
+    "volume_note": "Count times nominal1.25m cubed; snapped cells have small deformations. Exact selected-cell spatial geometry hash, not nominal volume, proves equal support across recipes. Cylinder center selection remains a finite support discretization."
+  },
+  "separate_city": "Closed bounded failure; see scenes/buildings/results/poc-study-summary.json. No E/S/W holdouts consumed because strict reference failed.",
+  "limitations": [
+    "No checked joint numerical reference:600s solve timeout; latest saved900 vs terminal995 clearly recorded.",
+    "No joint physical observations or flight accuracy acceptance.",
+    "No candidate-v-baseline performance conclusion: candidate solve deferred.",
+    "No cached-query benchmark or surrogate/training claim; sampled field export counted separately.",
+    "One500k joint cell-limit adjustment declared; protocol bytes unchanged.",
+    "Discarded implementation/support trials retained with wasted timing in ledger.",
+    "Tower/nacelle drag, swirl/tilt omitted; nominal source-cylinder selection differs from continuous cylinder, exact discrete support equal across accepted meshes."
+  ],
+  "cost_ledger": {
+    "poc-N-baseline": {
+      "prepare": {
+        "stage": "prepare",
+        "elapsed_s": 1.0244174580002436,
+        "cpu_s": 1.014281,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+      },
+      "solve": {
+        "stage": "solve",
+        "elapsed_s": 17.681971749996592,
+        "exit_code": 137,
+        "timed_out": false,
+        "cpu_s": null,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      },
+      "mesh": {
+        "stage": "mesh",
+        "elapsed_s": 105.21480187500129,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 104.915976,
+        "peak_cgroup_memory_bytes_including_cache": 631214080,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      }
+    },
+    "poc-N-reference": {
+      "prepare": {
+        "stage": "prepare",
+        "elapsed_s": 1.0435228330024984,
+        "cpu_s": 1.032062,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+      },
+      "solve": {
+        "stage": "solve",
+        "elapsed_s": 132.0920691249994,
+        "exit_code": 137,
+        "timed_out": false,
+        "cpu_s": null,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      },
+      "mesh": {
+        "stage": "mesh",
+        "elapsed_s": 120.85062662500422,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 120.467646,
+        "peak_cgroup_memory_bytes_including_cache": 785817600,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      }
+    },
+    "poc-N-reference-fixed": {
+      "prepare": {
+        "stage": "prepare",
+        "elapsed_s": 1.0285961250046967,
+        "cpu_s": 1.017176,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+      },
+      "sample": {
+        "stage": "sample",
+        "elapsed_s": 14.302093541999056,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 14.002071,
+        "peak_cgroup_memory_bytes_including_cache": 865423360,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      },
+      "solve": {
+        "stage": "solve",
+        "elapsed_s": 600.195815334002,
+        "exit_code": 137,
+        "timed_out": true,
+        "cpu_s": null,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      },
+      "mesh": {
+        "stage": "mesh",
+        "elapsed_s": 120.61761662500066,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 120.315628,
+        "peak_cgroup_memory_bytes_including_cache": 776638464,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      }
+    },
+    "poc-N-candidate-common": {
+      "prepare": {
+        "stage": "prepare",
+        "elapsed_s": 1.019820166999125,
+        "cpu_s": 1.012016,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+      },
+      "host-mesh-audit": {
+        "elapsed_s": 3.213864500001364,
+        "cpu_s": 3.2067310000000004,
+        "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+      },
+      "mesh": {
+        "stage": "mesh",
+        "elapsed_s": 119.34312012499868,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 118.998701,
+        "peak_cgroup_memory_bytes_including_cache": 784216064,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      }
+    },
+    "poc-N-baseline-common": {
+      "prepare": {
+        "stage": "prepare",
+        "elapsed_s": 1.0392629170019063,
+        "cpu_s": 1.0225339999999998,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+      },
+      "sample": {
+        "stage": "sample",
+        "elapsed_s": 9.914698083994153,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 9.648841,
+        "peak_cgroup_memory_bytes_including_cache": 558231552,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      },
+      "solve": {
+        "stage": "solve",
+        "elapsed_s": 177.97519766699406,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 512.434496,
+        "peak_cgroup_memory_bytes_including_cache": 932220928,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      },
+      "mesh": {
+        "stage": "mesh",
+        "elapsed_s": 117.83364070799871,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 117.544982,
+        "peak_cgroup_memory_bytes_including_cache": 783024128,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host": "Host-018.homenet.telecomitalia.it",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      }
+    },
+    "poc-N-candidate": {
+      "prepare": {
+        "stage": "prepare",
+        "elapsed_s": 1.019406290994084,
+        "cpu_s": 1.010759,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+      }
+    }
+  }
+}

@@ -1,0 +1,1273 @@
+[
+  {
+    "point_id": 1,
+    "xyz_model_m": [
+      -0.108,
+      0.448,
+      0.008
+    ],
+    "reference_ratio": 0.18,
+    "U_mean_model_m_s": [
+      0.2441197505,
+      0.02069152146,
+      -0.2547553634
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.08997395289761813,
+    "error_ratio": -0.09002604710238186
+  },
+  {
+    "point_id": 2,
+    "xyz_model_m": [
+      -0.372,
+      0.132,
+      0.008
+    ],
+    "reference_ratio": 0.59,
+    "U_mean_model_m_s": [
+      -1.562695147,
+      0.2971583299,
+      0.179426675
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.4075011556149497,
+    "error_ratio": -0.18249884438505026
+  },
+  {
+    "point_id": 3,
+    "xyz_model_m": [
+      -0.352,
+      0.14,
+      0.008
+    ],
+    "reference_ratio": 0.38,
+    "U_mean_model_m_s": [
+      -1.391203999,
+      0.3832179942,
+      0.2331183675
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3721023081300204,
+    "error_ratio": -0.007897691869979628
+  },
+  {
+    "point_id": 4,
+    "xyz_model_m": [
+      -0.296,
+      0.16,
+      0.008
+    ],
+    "reference_ratio": 0.32,
+    "U_mean_model_m_s": [
+      -0.8470930034,
+      0.1991071736,
+      0.2737040652
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.23221477845503882,
+    "error_ratio": -0.08778522154496118
+  },
+  {
+    "point_id": 5,
+    "xyz_model_m": [
+      -0.244,
+      0.182,
+      0.008
+    ],
+    "reference_ratio": 0.3,
+    "U_mean_model_m_s": [
+      -0.99406948,
+      -0.1381425737,
+      0.2043513974
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.26072763028243806,
+    "error_ratio": -0.03927236971756193
+  },
+  {
+    "point_id": 6,
+    "xyz_model_m": [
+      -0.202,
+      0.198,
+      0.008
+    ],
+    "reference_ratio": 0.34,
+    "U_mean_model_m_s": [
+      -1.556885144,
+      0.1847712104,
+      0.03807970848
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3992248838706547,
+    "error_ratio": 0.059224883870654665
+  },
+  {
+    "point_id": 7,
+    "xyz_model_m": [
+      -0.134,
+      0.23,
+      0.008
+    ],
+    "reference_ratio": 0.26,
+    "U_mean_model_m_s": [
+      -0.9947093617,
+      0.883929712,
+      -0.1436634803
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.34071732634158247,
+    "error_ratio": 0.08071732634158246
+  },
+  {
+    "point_id": 8,
+    "xyz_model_m": [
+      -0.038,
+      0.276,
+      0.008
+    ],
+    "reference_ratio": 0.14,
+    "U_mean_model_m_s": [
+      0.52973409,
+      0.5764600855,
+      0.1149143973
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.20143176894859843,
+    "error_ratio": 0.06143176894859842
+  },
+  {
+    "point_id": 9,
+    "xyz_model_m": [
+      0.028,
+      0.306,
+      0.008
+    ],
+    "reference_ratio": 0.12,
+    "U_mean_model_m_s": [
+      0.1272015784,
+      0.2624145421,
+      0.08549580278
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.07736009353796468,
+    "error_ratio": -0.04263990646203532
+  },
+  {
+    "point_id": 10,
+    "xyz_model_m": [
+      0.18,
+      0.376,
+      0.008
+    ],
+    "reference_ratio": 0.1,
+    "U_mean_model_m_s": [
+      -0.1532058739,
+      -0.5604970589,
+      -0.07361737192
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.1490985994999376,
+    "error_ratio": 0.049098599499937584
+  },
+  {
+    "point_id": 11,
+    "xyz_model_m": [
+      0.322,
+      0.44,
+      0.008
+    ],
+    "reference_ratio": 0.55,
+    "U_mean_model_m_s": [
+      -1.217559679,
+      -0.7112057333,
+      0.1511970423
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.36100681835843945,
+    "error_ratio": -0.1889931816415606
+  },
+  {
+    "point_id": 12,
+    "xyz_model_m": [
+      -0.532,
+      0.084,
+      0.008
+    ],
+    "reference_ratio": 0.3,
+    "U_mean_model_m_s": [
+      -0.9635702213,
+      0.2272380597,
+      -0.1512607533
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.2549428937017773,
+    "error_ratio": -0.04505710629822268
+  },
+  {
+    "point_id": 13,
+    "xyz_model_m": [
+      -0.388,
+      0.076,
+      0.008
+    ],
+    "reference_ratio": 0.59,
+    "U_mean_model_m_s": [
+      -1.271518098,
+      -0.2138079034,
+      -0.07307724955
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.32875274785843644,
+    "error_ratio": -0.2612472521415635
+  },
+  {
+    "point_id": 14,
+    "xyz_model_m": [
+      -0.336,
+      0.09,
+      0.008
+    ],
+    "reference_ratio": 0.46,
+    "U_mean_model_m_s": [
+      -1.539432531,
+      0.05430161921,
+      -0.2827306294
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3986771607045861,
+    "error_ratio": -0.06132283929541393
+  },
+  {
+    "point_id": 15,
+    "xyz_model_m": [
+      -0.262,
+      0.118,
+      0.008
+    ],
+    "reference_ratio": 0.4,
+    "U_mean_model_m_s": [
+      -0.5645232796,
+      1.368813512,
+      -0.09872367624
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.37775712955281887,
+    "error_ratio": -0.02224287044718115
+  },
+  {
+    "point_id": 16,
+    "xyz_model_m": [
+      -0.19,
+      0.146,
+      0.008
+    ],
+    "reference_ratio": 0.38,
+    "U_mean_model_m_s": [
+      -1.270944457,
+      -1.048238382,
+      -0.2362844776
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.42367271497573383,
+    "error_ratio": 0.04367271497573383
+  },
+  {
+    "point_id": 17,
+    "xyz_model_m": [
+      -0.1,
+      0.188,
+      0.008
+    ],
+    "reference_ratio": 0.2,
+    "U_mean_model_m_s": [
+      -0.6215972958,
+      0.5813282235,
+      -0.8259213782
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3018987490550966,
+    "error_ratio": 0.1018987490550966
+  },
+  {
+    "point_id": 18,
+    "xyz_model_m": [
+      -0.02,
+      0.224,
+      0.008
+    ],
+    "reference_ratio": 0.28,
+    "U_mean_model_m_s": [
+      1.070024072,
+      0.7016359082,
+      -0.2083817131
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3300172821810638,
+    "error_ratio": 0.05001728218106377
+  },
+  {
+    "point_id": 19,
+    "xyz_model_m": [
+      0.054,
+      0.258,
+      0.008
+    ],
+    "reference_ratio": 0.32,
+    "U_mean_model_m_s": [
+      -0.1163169512,
+      -0.1153614071,
+      0.1172958738
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.0512906894868195,
+    "error_ratio": -0.2687093105131805
+  },
+  {
+    "point_id": 20,
+    "xyz_model_m": [
+      0.2,
+      0.326,
+      0.008
+    ],
+    "reference_ratio": 0.2,
+    "U_mean_model_m_s": [
+      0.3661038085,
+      -0.1523892525,
+      -0.06546819794
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.10231436136859216,
+    "error_ratio": -0.09768563863140785
+  },
+  {
+    "point_id": 21,
+    "xyz_model_m": [
+      0.348,
+      0.39,
+      0.008
+    ],
+    "reference_ratio": 0.4,
+    "U_mean_model_m_s": [
+      -0.8573586082,
+      -0.6272091303,
+      0.03522214151
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.2705680604012317,
+    "error_ratio": -0.1294319395987683
+  },
+  {
+    "point_id": 22,
+    "xyz_model_m": [
+      -0.458,
+      -0.032,
+      0.008
+    ],
+    "reference_ratio": 0.59,
+    "U_mean_model_m_s": [
+      -0.503221659,
+      -1.260452638,
+      -0.07064155295
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.345959218184528,
+    "error_ratio": -0.24404078181547195
+  },
+  {
+    "point_id": 23,
+    "xyz_model_m": [
+      -0.362,
+      0.032,
+      0.008
+    ],
+    "reference_ratio": 0.54,
+    "U_mean_model_m_s": [
+      -1.037985483,
+      -1.483291447,
+      -0.06588375758
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.4611678251833745,
+    "error_ratio": -0.07883217481662552
+  },
+  {
+    "point_id": 24,
+    "xyz_model_m": [
+      -0.224,
+      0.132,
+      0.008
+    ],
+    "reference_ratio": 0.46,
+    "U_mean_model_m_s": [
+      -0.9023022949,
+      -0.5307869175,
+      0.1171149242
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.2681507627368177,
+    "error_ratio": -0.19184923726318232
+  },
+  {
+    "point_id": 25,
+    "xyz_model_m": [
+      -0.204,
+      0.088,
+      0.008
+    ],
+    "reference_ratio": 0.52,
+    "U_mean_model_m_s": [
+      0.3224345367,
+      -1.793605078,
+      0.3280070026
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.4713596683785539,
+    "error_ratio": -0.0486403316214461
+  },
+  {
+    "point_id": 26,
+    "xyz_model_m": [
+      -0.186,
+      0.044,
+      0.008
+    ],
+    "reference_ratio": 0.55,
+    "U_mean_model_m_s": [
+      0.9468906585,
+      -2.405069565,
+      0.1599171775
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.6592420392049347,
+    "error_ratio": 0.1092420392049347
+  },
+  {
+    "point_id": 27,
+    "xyz_model_m": [
+      -0.156,
+      0.064,
+      0.008
+    ],
+    "reference_ratio": 0.48,
+    "U_mean_model_m_s": [
+      0.7676954395,
+      -1.566780352,
+      -0.1806905253
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.446525076881995,
+    "error_ratio": -0.033474923118004984
+  },
+  {
+    "point_id": 28,
+    "xyz_model_m": [
+      -0.158,
+      -0.016,
+      0.008
+    ],
+    "reference_ratio": 0.71,
+    "U_mean_model_m_s": [
+      0.8098716434,
+      -2.623050495,
+      0.08229789406
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.6991486852863702,
+    "error_ratio": -0.010851314713629767
+  },
+  {
+    "point_id": 29,
+    "xyz_model_m": [
+      -0.128,
+      0.0,
+      0.008
+    ],
+    "reference_ratio": 0.61,
+    "U_mean_model_m_s": [
+      0.6367727197,
+      -1.424716938,
+      0.04713047872
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3974383872121879,
+    "error_ratio": -0.2125616127878121
+  },
+  {
+    "point_id": 30,
+    "xyz_model_m": [
+      -0.156,
+      -0.044,
+      0.008
+    ],
+    "reference_ratio": 0.69,
+    "U_mean_model_m_s": [
+      0.3860651102,
+      -2.406147946,
+      0.1159968874
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.6210535689968822,
+    "error_ratio": -0.0689464310031177
+  },
+  {
+    "point_id": 31,
+    "xyz_model_m": [
+      0.026,
+      0.208,
+      0.008
+    ],
+    "reference_ratio": 0.44,
+    "U_mean_model_m_s": [
+      0.6797737312,
+      -0.8797401016,
+      -0.05551903745
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.2833687873716451,
+    "error_ratio": -0.1566312126283549
+  },
+  {
+    "point_id": 32,
+    "xyz_model_m": [
+      0.262,
+      0.298,
+      0.008
+    ],
+    "reference_ratio": 0.54,
+    "U_mean_model_m_s": [
+      -0.3384943519,
+      -1.286453214,
+      0.1511667821
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3408099429638609,
+    "error_ratio": -0.19919005703613912
+  },
+  {
+    "point_id": 33,
+    "xyz_model_m": [
+      0.294,
+      0.226,
+      0.008
+    ],
+    "reference_ratio": 0.52,
+    "U_mean_model_m_s": [
+      0.386217435,
+      -1.185774193,
+      -0.06801157373
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.31793416722371226,
+    "error_ratio": -0.20206583277628776
+  },
+  {
+    "point_id": 34,
+    "xyz_model_m": [
+      -0.47,
+      -0.128,
+      0.008
+    ],
+    "reference_ratio": 0.32,
+    "U_mean_model_m_s": [
+      -0.006838736919,
+      -1.129920279,
+      0.04712179044
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.28789151951042413,
+    "error_ratio": -0.032108480489575875
+  },
+  {
+    "point_id": 35,
+    "xyz_model_m": [
+      -0.346,
+      -0.142,
+      0.008
+    ],
+    "reference_ratio": 0.5,
+    "U_mean_model_m_s": [
+      0.9044526163,
+      0.3521023218,
+      0.1408001252
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.24965837599470275,
+    "error_ratio": -0.25034162400529725
+  },
+  {
+    "point_id": 36,
+    "xyz_model_m": [
+      -0.3,
+      -0.126,
+      0.008
+    ],
+    "reference_ratio": 0.32,
+    "U_mean_model_m_s": [
+      -0.2313844994,
+      0.0376188612,
+      0.1676416487
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.07336445797922417,
+    "error_ratio": -0.24663554202077584
+  },
+  {
+    "point_id": 37,
+    "xyz_model_m": [
+      -0.222,
+      -0.092,
+      0.008
+    ],
+    "reference_ratio": 0.48,
+    "U_mean_model_m_s": [
+      -1.95512381,
+      -0.7277222262,
+      0.2764836812
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.5357049849802247,
+    "error_ratio": 0.05570498498022469
+  },
+  {
+    "point_id": 38,
+    "xyz_model_m": [
+      -0.104,
+      -0.04,
+      0.008
+    ],
+    "reference_ratio": 0.61,
+    "U_mean_model_m_s": [
+      0.4666858704,
+      -1.086537215,
+      -0.003447759414
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3010280423782773,
+    "error_ratio": -0.3089719576217227
+  },
+  {
+    "point_id": 39,
+    "xyz_model_m": [
+      -0.036,
+      -0.01,
+      0.008
+    ],
+    "reference_ratio": 0.26,
+    "U_mean_model_m_s": [
+      0.2022140289,
+      0.2780656889,
+      0.008130820611
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.0875479987071436,
+    "error_ratio": -0.17245200129285643
+  },
+  {
+    "point_id": 40,
+    "xyz_model_m": [
+      0.026,
+      0.018,
+      0.008
+    ],
+    "reference_ratio": 0.38,
+    "U_mean_model_m_s": [
+      -0.888598931,
+      -0.371713091,
+      -0.003076927165
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.24519985318145743,
+    "error_ratio": -0.13480014681854258
+  },
+  {
+    "point_id": 41,
+    "xyz_model_m": [
+      0.118,
+      0.06,
+      0.008
+    ],
+    "reference_ratio": 0.46,
+    "U_mean_model_m_s": [
+      -0.9538650755,
+      -0.04684468086,
+      -0.005992048043
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.24311647103032155,
+    "error_ratio": -0.21688352896967847
+  },
+  {
+    "point_id": 42,
+    "xyz_model_m": [
+      0.212,
+      0.104,
+      0.008
+    ],
+    "reference_ratio": 0.44,
+    "U_mean_model_m_s": [
+      -0.7475050225,
+      -0.0501965327,
+      -0.01060437659
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.19073500928264633,
+    "error_ratio": -0.24926499071735367
+  },
+  {
+    "point_id": 43,
+    "xyz_model_m": [
+      0.27,
+      0.13,
+      0.008
+    ],
+    "reference_ratio": 0.3,
+    "U_mean_model_m_s": [
+      -0.1693028318,
+      0.08080830828,
+      0.07388183219
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.051325893946647765,
+    "error_ratio": -0.24867410605335222
+  },
+  {
+    "point_id": 44,
+    "xyz_model_m": [
+      0.332,
+      0.156,
+      0.008
+    ],
+    "reference_ratio": 0.46,
+    "U_mean_model_m_s": [
+      0.4930016132,
+      -1.155098443,
+      -0.1316661214
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.32146003082690344,
+    "error_ratio": -0.13853996917309658
+  },
+  {
+    "point_id": 45,
+    "xyz_model_m": [
+      0.482,
+      0.226,
+      0.008
+    ],
+    "reference_ratio": 0.2,
+    "U_mean_model_m_s": [
+      1.179294994,
+      -0.650217717,
+      -0.05473666576
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.34309579302658844,
+    "error_ratio": 0.14309579302658842
+  },
+  {
+    "point_id": 46,
+    "xyz_model_m": [
+      -0.484,
+      -0.226,
+      0.008
+    ],
+    "reference_ratio": 0.18,
+    "U_mean_model_m_s": [
+      -0.07473031353,
+      0.1393747384,
+      -0.04152405367
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.041622605778083924,
+    "error_ratio": -0.13837739422191608
+  },
+  {
+    "point_id": 47,
+    "xyz_model_m": [
+      -0.386,
+      -0.238,
+      0.008
+    ],
+    "reference_ratio": 0.2,
+    "U_mean_model_m_s": null,
+    "predicted_mean_vector_magnitude_ratio": null,
+    "error_ratio": null,
+    "missing_reason": "OpenFOAM cloud sampler omitted this point; no valid fluid sample at its exact location"
+  },
+  {
+    "point_id": 48,
+    "xyz_model_m": [
+      -0.308,
+      -0.236,
+      0.008
+    ],
+    "reference_ratio": 0.36,
+    "U_mean_model_m_s": [
+      -0.1854069441,
+      0.6201912411,
+      0.04860387623
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.1652457526079409,
+    "error_ratio": -0.1947542473920591
+  },
+  {
+    "point_id": 49,
+    "xyz_model_m": [
+      -0.238,
+      -0.206,
+      0.008
+    ],
+    "reference_ratio": 0.3,
+    "U_mean_model_m_s": [
+      0.1510696272,
+      0.1130676173,
+      0.06175493891
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.05054218984139817,
+    "error_ratio": -0.24945781015860183
+  },
+  {
+    "point_id": 50,
+    "xyz_model_m": [
+      -0.182,
+      -0.18,
+      0.008
+    ],
+    "reference_ratio": 0.26,
+    "U_mean_model_m_s": null,
+    "predicted_mean_vector_magnitude_ratio": null,
+    "error_ratio": null,
+    "missing_reason": "OpenFOAM cloud sampler omitted this point; no valid fluid sample at its exact location"
+  },
+  {
+    "point_id": 51,
+    "xyz_model_m": [
+      -0.098,
+      -0.078,
+      0.008
+    ],
+    "reference_ratio": 0.69,
+    "U_mean_model_m_s": [
+      0.3643246863,
+      -1.70825804,
+      -0.1214487373
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.4457132126096988,
+    "error_ratio": -0.24428678739030113
+  },
+  {
+    "point_id": 52,
+    "xyz_model_m": [
+      -0.124,
+      -0.094,
+      0.008
+    ],
+    "reference_ratio": 0.63,
+    "U_mean_model_m_s": [
+      0.6302477429,
+      -1.652123251,
+      0.1884939183
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.4526829424046721,
+    "error_ratio": -0.1773170575953279
+  },
+  {
+    "point_id": 53,
+    "xyz_model_m": [
+      -0.098,
+      -0.152,
+      0.008
+    ],
+    "reference_ratio": 0.57,
+    "U_mean_model_m_s": [
+      0.4529556078,
+      -1.069935503,
+      0.06396800532
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.2962161703988444,
+    "error_ratio": -0.27378382960115555
+  },
+  {
+    "point_id": 54,
+    "xyz_model_m": [
+      -0.08,
+      -0.122,
+      0.008
+    ],
+    "reference_ratio": 0.59,
+    "U_mean_model_m_s": [
+      0.6267854171,
+      -1.673803514,
+      -0.06690575865
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.4553022847678343,
+    "error_ratio": -0.13469771523216567
+  },
+  {
+    "point_id": 55,
+    "xyz_model_m": [
+      -0.044,
+      -0.2,
+      0.008
+    ],
+    "reference_ratio": 0.38,
+    "U_mean_model_m_s": [
+      0.6388291757,
+      -1.475340911,
+      -0.0001811408489
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.4092641327497424,
+    "error_ratio": 0.029264132749742378
+  },
+  {
+    "point_id": 56,
+    "xyz_model_m": [
+      0.152,
+      0.022,
+      0.008
+    ],
+    "reference_ratio": 0.67,
+    "U_mean_model_m_s": [
+      -0.4916687907,
+      -0.2134086532,
+      -0.2609591574
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.15175498990973638,
+    "error_ratio": -0.5182450100902637
+  },
+  {
+    "point_id": 57,
+    "xyz_model_m": [
+      0.296,
+      0.088,
+      0.008
+    ],
+    "reference_ratio": 0.34,
+    "U_mean_model_m_s": [
+      0.2365150697,
+      -0.1377983931,
+      -0.1822498812
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.08371332448029789,
+    "error_ratio": -0.25628667551970213
+  },
+  {
+    "point_id": 58,
+    "xyz_model_m": [
+      0.252,
+      0.002,
+      0.008
+    ],
+    "reference_ratio": 0.85,
+    "U_mean_model_m_s": [
+      0.8432819414,
+      -1.210653786,
+      -0.006771771665
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.37558681206944916,
+    "error_ratio": -0.4744131879305508
+  },
+  {
+    "point_id": 59,
+    "xyz_model_m": [
+      0.202,
+      -0.09,
+      0.008
+    ],
+    "reference_ratio": 0.42,
+    "U_mean_model_m_s": [
+      0.7161578612,
+      0.01298683821,
+      0.2256207189
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.19116931932786568,
+    "error_ratio": -0.2288306806721343
+  },
+  {
+    "point_id": 60,
+    "xyz_model_m": [
+      0.354,
+      -0.024,
+      0.008
+    ],
+    "reference_ratio": 0.73,
+    "U_mean_model_m_s": [
+      0.6403601659,
+      -1.536556352,
+      -0.08534562259
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.4243159009787688,
+    "error_ratio": -0.30568409902123117
+  },
+  {
+    "point_id": 61,
+    "xyz_model_m": [
+      0.124,
+      0.0,
+      0.008
+    ],
+    "reference_ratio": 0.54,
+    "U_mean_model_m_s": [
+      -0.2655190201,
+      -0.9894385416,
+      -0.1290697938
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.2628479179930038,
+    "error_ratio": -0.27715208200699626
+  },
+  {
+    "point_id": 62,
+    "xyz_model_m": [
+      0.158,
+      -0.08,
+      0.008
+    ],
+    "reference_ratio": 0.69,
+    "U_mean_model_m_s": [
+      0.378332078,
+      -0.5805635462,
+      0.007438726513
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.17641154657690988,
+    "error_ratio": -0.5135884534230901
+  },
+  {
+    "point_id": 63,
+    "xyz_model_m": [
+      0.37,
+      0.08,
+      0.008
+    ],
+    "reference_ratio": 0.4,
+    "U_mean_model_m_s": [
+      0.5698051762,
+      -0.9443836425,
+      -0.02350507196
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.2808389246079208,
+    "error_ratio": -0.11916107539207921
+  },
+  {
+    "point_id": 64,
+    "xyz_model_m": [
+      0.402,
+      0.014,
+      0.008
+    ],
+    "reference_ratio": 0.44,
+    "U_mean_model_m_s": [
+      0.7717202823,
+      -0.9716008485,
+      0.07198644486
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.31639079229560857,
+    "error_ratio": -0.12360920770439143
+  },
+  {
+    "point_id": 65,
+    "xyz_model_m": [
+      -0.332,
+      -0.376,
+      0.008
+    ],
+    "reference_ratio": 0.3,
+    "U_mean_model_m_s": [
+      0.347145672,
+      0.4269901615,
+      0.1074108554
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.1427298562218251,
+    "error_ratio": -0.1572701437781749
+  },
+  {
+    "point_id": 66,
+    "xyz_model_m": [
+      -0.198,
+      -0.314,
+      0.008
+    ],
+    "reference_ratio": 0.32,
+    "U_mean_model_m_s": [
+      -0.06114178272,
+      -0.01135084121,
+      0.00164896742
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.01583596189639245,
+    "error_ratio": -0.30416403810360754
+  },
+  {
+    "point_id": 67,
+    "xyz_model_m": [
+      -0.04,
+      -0.238,
+      0.008
+    ],
+    "reference_ratio": 0.5,
+    "U_mean_model_m_s": [
+      0.647192195,
+      -1.50185603,
+      0.01614703171
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.4163250301113109,
+    "error_ratio": -0.08367496988868911
+  },
+  {
+    "point_id": 68,
+    "xyz_model_m": [
+      0.004,
+      -0.216,
+      0.008
+    ],
+    "reference_ratio": 0.28,
+    "U_mean_model_m_s": [
+      -0.4731335528,
+      -0.2269636427,
+      0.07657555574
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.13499817823541133,
+    "error_ratio": -0.1450018217645887
+  },
+  {
+    "point_id": 69,
+    "xyz_model_m": [
+      0.104,
+      -0.172,
+      0.008
+    ],
+    "reference_ratio": 0.24,
+    "U_mean_model_m_s": [
+      0.0171883043,
+      0.1044417932,
+      0.004741382952
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.026971707638716542,
+    "error_ratio": -0.21302829236128346
+  },
+  {
+    "point_id": 70,
+    "xyz_model_m": [
+      0.186,
+      -0.134,
+      0.008
+    ],
+    "reference_ratio": 0.34,
+    "U_mean_model_m_s": [
+      -0.472709567,
+      -0.3235579271,
+      0.07404009506
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.14703669799789085,
+    "error_ratio": -0.19296330200210918
+  },
+  {
+    "point_id": 71,
+    "xyz_model_m": [
+      0.266,
+      -0.098,
+      0.008
+    ],
+    "reference_ratio": 0.5,
+    "U_mean_model_m_s": [
+      -0.2439509556,
+      -0.7849599404,
+      0.1156435455
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.2113101748818144,
+    "error_ratio": -0.28868982511818564
+  },
+  {
+    "point_id": 72,
+    "xyz_model_m": [
+      0.328,
+      -0.07,
+      0.008
+    ],
+    "reference_ratio": 0.38,
+    "U_mean_model_m_s": [
+      -0.8138559807,
+      -1.021463651,
+      0.105535965
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.33355442032175703,
+    "error_ratio": -0.046445579678242976
+  },
+  {
+    "point_id": 73,
+    "xyz_model_m": [
+      0.394,
+      -0.038,
+      0.008
+    ],
+    "reference_ratio": 0.52,
+    "U_mean_model_m_s": [
+      1.20849127,
+      -0.7249746414,
+      0.02948931735
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.35882672699970475,
+    "error_ratio": -0.16117327300029527
+  },
+  {
+    "point_id": 74,
+    "xyz_model_m": [
+      0.226,
+      -0.218,
+      0.008
+    ],
+    "reference_ratio": 0.26,
+    "U_mean_model_m_s": null,
+    "predicted_mean_vector_magnitude_ratio": null,
+    "error_ratio": null,
+    "missing_reason": "OpenFOAM cloud sampler omitted this point; no valid fluid sample at its exact location"
+  },
+  {
+    "point_id": 75,
+    "xyz_model_m": [
+      0.436,
+      -0.07,
+      0.008
+    ],
+    "reference_ratio": 0.63,
+    "U_mean_model_m_s": [
+      0.8475448233,
+      -1.169891147,
+      -0.01477786166
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3677709339249227,
+    "error_ratio": -0.2622290660750773
+  },
+  {
+    "point_id": 76,
+    "xyz_model_m": [
+      0.464,
+      -0.122,
+      0.008
+    ],
+    "reference_ratio": 0.5,
+    "U_mean_model_m_s": [
+      0.6068176995,
+      -1.229176583,
+      0.04874884463
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.3491769047547624,
+    "error_ratio": -0.15082309524523763
+  },
+  {
+    "point_id": 77,
+    "xyz_model_m": [
+      0.02,
+      -0.376,
+      0.008
+    ],
+    "reference_ratio": 0.46,
+    "U_mean_model_m_s": [
+      0.6646618183,
+      -1.55849305,
+      -0.03526823104
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.43140179391244277,
+    "error_ratio": -0.028598206087557254
+  },
+  {
+    "point_id": 78,
+    "xyz_model_m": [
+      0.182,
+      -0.346,
+      0.008
+    ],
+    "reference_ratio": 0.28,
+    "U_mean_model_m_s": [
+      -0.7556544118,
+      -0.09161977807,
+      0.04374814223
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.19409039903055614,
+    "error_ratio": -0.08590960096944389
+  },
+  {
+    "point_id": 79,
+    "xyz_model_m": [
+      0.326,
+      -0.278,
+      0.008
+    ],
+    "reference_ratio": 0.32,
+    "U_mean_model_m_s": [
+      -0.8050339081,
+      -0.2486540282,
+      0.06871330443
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.2151970918649076,
+    "error_ratio": -0.10480290813509241
+  },
+  {
+    "point_id": 80,
+    "xyz_model_m": [
+      0.5,
+      -0.198,
+      0.008
+    ],
+    "reference_ratio": 0.54,
+    "U_mean_model_m_s": [
+      -0.2034157384,
+      -0.6505886818,
+      0.1357342939
+    ],
+    "predicted_mean_vector_magnitude_ratio": 0.17692925855164623,
+    "error_ratio": -0.36307074144835383
+  }
+]

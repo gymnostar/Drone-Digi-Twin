@@ -1,0 +1,51 @@
+{
+  "scenario": "numerical-abl",
+  "scope": "Numerical-only full source Niigata geometry; does not reproduce the wind-tunnel inflow or validate physical city flow.",
+  "protocol_revision": 3,
+  "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+  "empty_inflow_verification": true,
+  "direction": "N",
+  "wind_from_deg": 0.0,
+  "coordinate_frame": "World x east/y north/z up; solver frame rotates geometry and queries so incoming wind is -y.",
+  "raw_stl_to_world_scale": 250.0,
+  "closure": "realizableKE",
+  "closure_status": "Frozen shared-toy assumption; not evidence of superior physical city accuracy.",
+  "resolution": "reference",
+  "mesh_background_m": 20.0,
+  "surface_levels": [
+    2,
+    3
+  ],
+  "Uref_m_s": 8.7,
+  "Uref_height_m": 32.1,
+  "z0_m": 0.01158,
+  "ustar_m_s": 0.449941769460506,
+  "k_m2_s2": 0.6748253196841705,
+  "max_cells": 500000,
+  "iterations_cap": 2000,
+  "mesh_timeout_s": 600,
+  "solve_timeout_s": 600,
+  "residual_thresholds": {
+    "p": 0.0001,
+    "U": 1e-05,
+    "k": 1e-05,
+    "epsilon": 1e-05
+  },
+  "flux_threshold": 0.0001,
+  "probe_change_RMSE_over_Uref_threshold": 0.002,
+  "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+  "host": "Host-017.homenet.telecomitalia.it",
+  "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+  "source_hashes": {
+    "MP_caseE.png": "0fc868d42899783dea655cee10a47c79e148bf5febef6dfed7d293f6b50c96a3",
+    "AF_caseE.csv": "267ae89113e9f51a8c437543bdc0549c9f352dced7ed571a3e6844082b555f77",
+    "RS_caseE.csv": "d2f687c052c21d734c0de2ade677984d62a348f2660e09dd6d2fc09e7586c799",
+    "BD_caseE.stl": "eef5cae06ea5be7b02f837ba291959e3de25aa47628f5eda1f164f5e4eb549d9",
+    "readme_caseE.md": "a879d029decf0ebd41362fb4693b246fb9629c518167aa02e82c8d861e86ecb5"
+  },
+  "measured_RMSE_gate": "not applicable: new incoming conditions differ from original experiment",
+  "boundary_assumption": "Open-domain sides/top slip; common coherent neutral ABL ground/inlet; domain sensitivity not yet established.",
+  "comparison_sampling": "Exact fixed world grid; common valid fluid samples only; no moved, filled or extrapolated samples.",
+  "scaled_stl_sha256": "f21974890c970620401c491f35a97b3c7c56f63a6fbbe474b954f2d2c6112f9a",
+  "query_sha256": "12e53687207e31f08333eb36b57604666c43066b775b6a4add151fe837a70750"
+}

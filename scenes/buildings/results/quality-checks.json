@@ -1,0 +1,35 @@
+{
+  "standard_checkMesh_passed": true,
+  "custom_numerical_quality_passed": true,
+  "allGeometry_passed": false,
+  "concave_cells": 7981,
+  "cells": 208007,
+  "max_nonorthogonality_deg": 64.94285307,
+  "max_skewness": 3.997177066,
+  "global_min_determinant": 0.001218456877,
+  "acceptance": "Provisional pilot; concave-cell diagnostic retained, not claimed allGeometry pass.",
+  "prior_failed_meshes": [
+    {
+      "run": "baseline-mesh-failed-1",
+      "failures": [
+        "17skewfaces",
+        "1small determinant",
+        "8060concavecells"
+      ],
+      "elapsed_s": 24.814828582995688
+    },
+    {
+      "run": "baseline-mesh-failed-2",
+      "failures": [
+        "1small determinant",
+        "7873concavecells"
+      ],
+      "elapsed_s": 43.51045016699936
+    }
+  ],
+  "verification_attempts": [
+    "inflow-check-mesh-failed-1: overgraded structured mesh failed determinant check; never solved",
+    "inflow-check-coarse: valid structured mesh and solve, underresolved first sample; profile diagnostic retained",
+    "inflow-check: local isotropic profile refinement, allGeometry passes; non-equilibrium U/k drift persists"
+  ]
+}

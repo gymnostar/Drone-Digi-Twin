@@ -1,0 +1,35 @@
+{
+  "run": "empty-realizableKE",
+  "scope": "Undisturbed ABL Ux versus prescribed inlet log profile; |y|<27m,z13.5..67.5m",
+  "n_sampled_points": 9360,
+  "bias_m_s": 0.021389581054424473,
+  "RMSE_m_s": 0.024075677597937595,
+  "maximum_absolute_error_m_s": 0.06426973825980209,
+  "final_probe_Ux": [
+    8.76247692,
+    8.716453841,
+    8.716752591,
+    8.722119851,
+    8.728418545,
+    8.735551624
+  ],
+  "probe_x_m": [
+    -65,
+    0,
+    54,
+    81,
+    108,
+    135
+  ],
+  "iterations": 232,
+  "reference_Uhub_m_s": 8.7,
+  "tested_closure": "realizableKE",
+  "core_k_mean_m2_s2": 0.676381819565812,
+  "prescribed_k_m2_s2": 0.675,
+  "core_k_RMSE_m2_s2": 0.01348553831427999,
+  "core_k_mean_relative_drift": 0.0020471400974991986,
+  "limitations": [
+    "cellPoint/grid sampling alters values in coarse first ground-adjacent cells; z<13.5m is excluded only from this explicitly defined transport diagnostic, not from physical wake errors.",
+    "Top slip and chosen closure/default coefficients do not exactly preserve analytical equilibrium everywhere."
+  ]
+}

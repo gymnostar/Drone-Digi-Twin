@@ -1,0 +1,29 @@
+{
+  "solver_iteration": 248,
+  "residual_control_converged": true,
+  "final_initial_residuals": {
+    "Ux": 1.240480495e-07,
+    "Uy": 9.924711616e-05,
+    "Uz": 9.023675808e-06,
+    "p": 4.146546278e-07,
+    "epsilon": 2.917584543e-08,
+    "k": 1.288152033e-06
+  },
+  "frozen_residual_checks": {
+    "p": true,
+    "U": true,
+    "k": true,
+    "epsilon": true
+  },
+  "relative_flux_imbalance": 7.28925631000779e-11,
+  "terminal_window_iterations": 50,
+  "terminal_window_max_vector_RMSE_change_over_Uref": 7.503624834523415e-05,
+  "frozen_convergence_checks_pass": true,
+  "upstream_profile": {
+    "region": "background x<-40.5 |y|<54 z<81 m",
+    "samples": 336,
+    "streamwise_RMSE_m_s": 0.006146683372800348,
+    "streamwise_RMSE_over_Uref": 0.0007065153302069366,
+    "max_abs_error_m_s": 0.018688174714128536
+  }
+}

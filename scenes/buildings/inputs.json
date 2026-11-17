@@ -1,0 +1,42 @@
+{
+  "record": "15429018",
+  "license": "CC BY 4.0",
+  "attribution": "Tominaga, Kikumoto and Okaze, AIJ benchmark Case E (2025); original experiments cited in readme_caseE.md",
+  "files": [
+    {
+      "file": "MP_caseE.png",
+      "url": "https://zenodo.org/api/records/15429018/files/MP_caseE.png/content",
+      "bytes": 970842,
+      "upstream_checksum": "md5:922b1d3767af9fb184be5ae9cc9a83fe",
+      "sha256": "0fc868d42899783dea655cee10a47c79e148bf5febef6dfed7d293f6b50c96a3"
+    },
+    {
+      "file": "AF_caseE.csv",
+      "url": "https://zenodo.org/api/records/15429018/files/AF_caseE.csv/content",
+      "bytes": 222,
+      "upstream_checksum": "md5:a7e4f7e5a72070a47de56ad12a4eafdf",
+      "sha256": "267ae89113e9f51a8c437543bdc0549c9f352dced7ed571a3e6844082b555f77"
+    },
+    {
+      "file": "RS_caseE.csv",
+      "url": "https://zenodo.org/api/records/15429018/files/RS_caseE.csv/content",
+      "bytes": 66145,
+      "upstream_checksum": "md5:aa96fb31207d9004f2ca9b76f7973304",
+      "sha256": "d2f687c052c21d734c0de2ade677984d62a348f2660e09dd6d2fc09e7586c799"
+    },
+    {
+      "file": "BD_caseE.stl",
+      "url": "https://zenodo.org/api/records/15429018/files/BD_caseE.stl/content",
+      "bytes": 11847740,
+      "upstream_checksum": "md5:bc157b02c2bb90adedaf3a52e72722e4",
+      "sha256": "eef5cae06ea5be7b02f837ba291959e3de25aa47628f5eda1f164f5e4eb549d9"
+    },
+    {
+      "file": "readme_caseE.md",
+      "url": "https://zenodo.org/api/records/15429018/files/readme_caseE.md/content",
+      "bytes": 3624,
+      "upstream_checksum": "md5:8b7d80aad61694ae4a7d8771a5e79388",
+      "sha256": "a879d029decf0ebd41362fb4693b246fb9629c518167aa02e82c8d861e86ecb5"
+    }
+  ]
+}

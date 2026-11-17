@@ -1,0 +1,95 @@
+{
+  "scope": "One unfitted stock-closure sensitivity on the six-period DEVELOPMENT ensemble, not confirmatory generalization or a final optimized method.",
+  "baseline_run": "baseline-v2",
+  "tested_run": "closure-realizableKE",
+  "changed_solver_input_files": [
+    "constant/turbulenceProperties"
+  ],
+  "prescribed_inlet_fields_force_settings_mesh_sampling_and_observation_population_unchanged": true,
+  "installed_model_readback": {
+    "A0": 4.0,
+    "C2": 1.9,
+    "sigmak": 1.0,
+    "sigmaEps": 1.2
+  },
+  "empty_control": {
+    "run": "empty-realizableKE",
+    "scope": "Undisturbed ABL Ux versus prescribed inlet log profile; |y|<27m,z13.5..67.5m",
+    "n_sampled_points": 9360,
+    "bias_m_s": 0.021389581054424473,
+    "RMSE_m_s": 0.024075677597937595,
+    "maximum_absolute_error_m_s": 0.06426973825980209,
+    "final_probe_Ux": [
+      8.76247692,
+      8.716453841,
+      8.716752591,
+      8.722119851,
+      8.728418545,
+      8.735551624
+    ],
+    "probe_x_m": [
+      -65,
+      0,
+      54,
+      81,
+      108,
+      135
+    ],
+    "iterations": 232,
+    "reference_Uhub_m_s": 8.7,
+    "tested_closure": "realizableKE",
+    "core_k_mean_m2_s2": 0.676381819565812,
+    "prescribed_k_m2_s2": 0.675,
+    "core_k_RMSE_m2_s2": 0.01348553831427999,
+    "core_k_mean_relative_drift": 0.0020471400974991986,
+    "limitations": [
+      "cellPoint/grid sampling alters values in coarse first ground-adjacent cells; z<13.5m is excluded only from this explicitly defined transport diagnostic, not from physical wake errors.",
+      "Top slip and chosen closure/default coefficients do not exactly preserve analytical equilibrium everywhere."
+    ]
+  },
+  "baseline_accuracy": {
+    "n_periods": 6,
+    "n_distance_groups": 4,
+    "common_bins_by_distance": [
+      201,
+      255,
+      211,
+      250
+    ],
+    "bias_m_s": 0.6855553623087278,
+    "MAE_m_s": 0.7775107880529912,
+    "RMSE_m_s": 1.1087901640068887,
+    "RMSE_divided_by_prescribed_hub_speed": 0.12744714528814813,
+    "weighting": "Form equal-period observed and actual-location CFD mean for each bin first; equal-bin means within each distance; equal four-distance means of MSE, then square root.",
+    "normalization_m_s": 8.7,
+    "normalization_kind": "published ensemble hub speed"
+  },
+  "tested_accuracy": {
+    "n_periods": 6,
+    "n_distance_groups": 4,
+    "common_bins_by_distance": [
+      201,
+      255,
+      211,
+      250
+    ],
+    "bias_m_s": 0.5868253080048051,
+    "MAE_m_s": 0.6518946558788253,
+    "RMSE_m_s": 0.8630083687147174,
+    "RMSE_divided_by_prescribed_hub_speed": 0.09919636422008248,
+    "weighting": "Form equal-period observed and actual-location CFD mean for each bin first; equal-bin means within each distance; equal four-distance means of MSE, then square root.",
+    "normalization_m_s": 8.7,
+    "normalization_kind": "published ensemble hub speed"
+  },
+  "development_RMSE_reduction_fraction": 0.22166664466428676,
+  "baseline_CFD_pipeline_wall_seconds": 6.235327166985371,
+  "tested_CFD_pipeline_wall_seconds": 6.139470082998741,
+  "cost_interpretation": "Single runs at similar cost; small wall-time difference is not evidence of speedup.",
+  "remaining_limitations": [
+    "Stock realizableKE is not an atmospheric-adapted Shih/fP model.",
+    "No closure-specific mesh/domain verification or new independent experimental population.",
+    "Uniform finite-thickness disk, omitted tower/nacelle, equilibrium turbulence and proxy observation operator remain approximations.",
+    "Previously nominated date groups are exploratory because all six period means have informed method selection."
+  ],
+  "future_force_support_repair": "Use a fixed fine rotor/source refinement box common to a separate family of background/wake meshes; verify identical selected-cell support and volume. Not implemented as a new study yet."
+}

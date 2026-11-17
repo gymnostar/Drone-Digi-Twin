@@ -1,0 +1,902 @@
+{
+  "repository": "https://github.com/NatLabRockies/wakebench_swift",
+  "revision": "ca35fe83731b437994cf168120545af35386933b",
+  "lidar_release": "1.0.0",
+  "retrieved_utc": "2026-11-13",
+  "files": [
+    {
+      "path": "upstream/code/process_lidar_wake.ipynb",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/code/process_lidar_wake.ipynb",
+      "bytes": 717098,
+      "sha256": "15d3149dd9a992c710575da8929a8b01abf1b091c7abf854a6b30a3804b9b098"
+    },
+    {
+      "path": "upstream/code/process_simulation_wake.ipynb",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/code/process_simulation_wake.ipynb",
+      "bytes": 194833,
+      "sha256": "f14c6c7a60751567c333e721d49efc33ac7ee7079e26e2f82790be95ebf457c3"
+    },
+    {
+      "path": "upstream/docs/source/glossary.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/glossary.rst",
+      "bytes": 9524,
+      "sha256": "6812a33eaa3b4ade146a4c32ff87879e92164df9469def0ae151ac2f687226e8"
+    },
+    {
+      "path": "upstream/docs/source/index.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/index.rst",
+      "bytes": 5293,
+      "sha256": "f7b8c74fc6b8ac45a40e3db955a14d99261d1b0b4171997fcd555657e86e12a4"
+    },
+    {
+      "path": "upstream/docs/source/lessons.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/lessons.rst",
+      "bytes": 2449,
+      "sha256": "78b1857bdb2eaa6b3e1413616dfd56f0ba252472d659fbddfb9955ff77b4ee9e"
+    },
+    {
+      "path": "upstream/docs/source/measurements.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/measurements.rst",
+      "bytes": 4684,
+      "sha256": "694557a6408ee8ba5858e19ded67b7218f8217513e85d947106bcd47858cfb1b"
+    },
+    {
+      "path": "upstream/docs/source/simulations.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/simulations.rst",
+      "bytes": 13724,
+      "sha256": "d1bda705af2f8d98629f202f8f651c2e141401d31565dc07f65aa7fcdb275ecc"
+    },
+    {
+      "path": "upstream/docs/source/submissions.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/submissions.rst",
+      "bytes": 1585,
+      "sha256": "1872ab009006d014efa254530ee05801375a1e50eec0fc9975bdd8e033b51072"
+    },
+    {
+      "path": "upstream/docs/source/swift_neutral_evolution.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/swift_neutral_evolution.rst",
+      "bytes": 6887,
+      "sha256": "17ad6824905483697e57e6089b5bed56ff13fdc69cbcdab0eca00f3ae7414eb5"
+    },
+    {
+      "path": "upstream/docs/source/swift_stable_evolution.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/swift_stable_evolution.rst",
+      "bytes": 7163,
+      "sha256": "ef491c7d79c69635af9d79f28898c901554ac6224e8b3f4f4d10489023a28136"
+    },
+    {
+      "path": "upstream/docs/source/swift_unstable_dynamics.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/swift_unstable_dynamics.rst",
+      "bytes": 6961,
+      "sha256": "799f33dac17eb152dbab48adfbc492aab727e7f2a89ee775cb07038db94395de"
+    },
+    {
+      "path": "upstream/docs/source/timeline.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/timeline.rst",
+      "bytes": 5982,
+      "sha256": "9f45b0c1d88a0ff60bc20ed997f557662fe1bf567890e716aca5f4ed847de09c"
+    },
+    {
+      "path": "upstream/docs/source/validation.rst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/docs/source/validation.rst",
+      "bytes": 4656,
+      "sha256": "85541639335a9228696f9b23d9d5df8eec48106586afe8792b84f81e1ae70726"
+    },
+    {
+      "path": "upstream/images/coordinate_system_noyaw.png",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/images/coordinate_system_noyaw.png",
+      "bytes": 441026,
+      "sha256": "db30815e289992ded4e6afc7715441fc264050a900ee31a5d218f353431fb97f"
+    },
+    {
+      "path": "upstream/images/coordinate_system_yawed.png",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/images/coordinate_system_yawed.png",
+      "bytes": 495009,
+      "sha256": "9dd0c39177268d60b0cd7fb55f5952521467e3c21e2c2391daf5862c756cccd7"
+    },
+    {
+      "path": "upstream/images/site_sketch.png",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/images/site_sketch.png",
+      "bytes": 1816525,
+      "sha256": "990bf81618f13d2ca4604749e34ba2d145dc1b18e2e25cbbb65bd6d30411b87c"
+    },
+    {
+      "path": "upstream/met_data/README.md",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/met_data/README.md",
+      "bytes": 3186,
+      "sha256": "21dc9fae3fdf942936fcae06fdbc5e472aa5bd927b3f55517bfbd741b1d8b625"
+    },
+    {
+      "path": "upstream/met_data/swift_neutral_evolution_00_SONIC_32m.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/met_data/swift_neutral_evolution_00_SONIC_32m.csv",
+      "bytes": 4383643,
+      "sha256": "5e43d2f310f4e49133f984cd0b9d7c1a40c75a0a7943c815c1567248411f1364"
+    },
+    {
+      "path": "upstream/met_data/swift_neutral_evolution_01_SONIC_32m.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/met_data/swift_neutral_evolution_01_SONIC_32m.csv",
+      "bytes": 4430855,
+      "sha256": "4166e169c71f2a3e919e23df7fb1076a8185c352fd12d2bef33588c353656752"
+    },
+    {
+      "path": "upstream/met_data/swift_neutral_evolution_02_SONIC_32m.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/met_data/swift_neutral_evolution_02_SONIC_32m.csv",
+      "bytes": 4416229,
+      "sha256": "ff79b597abdf643a3e81d92abbc511c0389ff2b4640326a6036c57cbb2083986"
+    },
+    {
+      "path": "upstream/met_data/swift_neutral_evolution_03_SONIC_32m.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/met_data/swift_neutral_evolution_03_SONIC_32m.csv",
+      "bytes": 4422221,
+      "sha256": "586128e9fc2f5d2d5e6b68fc94cd5070ff2837e745a4269fe8b3cc28569311ef"
+    },
+    {
+      "path": "upstream/met_data/swift_neutral_evolution_04_SONIC_32m.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/met_data/swift_neutral_evolution_04_SONIC_32m.csv",
+      "bytes": 4420512,
+      "sha256": "54c53df0bdf04abb35d0ff553e215f748948189c6e22ee075c26261fb535ecab"
+    },
+    {
+      "path": "upstream/met_data/swift_neutral_evolution_05_SONIC_32m.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/met_data/swift_neutral_evolution_05_SONIC_32m.csv",
+      "bytes": 4418015,
+      "sha256": "8701ff31eb6161b0a052f596743ccf6ffe9a24934c7c64dc4b04acf43d58732d"
+    },
+    {
+      "path": "upstream/wt_data/measurements/README.md",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/README.md",
+      "bytes": 801,
+      "sha256": "32a7c5d6015c54338212cc938997745d8e92fe62758d357cd2f18c9a7db37741"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_00_WTGa1.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_00_WTGa1.csv",
+      "bytes": 1441749,
+      "sha256": "84df4b8498887c914df1e2d4dda65b9c4182d82af46a4e9e7dfb148d9f24c03f"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_01_WTGa1.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_01_WTGa1.csv",
+      "bytes": 1443515,
+      "sha256": "61dacacad85226045fef20035c4170399c14908c8459ecc911fcc241b6f142ad"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_02_WTGa1.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_02_WTGa1.csv",
+      "bytes": 1441332,
+      "sha256": "6436e1446ff49ec8e638adc57b1c2d03b17f5cfa9c281d5d04f1a9ad81de1016"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_03_WTGa1.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_03_WTGa1.csv",
+      "bytes": 1437865,
+      "sha256": "56b9706bb71ff302ddb0a35cff4b24b7fd085ca07c55527bb8498cdce915abe8"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_04_WTGa1.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_04_WTGa1.csv",
+      "bytes": 1435292,
+      "sha256": "9add60c6170ab3da1d2959ee419304fe794e5f94438ed4de6b985ec15d359705"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_05_WTGa1.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_05_WTGa1.csv",
+      "bytes": 1446220,
+      "sha256": "75cba29c85dc47841088e483e765a47175bbcf1273a4e6edaa2b19da9a36868c"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_00.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_wtg_and_met_00.csv",
+      "bytes": 358124,
+      "sha256": "f2782cfe1f8884fa8926ddb4dad2bc70f33ba0837d87538fcd3e5b6848ccd417"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_01.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_wtg_and_met_01.csv",
+      "bytes": 395974,
+      "sha256": "9add3b2014d0dff3756084e0ccf2e1bde51f6ecfc0f034296bfe20fbae5f5656"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_02.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_wtg_and_met_02.csv",
+      "bytes": 394323,
+      "sha256": "c20c31f25920289958e7184038b629cb60a726186ef114059254b92029c28abb"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_03.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_wtg_and_met_03.csv",
+      "bytes": 394416,
+      "sha256": "46eb8bf05705acd73e5c8eb9c972d20753434e99a63df8bcefda227610f71073"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_04.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_wtg_and_met_04.csv",
+      "bytes": 394414,
+      "sha256": "b213e48bea677df7fca82a7a52865a146553726566153000b9757e987f4688d7"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_and_met_05.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_wtg_and_met_05.csv",
+      "bytes": 396482,
+      "sha256": "64dd151fde06805f44c0b05b10403a936a0efed678c3c093487087a417350636"
+    },
+    {
+      "path": "upstream/wt_data/measurements/swift_neutral_evolution_wtg_summary.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/measurements/swift_neutral_evolution_wtg_summary.csv",
+      "bytes": 483,
+      "sha256": "9d0233c23d8788cad4b03136c986fe47ee69af10b75a112312fddabd12e2c0d2"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/63-214.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/63-214.txt",
+      "bytes": 1698,
+      "sha256": "da551cb8acd68787249017b86d18eee6889a733105f48b31581703279084ebc3"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/63-218.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/63-218.txt",
+      "bytes": 1699,
+      "sha256": "adefaccd022a068de510e2ab4b605736d24447c66320cd21941b49151700754c"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/63-224.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/63-224.txt",
+      "bytes": 1700,
+      "sha256": "7589b9f434e3e9239f039ff95c5fff9fe262c606d57925400974e72a60e056a1"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/63-235.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/63-235.txt",
+      "bytes": 1701,
+      "sha256": "ef0cc96d18d7dd2fe8d9922db6eda9e1e202a7afe8164f47f7c539c9f48bd76d"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_1_Cylinder.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_1_Cylinder.dat",
+      "bytes": 6889,
+      "sha256": "7247f326354bef84e1256f3c8f52e3f5fda5024a19405552189f1fda6b397197"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_2_63-235_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_2_63-235_mod.dat",
+      "bytes": 13219,
+      "sha256": "76a3c0912d572d15fa1800ba84ca93ed4dee117425a29042c86430f88d0d34be"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_3_63-224_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_3_63-224_mod.dat",
+      "bytes": 13221,
+      "sha256": "61eae42a87d478876ad8e187590a655f77a32827de6fd051e3888c5122d3fc52"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_4_63-218_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_4_63-218_mod.dat",
+      "bytes": 13220,
+      "sha256": "fb92a6b49fb294a94d577bc3b9ccacdcac4363bde22656839ce5876e96d78951"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_5_63-214_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/AD_5_63-214_mod.dat",
+      "bytes": 13219,
+      "sha256": "587056948060d7ff3bce85344e296bae7bbc345e6bea0657146606f5d3fc01bf"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/AeroData_AD15/Cylinder_coords.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/AeroData_AD15/Cylinder_coords.txt",
+      "bytes": 1876,
+      "sha256": "90d41efb3514d9bc36a5c907cb5455b793aa417659b7382f5d59fc5ba9753420"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_AeroDyn15F8.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_AeroDyn15F8.dat",
+      "bytes": 6781,
+      "sha256": "3365d667e6447971146f6a9c8e9c094b4ef86ca2d2af97c81d5110017dbb073b"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_AeroDyn15OF1.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_AeroDyn15OF1.dat",
+      "bytes": 7139,
+      "sha256": "f74136912ced43f7b33f70ebae6e22e1a5d3f883cce157ed6790bef3c39e6ff7"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_AeroDyn15OF2.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_AeroDyn15OF2.dat",
+      "bytes": 7681,
+      "sha256": "d21b8f5e3dac0a744b84b99979c40a2a0ab82c89cf025a6c272027ac81cbdeb7"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_AeroDyn_Blade.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_AeroDyn_Blade.dat",
+      "bytes": 2142,
+      "sha256": "ad9ecf8155970a694b12e86ce510d0637b8555f773d2ad5e2af26820d4b9ecd2"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_ElastoDyn.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_ElastoDyn.dat",
+      "bytes": 13937,
+      "sha256": "167ab097dcb77ed1833a22d65465a4261e20f9f6ce06a6a5482b8cb89e61c5ae"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_ElastoDyn_Blade.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_ElastoDyn_Blade.dat",
+      "bytes": 5211,
+      "sha256": "0ecb377d04454b521500ef3821ec820400ada719fdd275b7123e54b884d346f0"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_ElastoDyn_Tower.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_ElastoDyn_Tower.dat",
+      "bytes": 3802,
+      "sha256": "b9931da36e63c6ab6787a1d7b3e83be3eb56977bc275e3e73de26173e0dc90df"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_F8.fst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_F8.fst",
+      "bytes": 5572,
+      "sha256": "b0a5c1d1a752c01119c3cca572da375c5b5255ddf4e9b2185e5b3bf3012df49b"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_InflowWind.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_InflowWind.dat",
+      "bytes": 5417,
+      "sha256": "476a625e0d6a4925d76a30c28e825fba247a012d98366982f624aa7308de0391"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_OF1.fst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_OF1.fst",
+      "bytes": 5572,
+      "sha256": "84540a5c8c0174ed2f702263b8f50a8a416defc25b7aea87d3da542e1af7e785"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_OF2.fst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_OF2.fst",
+      "bytes": 5572,
+      "sha256": "c177772b2c8c3628e48b9170154ece41f71ea9f356048ed10a5387e33b01427c"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/SNLV27_ServoDyn.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/SNLV27_ServoDyn.dat",
+      "bytes": 10744,
+      "sha256": "4208d489f2b316d1d29b1c999a2d3193a733346769462f34499c07d83b1b7d16"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/Wind/StepWindSweep_m1mps.wnd",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/Wind/StepWindSweep_m1mps.wnd",
+      "bytes": 992,
+      "sha256": "a0c9de0680a8ad27b96acb1ee6de30d2ce3bc68a91ce4a85e0aeb80db32903fa"
+    },
+    {
+      "path": "upstream/wt_data/v1/OpenFAST_model/Wind/StepWindSweep_m1mps_200.wnd",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/OpenFAST_model/Wind/StepWindSweep_m1mps_200.wnd",
+      "bytes": 1001,
+      "sha256": "598660ba9e6b2a16e73b4626c5c96cced4c44488fec354a159292f8b0d59a1fa"
+    },
+    {
+      "path": "upstream/wt_data/v1/PowerCurve_WindStep.py",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/PowerCurve_WindStep.py",
+      "bytes": 6543,
+      "sha256": "a32ee2351497e4cbedfe05a51ad6940b9c6fd57fdea2f8b7ea7e456a2988fa7b"
+    },
+    {
+      "path": "upstream/wt_data/v1/README.md",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/README.md",
+      "bytes": 1062,
+      "sha256": "8b255540df3a276913d700e65b91f077bd798e90aeb9647a8575cd1854aee639"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/AD_1_cylinder.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/AD_1_cylinder.csv",
+      "bytes": 111,
+      "sha256": "ccb3895839117ab5d492ccd3ec0e93c7d4ccaeccb8e483e89a60e5b3ca42ddbc"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/AD_2_63-235_mod.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/AD_2_63-235_mod.csv",
+      "bytes": 6625,
+      "sha256": "53e62b075ed1a027d4c85c8ceeb9f4080098ba72ed77190fb47b8550f940fd3e"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/AD_3-63-224_mod.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/AD_3-63-224_mod.csv",
+      "bytes": 6627,
+      "sha256": "1d922c3510337a732a68248d00a95123d224fd67879aec710090de50e8bb4577"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/AD_4-63-218_mod.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/AD_4-63-218_mod.csv",
+      "bytes": 6625,
+      "sha256": "10e5c28e55cba6952a293f20efeac8e96147f666c50a82d139810ddb13c39bb1"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/AD_5_63-214_mod.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/AD_5_63-214_mod.csv",
+      "bytes": 6625,
+      "sha256": "96b7bac1b41d114661d4798df5f53ca704dedd386c83a3de707d63214bafdc8b"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/Blade_Aero.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/Blade_Aero.csv",
+      "bytes": 921,
+      "sha256": "4d4b68544aedf129f12a14b6054421c8c3313957a5133dd6b1a32e2d5386af1e"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/Blade_Aero_OF2.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/Blade_Aero_OF2.csv",
+      "bytes": 841,
+      "sha256": "2ad98d0ce6cdfcc22f8f8acf7c0258710f5db07c272f9afdc51f7d214417a123"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/Blade_Structure.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/Blade_Structure.csv",
+      "bytes": 6204,
+      "sha256": "bd2696e817bf388516303a9a8714e61b7af37344a8507881a23066428821b6e8"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/OperatingConditions.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/OperatingConditions.csv",
+      "bytes": 239,
+      "sha256": "85ec8505c82fd2cee7611864475f946e202dc5aadf9bf624e7972787a2e5dd19"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/OperatingConditions_OF2.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/OperatingConditions_OF2.csv",
+      "bytes": 239,
+      "sha256": "c376ef5cfe7c607b70f0cd6a8cf2326f189b3e37e4f9ee83f9b8df75e2c73b46"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/README.md",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/README.md",
+      "bytes": 516,
+      "sha256": "b2b94601f58036c78a518e5b25078643e237bcb3d62499f1a3d20913035e25fa"
+    },
+    {
+      "path": "upstream/wt_data/v1/Raw_model/Tower_Structure.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Raw_model/Tower_Structure.csv",
+      "bytes": 2059,
+      "sha256": "db1bc2e73ef85e8b759cd16a937768112f046c56e59c4a66e5a3eb156d49c35b"
+    },
+    {
+      "path": "upstream/wt_data/v1/Simulated_data/AeroPerformances_NoTipLoss.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Simulated_data/AeroPerformances_NoTipLoss.csv",
+      "bytes": 11678,
+      "sha256": "d0e21eddfa7be1c2afa4e8afa0f8f355d299548679adebbe55ce9ac1b4ef5ca7"
+    },
+    {
+      "path": "upstream/wt_data/v1/Simulated_data/AeroPerformances_WithTipLoss.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Simulated_data/AeroPerformances_WithTipLoss.csv",
+      "bytes": 11678,
+      "sha256": "4b413fca940b05b815435a93449603ffee1f24c1ca21b8755ba22996106563eb"
+    },
+    {
+      "path": "upstream/wt_data/v1/Simulated_data/RotorPerformances.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Simulated_data/RotorPerformances.csv",
+      "bytes": 609,
+      "sha256": "6acef0415e1c1f9405b934353434b4f8e6a7aaa134c2073d35e0c985d0452b4e"
+    },
+    {
+      "path": "upstream/wt_data/v1/Simulated_data/RotorPerformances_OF2.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v1/Simulated_data/RotorPerformances_OF2.csv",
+      "bytes": 799,
+      "sha256": "078fa2eacbaaff0a5446e2d01cece17857a781379137dbfcfbf7be12bd0d07a3"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/63-214.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/63-214.txt",
+      "bytes": 1698,
+      "sha256": "da551cb8acd68787249017b86d18eee6889a733105f48b31581703279084ebc3"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/63-218.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/63-218.txt",
+      "bytes": 1699,
+      "sha256": "adefaccd022a068de510e2ab4b605736d24447c66320cd21941b49151700754c"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/63-224.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/63-224.txt",
+      "bytes": 1700,
+      "sha256": "7589b9f434e3e9239f039ff95c5fff9fe262c606d57925400974e72a60e056a1"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/63-235.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/63-235.txt",
+      "bytes": 1701,
+      "sha256": "ef0cc96d18d7dd2fe8d9922db6eda9e1e202a7afe8164f47f7c539c9f48bd76d"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_1_Cylinder.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_1_Cylinder.dat",
+      "bytes": 6889,
+      "sha256": "7247f326354bef84e1256f3c8f52e3f5fda5024a19405552189f1fda6b397197"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_2_63-235_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_2_63-235_mod.dat",
+      "bytes": 13219,
+      "sha256": "76a3c0912d572d15fa1800ba84ca93ed4dee117425a29042c86430f88d0d34be"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_3_63-224_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_3_63-224_mod.dat",
+      "bytes": 13221,
+      "sha256": "61eae42a87d478876ad8e187590a655f77a32827de6fd051e3888c5122d3fc52"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_4_63-218_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_4_63-218_mod.dat",
+      "bytes": 13220,
+      "sha256": "fb92a6b49fb294a94d577bc3b9ccacdcac4363bde22656839ce5876e96d78951"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_5_63-214_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/AD_5_63-214_mod.dat",
+      "bytes": 13219,
+      "sha256": "587056948060d7ff3bce85344e296bae7bbc345e6bea0657146606f5d3fc01bf"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/AeroData_AD15/Cylinder_coords.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/AeroData_AD15/Cylinder_coords.txt",
+      "bytes": 7989,
+      "sha256": "c692e7b3e479c9c85e1d3bfab5cd3fa3c0d22eebff441be16df5a1af1b485fdd"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_AeroDyn15OF2.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_AeroDyn15OF2.dat",
+      "bytes": 7699,
+      "sha256": "fee44f22ed4876cd0b79382fa7eaa1d3970401be7b4a736a74fe0af4116251c9"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_AeroDyn_Blade.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_AeroDyn_Blade.dat",
+      "bytes": 2142,
+      "sha256": "ad9ecf8155970a694b12e86ce510d0637b8555f773d2ad5e2af26820d4b9ecd2"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_ElastoDyn.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_ElastoDyn.dat",
+      "bytes": 13944,
+      "sha256": "c7b9a981b5484261858e0815a22576a4e5ad456d28dd078de8edf1834c9bf811"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_ElastoDyn_Blade.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_ElastoDyn_Blade.dat",
+      "bytes": 5211,
+      "sha256": "0ecb377d04454b521500ef3821ec820400ada719fdd275b7123e54b884d346f0"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_ElastoDyn_Tower.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_ElastoDyn_Tower.dat",
+      "bytes": 3802,
+      "sha256": "b9931da36e63c6ab6787a1d7b3e83be3eb56977bc275e3e73de26173e0dc90df"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_F8.fst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_F8.fst",
+      "bytes": 5572,
+      "sha256": "43b44d7b3537dfab2f28b39979c2f793e3ef42390a2d91bddeaa2eadbb92a3c5"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_InflowWind.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_InflowWind.dat",
+      "bytes": 5415,
+      "sha256": "5af2b00883b09f63524de53a198370d9e46665486b2e9534347cc1976b1fa503"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_InflowWind_Turb.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_InflowWind_Turb.dat",
+      "bytes": 5538,
+      "sha256": "ff35cdf992d89c605113af242fe8c92aba044c6837bed33b824f0b727b3722e2"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_OF2.fst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_OF2.fst",
+      "bytes": 5574,
+      "sha256": "55141ef916feb396c55331bfe85ec1c5ec992093ac6840e0e2a9cce6d44dad06"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/SNLV27_ServoDyn.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/SNLV27_ServoDyn.dat",
+      "bytes": 10685,
+      "sha256": "06ac8fb04262594a420ca03b798249198061c308897674143c9c26fa3d702f18"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/Wind/StepWindSweep_m1mps.wnd",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/Wind/StepWindSweep_m1mps.wnd",
+      "bytes": 992,
+      "sha256": "a0c9de0680a8ad27b96acb1ee6de30d2ce3bc68a91ce4a85e0aeb80db32903fa"
+    },
+    {
+      "path": "upstream/wt_data/v2/OpenFAST_model/Wind/StepWindSweep_m1mps_200.wnd",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/OpenFAST_model/Wind/StepWindSweep_m1mps_200.wnd",
+      "bytes": 1001,
+      "sha256": "598660ba9e6b2a16e73b4626c5c96cced4c44488fec354a159292f8b0d59a1fa"
+    },
+    {
+      "path": "upstream/wt_data/v2/README.md",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/README.md",
+      "bytes": 1101,
+      "sha256": "ecca473ebc3d8c95e6be3b95d76ad083655b21fbe6840615de40cba3943a1567"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/AD_1_cylinder.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/AD_1_cylinder.csv",
+      "bytes": 111,
+      "sha256": "ccb3895839117ab5d492ccd3ec0e93c7d4ccaeccb8e483e89a60e5b3ca42ddbc"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/AD_2_63-235_mod.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/AD_2_63-235_mod.csv",
+      "bytes": 6625,
+      "sha256": "53e62b075ed1a027d4c85c8ceeb9f4080098ba72ed77190fb47b8550f940fd3e"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/AD_3-63-224_mod.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/AD_3-63-224_mod.csv",
+      "bytes": 6627,
+      "sha256": "1d922c3510337a732a68248d00a95123d224fd67879aec710090de50e8bb4577"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/AD_4-63-218_mod.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/AD_4-63-218_mod.csv",
+      "bytes": 6625,
+      "sha256": "10e5c28e55cba6952a293f20efeac8e96147f666c50a82d139810ddb13c39bb1"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/AD_5_63-214_mod.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/AD_5_63-214_mod.csv",
+      "bytes": 6625,
+      "sha256": "96b7bac1b41d114661d4798df5f53ca704dedd386c83a3de707d63214bafdc8b"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/Blade_Aero.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/Blade_Aero.csv",
+      "bytes": 921,
+      "sha256": "4d4b68544aedf129f12a14b6054421c8c3313957a5133dd6b1a32e2d5386af1e"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/Blade_Aero_OF2.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/Blade_Aero_OF2.csv",
+      "bytes": 841,
+      "sha256": "2ad98d0ce6cdfcc22f8f8acf7c0258710f5db07c272f9afdc51f7d214417a123"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/Blade_Structure.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/Blade_Structure.csv",
+      "bytes": 6204,
+      "sha256": "bd2696e817bf388516303a9a8714e61b7af37344a8507881a23066428821b6e8"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/OperatingConditions_OF2.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/OperatingConditions_OF2.csv",
+      "bytes": 239,
+      "sha256": "9103feff032fb980834487c6b01b98f75168ac921364df00c22ede55393cc0e6"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/README.md",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/README.md",
+      "bytes": 516,
+      "sha256": "b2b94601f58036c78a518e5b25078643e237bcb3d62499f1a3d20913035e25fa"
+    },
+    {
+      "path": "upstream/wt_data/v2/Raw_model/Tower_Structure.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Raw_model/Tower_Structure.csv",
+      "bytes": 2059,
+      "sha256": "db1bc2e73ef85e8b759cd16a937768112f046c56e59c4a66e5a3eb156d49c35b"
+    },
+    {
+      "path": "upstream/wt_data/v2/Simulated_data/RotorPerformances_OF2.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v2/Simulated_data/RotorPerformances_OF2.csv",
+      "bytes": 797,
+      "sha256": "5c7dec65f9254758bffea8e09fc8578abf1d1978cf580eb490dda3de49b53222"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/63-214.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/63-214.txt",
+      "bytes": 1698,
+      "sha256": "da551cb8acd68787249017b86d18eee6889a733105f48b31581703279084ebc3"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/63-218.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/63-218.txt",
+      "bytes": 1699,
+      "sha256": "adefaccd022a068de510e2ab4b605736d24447c66320cd21941b49151700754c"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/63-224.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/63-224.txt",
+      "bytes": 1700,
+      "sha256": "7589b9f434e3e9239f039ff95c5fff9fe262c606d57925400974e72a60e056a1"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/63-235.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/63-235.txt",
+      "bytes": 1701,
+      "sha256": "ef0cc96d18d7dd2fe8d9922db6eda9e1e202a7afe8164f47f7c539c9f48bd76d"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_1_Cylinder.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_1_Cylinder.dat",
+      "bytes": 6889,
+      "sha256": "7247f326354bef84e1256f3c8f52e3f5fda5024a19405552189f1fda6b397197"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_2_63-235_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_2_63-235_mod.dat",
+      "bytes": 13219,
+      "sha256": "76a3c0912d572d15fa1800ba84ca93ed4dee117425a29042c86430f88d0d34be"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_3_63-224_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_3_63-224_mod.dat",
+      "bytes": 13221,
+      "sha256": "61eae42a87d478876ad8e187590a655f77a32827de6fd051e3888c5122d3fc52"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_4_63-218_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_4_63-218_mod.dat",
+      "bytes": 13220,
+      "sha256": "fb92a6b49fb294a94d577bc3b9ccacdcac4363bde22656839ce5876e96d78951"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_5_63-214_mod.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/AD_5_63-214_mod.dat",
+      "bytes": 13219,
+      "sha256": "587056948060d7ff3bce85344e296bae7bbc345e6bea0657146606f5d3fc01bf"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/AeroData_AD15/Cylinder_coords.txt",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/AeroData_AD15/Cylinder_coords.txt",
+      "bytes": 7989,
+      "sha256": "c692e7b3e479c9c85e1d3bfab5cd3fa3c0d22eebff441be16df5a1af1b485fdd"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_AeroDyn15OF2.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_AeroDyn15OF2.dat",
+      "bytes": 7699,
+      "sha256": "fee44f22ed4876cd0b79382fa7eaa1d3970401be7b4a736a74fe0af4116251c9"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_AeroDyn_Blade.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_AeroDyn_Blade.dat",
+      "bytes": 2142,
+      "sha256": "ad9ecf8155970a694b12e86ce510d0637b8555f773d2ad5e2af26820d4b9ecd2"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_ElastoDyn.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_ElastoDyn.dat",
+      "bytes": 10980,
+      "sha256": "a3f04d7a26e5935e1a6d991cfca5abbda175fb9df2db22fb8f1350c6474654ea"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_ElastoDyn_Blade.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_ElastoDyn_Blade.dat",
+      "bytes": 5211,
+      "sha256": "0ecb377d04454b521500ef3821ec820400ada719fdd275b7123e54b884d346f0"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_ElastoDyn_Tower.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_ElastoDyn_Tower.dat",
+      "bytes": 3802,
+      "sha256": "b9931da36e63c6ab6787a1d7b3e83be3eb56977bc275e3e73de26173e0dc90df"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_F8.fst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_F8.fst",
+      "bytes": 5572,
+      "sha256": "43b44d7b3537dfab2f28b39979c2f793e3ef42390a2d91bddeaa2eadbb92a3c5"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_InflowWind.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_InflowWind.dat",
+      "bytes": 5415,
+      "sha256": "5af2b00883b09f63524de53a198370d9e46665486b2e9534347cc1976b1fa503"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_InflowWind_Turb.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_InflowWind_Turb.dat",
+      "bytes": 5538,
+      "sha256": "ff35cdf992d89c605113af242fe8c92aba044c6837bed33b824f0b727b3722e2"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_OF2.fst",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_OF2.fst",
+      "bytes": 5574,
+      "sha256": "55141ef916feb396c55331bfe85ec1c5ec992093ac6840e0e2a9cce6d44dad06"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/SNLV27_ServoDyn.dat",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/SNLV27_ServoDyn.dat",
+      "bytes": 10686,
+      "sha256": "d213dac7c614c806fa6163a1e66c70b0620f68c27af477d6d7b81a5b3a994f6d"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/Wind/StepWindSweep_m1mps.wnd",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/Wind/StepWindSweep_m1mps.wnd",
+      "bytes": 992,
+      "sha256": "a0c9de0680a8ad27b96acb1ee6de30d2ce3bc68a91ce4a85e0aeb80db32903fa"
+    },
+    {
+      "path": "upstream/wt_data/v3/OpenFAST_model/Wind/StepWindSweep_m1mps_200.wnd",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/OpenFAST_model/Wind/StepWindSweep_m1mps_200.wnd",
+      "bytes": 1001,
+      "sha256": "598660ba9e6b2a16e73b4626c5c96cced4c44488fec354a159292f8b0d59a1fa"
+    },
+    {
+      "path": "upstream/wt_data/v3/README.md",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/README.md",
+      "bytes": 276,
+      "sha256": "9997ea08658f239f43f17025ae93a6b7c31143c6c45961fca2158ae4d8f05dfd"
+    },
+    {
+      "path": "upstream/wt_data/v3/Raw_model/OperatingConditions_OF2.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/Raw_model/OperatingConditions_OF2.csv",
+      "bytes": 248,
+      "sha256": "d24a020d17ef8749627676089a257a17cd878ed75d894abdb826a62cfca0ad1c"
+    },
+    {
+      "path": "upstream/wt_data/v3/Simulated_data/RotorPerformances_OF2.csv",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/wt_data/v3/Simulated_data/RotorPerformances_OF2.csv",
+      "bytes": 809,
+      "sha256": "1d185b98cb79bc646634e13209ff6d80bcd850576fb0fc8f68a810024625faf9"
+    },
+    {
+      "path": "lidar/lidar.z01.b0.20170123.225000.mat",
+      "url": "https://github.com/NatLabRockies/wakebench_swift/releases/download/1.0.0/lidar.z01.b0.20170123.225000.mat",
+      "bytes": 34308730,
+      "sha256": "bc87e40ec4a41ebd967223096a2cf4cd9b6191d23748c798ec5f59b6e9b56811"
+    },
+    {
+      "path": "lidar/lidar.z01.b0.20170622.012000.mat",
+      "url": "https://github.com/NatLabRockies/wakebench_swift/releases/download/1.0.0/lidar.z01.b0.20170622.012000.mat",
+      "bytes": 22840473,
+      "sha256": "b416f37bbe2aa320a9130ddd64b51124da09af1443562e48f77410e154a6baf1"
+    },
+    {
+      "path": "lidar/lidar.z01.b0.20170622.013000.mat",
+      "url": "https://github.com/NatLabRockies/wakebench_swift/releases/download/1.0.0/lidar.z01.b0.20170622.013000.mat",
+      "bytes": 26121626,
+      "sha256": "ae8b1bf185c0ca29d449ba726431374f5d3b6588d3d12dc83f05f5d126beaf4d"
+    },
+    {
+      "path": "lidar/lidar.z01.b0.20170622.014000.mat",
+      "url": "https://github.com/NatLabRockies/wakebench_swift/releases/download/1.0.0/lidar.z01.b0.20170622.014000.mat",
+      "bytes": 27455855,
+      "sha256": "e52d58587bb14251981007c74e3bd2454aa945eec64a1b98f7f93cbcc73200d5"
+    },
+    {
+      "path": "lidar/lidar.z01.b0.20170622.015000.mat",
+      "url": "https://github.com/NatLabRockies/wakebench_swift/releases/download/1.0.0/lidar.z01.b0.20170622.015000.mat",
+      "bytes": 26868866,
+      "sha256": "f31e1fa09259872e8b7d2090238805d82f79373028f777d38636ea4859b21f02"
+    },
+    {
+      "path": "lidar/lidar.z01.b0.20170703.141000.mat",
+      "url": "https://github.com/NatLabRockies/wakebench_swift/releases/download/1.0.0/lidar.z01.b0.20170703.141000.mat",
+      "bytes": 26806678,
+      "sha256": "f5a9450a84b7803afdaa7f9028951ae4e1a93575acffeea2a079a008548ac713"
+    },
+    {
+      "path": "wake-conference-2019.pdf",
+      "url": "https://docs.nlr.gov/docs/fy19osti/73258.pdf",
+      "bytes": 3576203,
+      "sha256": "1f3a92ebe4599c9dca157a3af474b26c81aebca6dc135c03c6b129e1ae77a2e5"
+    },
+    {
+      "path": "multimodel-validation-2020.pdf",
+      "url": "https://www.osti.gov/servlets/purl/1660136",
+      "bytes": 20992737,
+      "sha256": "95352d2b50e1a81e548618b34227d1927f62e1e47859c2cdf20685ccaaa1488a"
+    },
+    {
+      "path": "v27-model-update-2018.pdf",
+      "url": "https://raw.githubusercontent.com/NatLabRockies/wakebench_swift/ca35fe83731b437994cf168120545af35386933b/supporting_material/SAND_V27_FAST_Update.pdf",
+      "bytes": 10492775,
+      "sha256": "929fd378e3846df92d79dd3b8944d565dbcab8fc40bb531fefe988b1494e14e4"
+    },
+    {
+      "path": "samwich-dataloaders-86234569c985e6298f63bf3c36eacdfd374c36be.py",
+      "url": "https://raw.githubusercontent.com/ewquon/waketracking/86234569c985e6298f63bf3c36eacdfd374c36be/samwich/dataloaders.py",
+      "bytes": 55376,
+      "sha256": "a5c8dd0b57fc9cb4dc6dcbb3ca2a9537c838b0672453eaaba2856211396e8eed"
+    }
+  ]
+}

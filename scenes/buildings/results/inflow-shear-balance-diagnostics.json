@@ -1,0 +1,441 @@
+{
+  "case": "inflow-shear-balance",
+  "scope": "postprocessing existing converged/iteration-capped field, no new CFD solve",
+  "profile_xy_model_m": [
+    0,
+    1.2
+  ],
+  "distance_from_inlet_model_m": 0.8,
+  "elapsed_s": 2.1982047500059707,
+  "profiles": [
+    {
+      "z_model_m": 0.003,
+      "z_full_equivalent_m": 0.75,
+      "prescribed_U_m_s": 1.7082,
+      "prescribed_k_m2_s2": 0.487,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 2.692139838535218,
+        "k_m2_s2": 0.2959767872,
+        "epsilon_m2_s3": 12.90667869,
+        "nut_m2_s": 0.0006108622877,
+        "relative_U_drift": 0.5760097403905973,
+        "relative_k_drift": -0.3922447901437372
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 0.8974209400519525,
+        "k_m2_s2": 0.3031209725,
+        "epsilon_m2_s3": 11.68468878,
+        "nut_m2_s": 0.0005232412545,
+        "relative_U_drift": -0.4746394215829806,
+        "relative_k_drift": -0.37757500513347025
+      }
+    },
+    {
+      "z_model_m": 0.004,
+      "z_full_equivalent_m": 1.0,
+      "prescribed_U_m_s": 2.2776,
+      "prescribed_k_m2_s2": 0.487,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 2.692139838535218,
+        "k_m2_s2": 0.2959767872,
+        "epsilon_m2_s3": 12.90667869,
+        "nut_m2_s": 0.0006108622877,
+        "relative_U_drift": 0.1820073052929479,
+        "relative_k_drift": -0.3922447901437372
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 1.1965612530692702,
+        "k_m2_s2": 0.3055347979,
+        "epsilon_m2_s3": 11.27947975,
+        "nut_m2_s": 0.0006508756775,
+        "relative_U_drift": -0.47463942172933343,
+        "relative_k_drift": -0.37261848480492815
+      }
+    },
+    {
+      "z_model_m": 0.005,
+      "z_full_equivalent_m": 1.25,
+      "prescribed_U_m_s": 2.847,
+      "prescribed_k_m2_s2": 0.487,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 2.692139838535218,
+        "k_m2_s2": 0.2959767872,
+        "epsilon_m2_s3": 12.90667869,
+        "nut_m2_s": 0.0006108622877,
+        "relative_U_drift": -0.05439415576564165,
+        "relative_k_drift": -0.3922447901437372
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 1.4957015670865874,
+        "k_m2_s2": 0.3079486232,
+        "epsilon_m2_s3": 10.87427071,
+        "nut_m2_s": 0.0007785101006,
+        "relative_U_drift": -0.4746394214658983,
+        "relative_k_drift": -0.36766196468172485
+      }
+    },
+    {
+      "z_model_m": 0.006,
+      "z_full_equivalent_m": 1.5,
+      "prescribed_U_m_s": 2.886,
+      "prescribed_k_m2_s2": 0.4992,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 2.692139838535218,
+        "k_m2_s2": 0.2959767872,
+        "epsilon_m2_s3": 12.90667869,
+        "nut_m2_s": 0.0006108622877,
+        "relative_U_drift": -0.06717261312016005,
+        "relative_k_drift": -0.40709778205128205
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 1.794841880103905,
+        "k_m2_s2": 0.3103624486,
+        "epsilon_m2_s3": 10.46906168,
+        "nut_m2_s": 0.0009061445236,
+        "relative_U_drift": -0.3780866666306636,
+        "relative_k_drift": -0.37828035136217947
+      }
+    },
+    {
+      "z_model_m": 0.008,
+      "z_full_equivalent_m": 2.0,
+      "prescribed_U_m_s": 2.964,
+      "prescribed_k_m2_s2": 0.5236000000000001,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 2.692139838535218,
+        "k_m2_s2": 0.2959767872,
+        "epsilon_m2_s3": 12.90667869,
+        "nut_m2_s": 0.0006108622877,
+        "relative_U_drift": -0.09172070224857684,
+        "relative_k_drift": -0.4347272971734149
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 2.3931225071385405,
+        "k_m2_s2": 0.3151900993,
+        "epsilon_m2_s3": 9.658643605,
+        "nut_m2_s": 0.00116141337,
+        "relative_U_drift": -0.1926037425308568,
+        "relative_k_drift": -0.39803265985485103
+      }
+    },
+    {
+      "z_model_m": 0.01,
+      "z_full_equivalent_m": 2.5,
+      "prescribed_U_m_s": 3.042,
+      "prescribed_k_m2_s2": 0.548,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 2.692139838535218,
+        "k_m2_s2": 0.2959767872,
+        "epsilon_m2_s3": 12.90667869,
+        "nut_m2_s": 0.0006108622877,
+        "relative_U_drift": -0.1150099150114338,
+        "relative_k_drift": -0.4598963737226278
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 2.9914031331731747,
+        "k_m2_s2": 0.32001775,
+        "epsilon_m2_s3": 8.848225534,
+        "nut_m2_s": 0.001416682216,
+        "relative_U_drift": -0.01663276358541258,
+        "relative_k_drift": -0.4160260036496351
+      }
+    },
+    {
+      "z_model_m": 0.012,
+      "z_full_equivalent_m": 3.0,
+      "prescribed_U_m_s": 3.0856,
+      "prescribed_k_m2_s2": 0.548,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 3.289840678982483,
+        "k_m2_s2": 0.3444158141,
+        "epsilon_m2_s3": 4.798837174,
+        "nut_m2_s": 0.002224706191,
+        "relative_U_drift": 0.06619156046878504,
+        "relative_k_drift": -0.3715039888686132
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 3.078442292495996,
+        "k_m2_s2": 0.3281821,
+        "epsilon_m2_s3": 7.852111973,
+        "nut_m2_s": 0.001792024485,
+        "relative_U_drift": -0.0023197133471622,
+        "relative_k_drift": -0.40112755474452566
+      }
+    },
+    {
+      "z_model_m": 0.016,
+      "z_full_equivalent_m": 4.0,
+      "prescribed_U_m_s": 3.1727999999999996,
+      "prescribed_k_m2_s2": 0.548,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 3.289840678982483,
+        "k_m2_s2": 0.3444158141,
+        "epsilon_m2_s3": 4.798837174,
+        "nut_m2_s": 0.002224706191,
+        "relative_U_drift": 0.03688876669896728,
+        "relative_k_drift": -0.3715039888686132
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 3.252520631531006,
+        "k_m2_s2": 0.3445108001,
+        "epsilon_m2_s3": 5.859884852,
+        "nut_m2_s": 0.002542709024,
+        "relative_U_drift": 0.025126270653998417,
+        "relative_k_drift": -0.37133065675182486
+      }
+    },
+    {
+      "z_model_m": 0.02,
+      "z_full_equivalent_m": 5.0,
+      "prescribed_U_m_s": 3.26,
+      "prescribed_k_m2_s2": 0.548,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 3.289840678982483,
+        "k_m2_s2": 0.3444158141,
+        "epsilon_m2_s3": 4.798837174,
+        "nut_m2_s": 0.002224706191,
+        "relative_U_drift": 0.009153582509964177,
+        "relative_k_drift": -0.3715039888686132
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 3.4265989942990975,
+        "k_m2_s2": 0.3608395002,
+        "epsilon_m2_s3": 3.86765773,
+        "nut_m2_s": 0.003293393562,
+        "relative_U_drift": 0.05110398598131833,
+        "relative_k_drift": -0.3415337587591242
+      }
+    },
+    {
+      "z_model_m": 0.03,
+      "z_full_equivalent_m": 7.5,
+      "prescribed_U_m_s": 3.409,
+      "prescribed_k_m2_s2": 0.548,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 3.7361652675216117,
+        "k_m2_s2": 0.4068511607,
+        "epsilon_m2_s3": 2.243655153,
+        "nut_m2_s": 0.006639838575,
+        "relative_U_drift": 0.09597103770067818,
+        "relative_k_drift": -0.2575708746350366
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 3.649888898532442,
+        "k_m2_s2": 0.391959884,
+        "epsilon_m2_s3": 2.589978721,
+        "nut_m2_s": 0.00549885463,
+        "relative_U_drift": 0.07066262790626056,
+        "relative_k_drift": -0.28474473722627747
+      }
+    },
+    {
+      "z_model_m": 0.05,
+      "z_full_equivalent_m": 12.5,
+      "prescribed_U_m_s": 3.767,
+      "prescribed_k_m2_s2": 0.608,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 3.8706550814094154,
+        "k_m2_s2": 0.430734327,
+        "epsilon_m2_s3": 1.895136084,
+        "nut_m2_s": 0.008810916316,
+        "relative_U_drift": 0.027516613063290545,
+        "relative_k_drift": -0.29155538322368424
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 3.9255432524886458,
+        "k_m2_s2": 0.4419387606,
+        "epsilon_m2_s3": 1.799445686,
+        "nut_m2_s": 0.009829665241,
+        "relative_U_drift": 0.042087404430221895,
+        "relative_k_drift": -0.2731270384868421
+      }
+    },
+    {
+      "z_model_m": 0.0636,
+      "z_full_equivalent_m": 15.9,
+      "prescribed_U_m_s": 3.928296,
+      "prescribed_k_m2_s2": 0.608,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 4.0812024006276255,
+        "k_m2_s2": 0.4705257433,
+        "epsilon_m2_s3": 1.571508912,
+        "nut_m2_s": 0.01267921716,
+        "relative_U_drift": 0.038924358202036075,
+        "relative_k_drift": -0.22610897483552625
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 4.065087077542069,
+        "k_m2_s2": 0.468019536,
+        "epsilon_m2_s3": 1.598896639,
+        "nut_m2_s": 0.01239665987,
+        "relative_U_drift": 0.034821988348655214,
+        "relative_k_drift": -0.23023102631578943
+      }
+    },
+    {
+      "z_model_m": 0.1,
+      "z_full_equivalent_m": 25.0,
+      "prescribed_U_m_s": 4.36,
+      "prescribed_k_m2_s2": 0.608,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 4.2986924357534315,
+        "k_m2_s2": 0.5080250638,
+        "epsilon_m2_s3": 1.392207826,
+        "nut_m2_s": 0.01668432792,
+        "relative_U_drift": -0.014061367946460733,
+        "relative_k_drift": -0.1644324608552631
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 4.378696819442498,
+        "k_m2_s2": 0.5159675065,
+        "epsilon_m2_s3": 1.341201262,
+        "nut_m2_s": 0.01791259298,
+        "relative_U_drift": 0.004288261340022302,
+        "relative_k_drift": -0.15136923273026312
+      }
+    },
+    {
+      "z_model_m": 0.2,
+      "z_full_equivalent_m": 50.0,
+      "prescribed_U_m_s": 5.109,
+      "prescribed_k_m2_s2": 0.548,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 4.95125689895814,
+        "k_m2_s2": 0.5422719929,
+        "epsilon_m2_s3": 1.056262803,
+        "nut_m2_s": 0.02505560378,
+        "relative_U_drift": -0.030875533576406378,
+        "relative_k_drift": -0.010452567700729904
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 5.0784523527834065,
+        "k_m2_s2": 0.5354243683,
+        "epsilon_m2_s3": 0.9926591777,
+        "nut_m2_s": 0.02605409278,
+        "relative_U_drift": -0.0059791832485013765,
+        "relative_k_drift": -0.02294823302919724
+      }
+    },
+    {
+      "z_model_m": 0.3,
+      "z_full_equivalent_m": 75.0,
+      "prescribed_U_m_s": 5.694,
+      "prescribed_k_m2_s2": 0.487,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 5.557607105520673,
+        "k_m2_s2": 0.5021861444,
+        "epsilon_m2_s3": 0.7718915306,
+        "nut_m2_s": 0.02940462776,
+        "relative_U_drift": -0.023953792497247436,
+        "relative_k_drift": 0.031183048049281296
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 5.650971066268656,
+        "k_m2_s2": 0.4910178854,
+        "epsilon_m2_s3": 0.7390402844,
+        "nut_m2_s": 0.02967037842,
+        "relative_U_drift": -0.007556890363776662,
+        "relative_k_drift": 0.008250278028747499
+      }
+    },
+    {
+      "z_model_m": 0.4,
+      "z_full_equivalent_m": 100.0,
+      "prescribed_U_m_s": 6.162,
+      "prescribed_k_m2_s2": 0.426,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 5.962068334398622,
+        "k_m2_s2": 0.4615371504,
+        "epsilon_m2_s3": 0.6097269137,
+        "nut_m2_s": 0.03144274638,
+        "relative_U_drift": -0.032445904836315785,
+        "relative_k_drift": 0.08342054084507042
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 6.140991978320789,
+        "k_m2_s2": 0.4434141816,
+        "epsilon_m2_s3": 0.5519460962,
+        "nut_m2_s": 0.03220345531,
+        "relative_U_drift": -0.0034092862186320292,
+        "relative_k_drift": 0.04087836056338034
+      }
+    },
+    {
+      "z_model_m": 0.6,
+      "z_full_equivalent_m": 150.0,
+      "prescribed_U_m_s": 6.965,
+      "prescribed_k_m2_s2": 0.365,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 6.914265933033287,
+        "k_m2_s2": 0.3551691079,
+        "epsilon_m2_s3": 0.3216050753,
+        "nut_m2_s": 0.03530124193,
+        "relative_U_drift": -0.0072841445752638125,
+        "relative_k_drift": -0.02693395095890408
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 6.899856322789869,
+        "k_m2_s2": 0.3535261928,
+        "epsilon_m2_s3": 0.3243809527,
+        "nut_m2_s": 0.03494955299,
+        "relative_U_drift": -0.009353004624570078,
+        "relative_k_drift": -0.03143508821917798
+      }
+    },
+    {
+      "z_model_m": 0.8,
+      "z_full_equivalent_m": 200.0,
+      "prescribed_U_m_s": 7.394,
+      "prescribed_k_m2_s2": 0.243,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 7.304989292593689,
+        "k_m2_s2": 0.2641432672,
+        "epsilon_m2_s3": 0.1858772142,
+        "nut_m2_s": 0.03378278468,
+        "relative_U_drift": -0.012038234704667479,
+        "relative_k_drift": 0.08700933004115219
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 7.387486487329729,
+        "k_m2_s2": 0.2421404677,
+        "epsilon_m2_s3": 0.1626560703,
+        "nut_m2_s": 0.03253314409,
+        "relative_U_drift": -0.0008809186732853069,
+        "relative_k_drift": -0.003537169958847709
+      }
+    },
+    {
+      "z_model_m": 1.0,
+      "z_full_equivalent_m": 250.0,
+      "prescribed_U_m_s": 7.8,
+      "prescribed_k_m2_s2": 0.12200000000000001,
+      "cell": {
+        "U_mean_vector_magnitude_m_s": 7.7594503363037015,
+        "k_m2_s2": 0.1301751527,
+        "epsilon_m2_s3": 0.07399281468,
+        "nut_m2_s": 0.02061147883,
+        "relative_U_drift": -0.005198674832858758,
+        "relative_k_drift": 0.06700944836065556
+      },
+      "cellPoint": {
+        "U_mean_vector_magnitude_m_s": 7.73681456607858,
+        "k_m2_s2": 0.1376269104,
+        "epsilon_m2_s3": 0.07976088898,
+        "nut_m2_s": 0.02138411102,
+        "relative_U_drift": -0.008100696656592245,
+        "relative_k_drift": 0.1280894295081966
+      }
+    }
+  ],
+  "yPlus_log": "writing field yPlus\n    patch ground y+ : min = 97.9513173, max = 1080.749219, average = 435.490735\n\nEnd",
+  "yPlus_distributions": {
+    "ground": {
+      "boundary_faces": 9298,
+      "min": 97.9513173,
+      "max": 1080.749219,
+      "faces_yplus_below_30": 0,
+      "fraction_faces_yplus_below_30": 0.0,
+      "denominator": "patch faces, not area weighting; y+<30 is a high-Re wall-function diagnostic"
+    }
+  }
+}

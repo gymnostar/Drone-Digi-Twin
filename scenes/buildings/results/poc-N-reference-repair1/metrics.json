@@ -1,0 +1,167 @@
+{
+  "case": "poc-N-reference-repair1",
+  "scenario": "numerical-abl",
+  "scope": "Numerical-only full source Niigata geometry; does not reproduce the wind-tunnel inflow or validate physical city flow.",
+  "closure": "realizableKE",
+  "resolution": "reference",
+  "host": "Host-018.homenet.telecomitalia.it",
+  "cells": 320764,
+  "mesh_checks": {
+    "standard": true,
+    "quality": true,
+    "cell_cap": true,
+    "allGeometry_or_concavity_only": true
+  },
+  "preparation_cost_included": true,
+  "stage_checks": {
+    "prepare": true,
+    "mesh": true,
+    "solve": false,
+    "sample": true
+  },
+  "solver_final_iteration": "665",
+  "last_initial_residuals": {
+    "Ux": 1.72060894e-05,
+    "Uy": 1.772745716e-07,
+    "Uz": 5.633970426e-06,
+    "p": 0.0006422276428
+  },
+  "frozen_residual_checks": {
+    "p": false,
+    "U": false,
+    "k": false,
+    "epsilon": false
+  },
+  "solver_reported_convergence": false,
+  "boundary_flux_m3_s": {
+    "flux": -4438619.5304,
+    "outflux": 4438619.5272
+  },
+  "normalized_flux_imbalance": 7.209446988534501e-10,
+  "probe_settling": [
+    {
+      "iterations": [
+        "625",
+        "650"
+      ],
+      "samples": 9,
+      "vector_change_RMSE_over_Uref": 2.6545105344636698e-05
+    }
+  ],
+  "frozen_numerical_checks_pass": false,
+  "status": "provisional: frozen convergence/flux/output criteria unmet",
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 0.7862897500017425,
+      "cpu_s": 0.779473,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Host case preparation, geometry transformation and fixed-query generation; source acquisition excluded",
+      "host": "Host-018.homenet.telecomitalia.it"
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 98.1933987500015,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 97.870212,
+      "peak_cgroup_memory_bytes_including_cache": 596869120,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 283.5891270840002,
+      "exit_code": 137,
+      "timed_out": false,
+      "cpu_s": null,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "sample": {
+      "stage": "sample",
+      "elapsed_s": 8.49575354099943,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 8.270599,
+      "peak_cgroup_memory_bytes_including_cache": 652660736,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "complete_map_generation_elapsed_s": 391.0645691250029,
+  "complete_map_generation_cpu_s": null,
+  "accounted_cpu_s_partial": 106.920284,
+  "peak_memory_accounting_complete": false,
+  "peak_cgroup_memory_bytes_including_cache": 652660736,
+  "physical_validation": "not performed: numerical-only ABL toy; experimental conditions intentionally differ",
+  "sample_iteration": "600",
+  "sampling_counts": {
+    "city": {
+      "total_requested": 32805,
+      "valid_fluid": 30505
+    },
+    "domain": {
+      "total_requested": 4940,
+      "valid_fluid": 4906
+    },
+    "inflow": {
+      "total_requested": 7,
+      "valid_fluid": 7
+    }
+  },
+  "upstream_profile": [
+    {
+      "z_m": 5.0,
+      "mean_speed_m_s": 6.4746453391167655,
+      "prescribed_speed_m_s": 6.661582185534686,
+      "speed_error_over_Uref": -0.02148699384114033
+    },
+    {
+      "z_m": 10.0,
+      "mean_speed_m_s": 7.298475714622168,
+      "prescribed_speed_m_s": 7.420986428839567,
+      "speed_error_over_Uref": -0.01408169128935612
+    },
+    {
+      "z_m": 20.0,
+      "mean_speed_m_s": 8.08157902861031,
+      "prescribed_speed_m_s": 8.181024425639528,
+      "speed_error_over_Uref": -0.011430505405657211
+    },
+    {
+      "z_m": 32.1,
+      "mean_speed_m_s": 8.609505825864371,
+      "prescribed_speed_m_s": 8.7,
+      "speed_error_over_Uref": -0.01040162921099175
+    },
+    {
+      "z_m": 40.0,
+      "mean_speed_m_s": 8.85720696458982,
+      "prescribed_speed_m_s": 8.941379711772653,
+      "speed_error_over_Uref": -0.009675028411819945
+    },
+    {
+      "z_m": 80.0,
+      "mean_speed_m_s": 9.64547711244044,
+      "prescribed_speed_m_s": 9.701893745881286,
+      "speed_error_over_Uref": -0.00648467051044197
+    },
+    {
+      "z_m": 160.0,
+      "mean_speed_m_s": 10.449759726497636,
+      "prescribed_speed_m_s": 10.462487179825255,
+      "speed_error_over_Uref": -0.0014629256698412566
+    }
+  ]
+}

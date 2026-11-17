@@ -1,0 +1,190 @@
+{
+  "case": "poc-N-reference-fixed",
+  "scenario": "numerical-abl",
+  "scope": "Coupled full Niigata geometry and hypothetical full-size SWiFT rotor placement; numerical transfer only, no interaction observations.",
+  "closure": "realizableKE",
+  "resolution": "reference",
+  "host": "Host-018.homenet.telecomitalia.it",
+  "cells": 422894,
+  "mesh_checks": {
+    "standard": true,
+    "quality": true,
+    "cell_cap": true,
+    "allGeometry_or_concavity_only": true
+  },
+  "preparation_cost_included": true,
+  "stage_checks": {
+    "prepare": true,
+    "mesh": true,
+    "solve": false,
+    "sample": true
+  },
+  "solver_final_iteration": "995",
+  "last_initial_residuals": {
+    "Ux": 1.249764773e-05,
+    "Uy": 1.558493807e-07,
+    "Uz": 9.043786164e-06,
+    "p": 0.0002448068993
+  },
+  "frozen_residual_checks": {
+    "p": false,
+    "U": false,
+    "k": false,
+    "epsilon": false
+  },
+  "solver_reported_convergence": false,
+  "boundary_flux_m3_s": {
+    "flux": -4438619.5306,
+    "outflux": 4438619.5316
+  },
+  "normalized_flux_imbalance": 2.2529531017892763e-10,
+  "probe_settling": [
+    {
+      "iterations": [
+        "950",
+        "975"
+      ],
+      "samples": 14,
+      "vector_change_RMSE_over_Uref": 2.6994249158828978e-05
+    }
+  ],
+  "frozen_numerical_checks_pass": false,
+  "status": "provisional: frozen convergence/flux/output criteria unmet",
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.0285961250046967,
+      "cpu_s": 1.017176,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 120.61761662500066,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 120.315628,
+      "peak_cgroup_memory_bytes_including_cache": 776638464,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 600.195815334002,
+      "exit_code": 137,
+      "timed_out": true,
+      "cpu_s": null,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "sample": {
+      "stage": "sample",
+      "elapsed_s": 14.302093541999056,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 14.002071,
+      "peak_cgroup_memory_bytes_including_cache": 865423360,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "complete_map_generation_elapsed_s": 736.1441216260064,
+  "complete_map_generation_cpu_s": null,
+  "accounted_cpu_s_partial": 135.334875,
+  "peak_memory_accounting_complete": false,
+  "peak_cgroup_memory_bytes_including_cache": 865423360,
+  "physical_validation": "not performed: numerical-only ABL toy; experimental conditions intentionally differ",
+  "recorded_pipeline_elapsed_s": 736.1441216260064,
+  "supplemental_host_verification_cost": {},
+  "generation_timing_complete": false,
+  "generation_timing_note": "Recorded stage total plus measured automated host verification; missing original host support hashing is unrecorded, so incomplete totals are lower bounds. Comparative scientific evaluation and manual implementation work excluded.",
+  "joint": true,
+  "role": "reference",
+  "sample_iteration": "900",
+  "force_support": {
+    "configuration_sha256": "07990ce42b35b1477bd090fa22208878243614faf12867189febd7bcd61d1b5f",
+    "selected_cells": 2184,
+    "spatial_cell_vertices_sha256": "ae965b6d2d21da7d816404ea8a62181d8cbf3a02ba57a609a518a5d8454e67d9",
+    "selected_refinement_levels": [
+      4
+    ],
+    "all_selected_cells_at_fixed_level": true,
+    "interpretation": "Same axis-aligned base lattice/refinement box and uniform selected level establish the intended common support; compare selected counts as well as total force.",
+    "nominal_selected_volume_m3": 4265.625,
+    "nominal_volume_over_geometric_cylinder": 1.1037265524586555,
+    "volume_note": "Count times nominal1.25m cubed; snapped cells have small deformations. Exact selected-cell spatial geometry hash, not nominal volume, proves equal support across recipes. Cylinder center selection remains a finite support discretization."
+  },
+  "force_audit": {
+    "passed": true,
+    "force_iteration": 900.0,
+    "sample_iteration": 900.0,
+    "monitor_is_valid_fluid_sample": true,
+    "monitor_vector_m_s": [
+      -0.09946575681,
+      -8.5469751445,
+      -0.23831982811
+    ],
+    "disk_mean_vector_m_s": [
+      -0.082536014692,
+      -5.8223593053,
+      -0.273989729
+    ],
+    "kinematic_thrust": 16063.480422,
+    "physical_thrust_N": 16384.750030440002,
+    "formula_relative_error": 2.0011115957731027e-11,
+    "sink_convention": "Native source sink=true, diskDir(0 -1 0), actual upstream/disk Uy negative; force opposes prescribed flow. Source formula uses Uy squared, not standalone turbine Ux."
+  },
+  "cheap150k_target_met": false,
+  "cell_limit_adjustment": {
+    "original_cheap_target": 150000,
+    "joint_cap": 500000,
+    "reason": "One allowed adjustment: full city geometry accepted20m background plus common1.25m force support. Cheap150k target remains reported unmet if exceeded."
+  },
+  "transfer_limitation": "Separate30m cheap recipe cannot share the20m source lattice. This adapted20m candidate is not an exact replay or established optimized method.",
+  "rotor_wake_settling": {
+    "iterations": [
+      "950",
+      "975"
+    ],
+    "valid_wake_probes": 4,
+    "vector_change_RMSE_over_Uref": 1.1110174576568667e-05,
+    "passed": true
+  },
+  "checked_coupled_result": false,
+  "sampling_counts": {
+    "city": {
+      "requested": 32805,
+      "valid": 30504
+    },
+    "domain": {
+      "requested": 4940,
+      "valid": 4906
+    },
+    "inflow": {
+      "requested": 7,
+      "valid": 7
+    },
+    "rotor_wake": {
+      "requested": 24200,
+      "valid": 24200
+    },
+    "flight": {
+      "requested": 2961,
+      "valid": 2961
+    },
+    "rotor_monitor": {
+      "requested": 1,
+      "valid": 1
+    }
+  }
+}

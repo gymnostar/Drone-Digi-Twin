@@ -1,0 +1,58 @@
+{
+  "status": "scene_prepared_no_mesh_or_simulation",
+  "benchmark": "SWiFT nearly-neutral single-wake evolution",
+  "source_revision": "ca35fe83731b437994cf168120545af35386933b",
+  "reference_turbine_model": "v3",
+  "model_choice_evidence": "2020 paper DOI 10.1002/we.2543 section 2.3, calibrated upwind pitch -0.75 degrees; the older website still names v1.",
+  "published_inflow": {
+    "hub_height_m_agl": 32.1,
+    "rotor_diameter_m": 27.0,
+    "mean_horizontal_speed_m_s": 8.7,
+    "horizontal_TI_percent": 10.7,
+    "power_law_exponent": 0.14,
+    "roughness_range_m": [0.005, 0.05],
+    "friction_velocity_m_s": 0.45,
+    "z_over_L_at_10m": 0.004,
+    "surface_kinematic_heat_flux_K_m_s": -0.002,
+    "near_surface_virtual_potential_temperature_K": 314.4,
+    "hub_air_density_kg_m3": 1.02,
+    "ABL_height_m": null
+  },
+  "local_frame": {
+    "origin": "ground vertically below the benchmark rotor centre",
+    "x": "downstream along ensemble mean wind",
+    "y": "crosswind, right-handed with x and z",
+    "z": "up, metres above flat benchmark ground",
+    "units": "metres",
+    "earth_rotation_defined": false,
+    "note": "A normalized benchmark frame, not an ENU or UTM frame and not an observed event heading."
+  },
+  "geographic_reference_only": {
+    "latitude_deg": 33.60795,
+    "longitude_deg": -102.04862,
+    "WGS84_UTM_EPSG": 32613,
+    "published_easting_m": 773846.5,
+    "published_northing_m": 3722593.7,
+    "published_base_elevation_m": 1018.0,
+    "base_vertical_datum": "not specified in benchmark site-layout page",
+    "note": "Site location only. No geographic DEM, buildings or surveyed mast position have been reconstructed."
+  },
+  "proposed_domain_m": {
+    "x": [-135.0, 405.0],
+    "y": [-135.0, 135.0],
+    "z": [0.0, 162.0],
+    "status": "autonomous starting proposal; requires domain sensitivity before use"
+  },
+  "reference_planes_x_D": [2, 3, 4, 5],
+  "additional_model_comparison_planes_x_D": [1, 6, 7, 8],
+  "upstream_sampling_marker_m": [-65.0, 0.0, 32.0],
+  "sampling_marker_status": "benchmark output reference x=-65 m, approximately -2.5D; not a surveyed real mast location",
+  "scene_limitations": [
+    "Flat ground is the published benchmark idealization, not downloaded topography.",
+    "Tower profile comes from the v3 AeroDyn model; ground to tower top 31 m.",
+    "Rotor reference is a vertical zero-thickness disk at z=32.1 m, not blades or a wall. Tilt and overhang must be reconciled when building forcing.",
+    "No nacelle shape or dimensions are invented. No other turbines or buildings are added.",
+    "The upstream reference marker is symbolic and must not be included as a CFD solid.",
+    "No aerodynamic or electromagnetic material properties are assigned by this geometry."
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "case": "poc-N-cheap-repair1",
+  "status": "failed mesh; solve not run",
+  "cells": 56921,
+  "checks": {
+    "standard": true,
+    "quality": true,
+    "allGeometry": false
+  },
+  "failures": [
+    "1 underdetermined cell (cell determinant)",
+    "2772 concave cells"
+  ],
+  "snapped_domain_min_z_m": -0.8005958528,
+  "interpretation": "Additional determinant failure is not accepted; reduced snapping improved below-ground displacement but did not remove it.",
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 0.7965025840021553,
+      "cpu_s": 0.7891680000000001,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Host case preparation, geometry transformation and fixed-query generation; source acquisition excluded",
+      "host": "Host-018.homenet.telecomitalia.it"
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 19.85932504200173,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 19.653248,
+      "peak_cgroup_memory_bytes_including_cache": 114880512,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47"
+}

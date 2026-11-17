@@ -1,0 +1,294 @@
+{
+  "scope": "Same-physics numerical RANS fidelity/cost; not physical truth, flight acceptance or confirmatory field generalization.",
+  "reference": "poc-studio-holdout3-reference",
+  "cheap": "poc-studio-holdout3-cheap",
+  "normalization_Uhub_m_s": 8.7,
+  "condition_role": "numerical-holdout",
+  "force_support": {
+    "reference": {
+      "configuration_sha256": "9f6e5c5fe9a706e8b3a8fb0cbc5e3003554acd173d997c5b994164f0197f7232",
+      "selected_cells": 6496,
+      "spatial_cell_vertices_sha256": "338afa34b8b7985f16dbcb3fa31933dd6d1dca3b654ea1590c634ba4525bdec8",
+      "selected_refinement_levels": [
+        4
+      ],
+      "selected_volume_m3": 3902.0009765625,
+      "all_selected_cells_at_fixed_level": true,
+      "interpretation": "Same axis-aligned base lattice/refinement box and uniform selected level establish the intended common support; compare selected counts as well as total force."
+    },
+    "cheap": {
+      "configuration_sha256": "9f6e5c5fe9a706e8b3a8fb0cbc5e3003554acd173d997c5b994164f0197f7232",
+      "selected_cells": 6496,
+      "spatial_cell_vertices_sha256": "338afa34b8b7985f16dbcb3fa31933dd6d1dca3b654ea1590c634ba4525bdec8",
+      "selected_refinement_levels": [
+        4
+      ],
+      "selected_volume_m3": 3902.0009765625,
+      "all_selected_cells_at_fixed_level": true,
+      "interpretation": "Same axis-aligned base lattice/refinement box and uniform selected level establish the intended common support; compare selected counts as well as total force."
+    },
+    "compatible": true
+  },
+  "convergence": {
+    "reference": {
+      "solver_iteration": 502,
+      "residual_control_converged": true,
+      "final_initial_residuals": {
+        "Ux": 5.302114261e-07,
+        "Uy": 9.829578332e-06,
+        "Uz": 4.768913594e-06,
+        "p": 5.182334755e-06,
+        "epsilon": 3.081074231e-07,
+        "k": 2.561631908e-06
+      },
+      "frozen_residual_checks": {
+        "p": true,
+        "U": true,
+        "k": true,
+        "epsilon": true
+      },
+      "relative_flux_imbalance": 1.446151421251411e-10,
+      "terminal_window_iterations": 50,
+      "terminal_window_max_vector_RMSE_change_over_Uref": 5.8089832937769334e-05,
+      "frozen_convergence_checks_pass": true
+    },
+    "cheap": {
+      "solver_iteration": 209,
+      "residual_control_converged": true,
+      "final_initial_residuals": {
+        "Ux": 2.786961185e-07,
+        "Uy": 9.978129661e-06,
+        "Uz": 8.412213322e-06,
+        "p": 9.512192757e-06,
+        "epsilon": 1.550541511e-07,
+        "k": 5.879945841e-06
+      },
+      "frozen_residual_checks": {
+        "p": true,
+        "U": true,
+        "k": true,
+        "epsilon": true
+      },
+      "relative_flux_imbalance": 1.6871772137767912e-10,
+      "terminal_window_iterations": 50,
+      "terminal_window_max_vector_RMSE_change_over_Uref": 0.000564342213411973,
+      "frozen_convergence_checks_pass": true
+    }
+  },
+  "cost": {
+    "reference": {
+      "stages": {
+        "prepare": {
+          "stage": "prepare",
+          "elapsed_wall_seconds": 0.18518591699830722,
+          "timing_scope": "Pinned source verification and complete case/query dictionary preparation; source acquisition excluded."
+        },
+        "mesh": {
+          "stage": "mesh",
+          "elapsed_wall_seconds": 6.218867167001008,
+          "returncode": 0,
+          "container_cpu_limit": 3,
+          "container_memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+          "architecture": "arm64",
+          "solver": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+          "timing_scope": "Host elapsed includes container startup, sourcing and complete stage command.",
+          "memory_scope": "cgroup v2 memory.peak includes cache; not process RSS",
+          "timeout_seconds": 600,
+          "host_model": "Mac13,1",
+          "host_physical_memory_bytes": 34359738368,
+          "source_lock_sha256": "9777c4b0026910194eb62868b542e45a6c19e81e582bf0104e59b921601b8885",
+          "cpu_usage_usec": 6037314,
+          "peak_cgroup_memory_bytes": 381616128,
+          "cpu_hours": 0.0016770316666666666,
+          "poc_role": "reference",
+          "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+          "gate_failures": [],
+          "cells": 359334,
+          "cell_limit": 500000,
+          "accepted_stage": true
+        },
+        "solve": {
+          "stage": "solve",
+          "elapsed_wall_seconds": 130.12801241700072,
+          "returncode": 0,
+          "container_cpu_limit": 3,
+          "container_memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+          "architecture": "arm64",
+          "solver": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+          "timing_scope": "Host elapsed includes container startup, sourcing and complete stage command.",
+          "memory_scope": "cgroup v2 memory.peak includes cache; not process RSS",
+          "timeout_seconds": 600,
+          "host_model": "Mac13,1",
+          "host_physical_memory_bytes": 34359738368,
+          "source_lock_sha256": "9777c4b0026910194eb62868b542e45a6c19e81e582bf0104e59b921601b8885",
+          "cpu_usage_usec": 374409848,
+          "peak_cgroup_memory_bytes": 623525888,
+          "cpu_hours": 0.10400273555555556,
+          "poc_role": "reference",
+          "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+          "gate_failures": [],
+          "accepted_stage": true
+        },
+        "study": {
+          "stage": "study",
+          "elapsed_wall_seconds": 4.285820290999254,
+          "returncode": 0,
+          "container_cpu_limit": 3,
+          "container_memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+          "architecture": "arm64",
+          "solver": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+          "timing_scope": "Host elapsed includes container startup, sourcing and complete stage command.",
+          "memory_scope": "cgroup v2 memory.peak includes cache; not process RSS",
+          "timeout_seconds": 600,
+          "host_model": "Mac13,1",
+          "host_physical_memory_bytes": 34359738368,
+          "source_lock_sha256": "9777c4b0026910194eb62868b542e45a6c19e81e582bf0104e59b921601b8885",
+          "cpu_usage_usec": 4117707,
+          "peak_cgroup_memory_bytes": 327094272,
+          "cpu_hours": 0.0011438075,
+          "poc_role": "reference",
+          "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+          "gate_failures": [],
+          "accepted_stage": true
+        }
+      },
+      "complete_map_generation_wall_seconds": 140.8178857919993,
+      "cpu_hours": 0.10682357472222223,
+      "peak_cgroup_memory_bytes": 623525888,
+      "scope": "Source verification/case preparation + mesh + solve/decompose/reconstruct + fixed-query map export, including container starts. Acquisition and observational assessment are separate.",
+      "memory_scope": "Peak cgroup memory including cache; not process RSS"
+    },
+    "cheap": {
+      "stages": {
+        "prepare": {
+          "stage": "prepare",
+          "elapsed_wall_seconds": 0.1845855420033331,
+          "timing_scope": "Pinned source verification and complete case/query dictionary preparation; source acquisition excluded."
+        },
+        "mesh": {
+          "stage": "mesh",
+          "elapsed_wall_seconds": 2.445413582994661,
+          "returncode": 0,
+          "container_cpu_limit": 3,
+          "container_memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+          "architecture": "arm64",
+          "solver": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+          "timing_scope": "Host elapsed includes container startup, sourcing and complete stage command.",
+          "memory_scope": "cgroup v2 memory.peak includes cache; not process RSS",
+          "timeout_seconds": 600,
+          "host_model": "Mac13,1",
+          "host_physical_memory_bytes": 34359738368,
+          "source_lock_sha256": "9777c4b0026910194eb62868b542e45a6c19e81e582bf0104e59b921601b8885",
+          "cpu_usage_usec": 2292206,
+          "peak_cgroup_memory_bytes": 148561920,
+          "cpu_hours": 0.0006367238888888889,
+          "poc_role": "cheap",
+          "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+          "gate_failures": [],
+          "cells": 112206,
+          "cell_limit": 150000,
+          "accepted_stage": true
+        },
+        "solve": {
+          "stage": "solve",
+          "elapsed_wall_seconds": 19.083794874997693,
+          "returncode": 0,
+          "container_cpu_limit": 3,
+          "container_memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+          "architecture": "arm64",
+          "solver": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+          "timing_scope": "Host elapsed includes container startup, sourcing and complete stage command.",
+          "memory_scope": "cgroup v2 memory.peak includes cache; not process RSS",
+          "timeout_seconds": 600,
+          "host_model": "Mac13,1",
+          "host_physical_memory_bytes": 34359738368,
+          "source_lock_sha256": "9777c4b0026910194eb62868b542e45a6c19e81e582bf0104e59b921601b8885",
+          "cpu_usage_usec": 51648530,
+          "peak_cgroup_memory_bytes": 245809152,
+          "cpu_hours": 0.01434681388888889,
+          "poc_role": "cheap",
+          "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+          "gate_failures": [],
+          "accepted_stage": true
+        },
+        "study": {
+          "stage": "study",
+          "elapsed_wall_seconds": 1.6624729169998318,
+          "returncode": 0,
+          "container_cpu_limit": 3,
+          "container_memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+          "architecture": "arm64",
+          "solver": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+          "timing_scope": "Host elapsed includes container startup, sourcing and complete stage command.",
+          "memory_scope": "cgroup v2 memory.peak includes cache; not process RSS",
+          "timeout_seconds": 600,
+          "host_model": "Mac13,1",
+          "host_physical_memory_bytes": 34359738368,
+          "source_lock_sha256": "9777c4b0026910194eb62868b542e45a6c19e81e582bf0104e59b921601b8885",
+          "cpu_usage_usec": 1489785,
+          "peak_cgroup_memory_bytes": 120758272,
+          "cpu_hours": 0.0004138291666666667,
+          "poc_role": "cheap",
+          "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+          "gate_failures": [],
+          "accepted_stage": true
+        }
+      },
+      "complete_map_generation_wall_seconds": 23.37626691699552,
+      "cpu_hours": 0.015397366944444445,
+      "peak_cgroup_memory_bytes": 245809152,
+      "scope": "Source verification/case preparation + mesh + solve/decompose/reconstruct + fixed-query map export, including container starts. Acquisition and observational assessment are separate.",
+      "memory_scope": "Peak cgroup memory including cache; not process RSS"
+    },
+    "speedup": 6.023968082329639,
+    "speedup_target_pass": true
+  },
+  "numerical_regions": {
+    "wakeROI": {
+      "total_queries": 19800,
+      "reference_valid_queries": 19800,
+      "common_valid_queries": 19800,
+      "common_fraction_of_reference_valid": 1.0,
+      "vector_RMSE_m_s": 0.12109293116885597,
+      "vector_RMSE_over_Uref": 0.013918727720558159,
+      "pointwise_vector_error_P95_m_s": 0.2834633437787124,
+      "pointwise_vector_error_P95_over_Uref": 0.03258199353778304,
+      "maximum_vector_error_m_s": 0.8437716090228442,
+      "targets_pass": true
+    },
+    "background": {
+      "total_queries": 9600,
+      "reference_valid_queries": 9600,
+      "common_valid_queries": 9600,
+      "common_fraction_of_reference_valid": 1.0,
+      "vector_RMSE_m_s": 0.020243203509899197,
+      "vector_RMSE_over_Uref": 0.002326805001137839,
+      "pointwise_vector_error_P95_m_s": 0.016108997318894952,
+      "pointwise_vector_error_P95_over_Uref": 0.001851608887229305,
+      "maximum_vector_error_m_s": 0.44750084088017644,
+      "targets_pass": true
+    }
+  },
+  "observational_agreement": {
+    "status": "not_applicable",
+    "reason": "This is a separately specified numerical condition."
+  },
+  "numerical_target_pass": true,
+  "limitations": [
+    "One timing per recipe; repeat only if timing noise affects a close decision.",
+    "Source consistency uses identical lattice/box configuration, uniform selected level and selected-cell count; no source parameters are fitted.",
+    "Cached map-query latency is not measured here and must not be conflated with repeated CFD generation."
+  ]
+}

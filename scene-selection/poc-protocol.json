@@ -1,0 +1,133 @@
+{
+  "frozen_at_utc": "2026-11-16T19:10:16.218121+00:00",
+  "status": "prospective bounded proof-of-concept criteria; not flight acceptance",
+  "decision_authority": "User chose bounded study and delegated provisional technical cutoffs; parent selected these before new Studio runs.",
+  "objective": "Reduce repeated wind-map generation cost while preserving declared mean-flow outputs; report offline preparation separately from cached map-query cost.",
+  "execution_host": "studio",
+  "resources": {
+    "concurrent_timed_solves": 1,
+    "cpu_quota": 3,
+    "memory_limit_GiB": 5,
+    "cheap_target_max_cells": 150000,
+    "reference_max_cells": 500000,
+    "joint_initial_max_cells": 500000,
+    "max_mesh_minutes": 10,
+    "max_solve_minutes": 10,
+    "max_substantive_attempts_per_repair_family": 3,
+    "max_reference_conditions_per_separate_scene": 6,
+    "joint_conditions": 1,
+    "allowance": "One documented cell-limit adjustment if geometric quality prevents the initial cap; stop and report failures instead of unlimited escalation."
+  },
+  "targets": {
+    "complete_map_generation_speedup_vs_same_physics_reference_min": 2.0,
+    "strong_speedup": 5.0,
+    "common_region_vector_RMSE_over_prescribed_Uref_max": 0.05,
+    "common_region_pointwise_vector_error_P95_over_Uref_max": 0.15,
+    "measured_RMSE_ratio_to_matched_reference_max": 1.05,
+    "coverage": "Report common-air and obstacle/wake-region errors separately, with fixed masks and valid/total counts; do not hide local errors in a large undisturbed domain average.",
+    "measured_RMSE_gate_scope": "Apply only where model/observation conditions are matched; it is not applicable to the new numerical-only Niigata ABL toy. Preserve original measurement mismatches explicitly.",
+    "minimum_common_valid_fraction_of_reference_valid_ROI_points": 0.95
+  },
+  "integrity": {
+    "reference": "Numerically checked RANS reference, not physical truth",
+    "timing": "Retime all compared recipes on Studio with identical quotas and stopping rules; retain Pro timings as historical and never infer cross-machine speedup.",
+    "forcing": "Same force support in mesh comparisons; total-thrust normalization alone does not fix support aliasing.",
+    "physics": "One global turbulence closure per joint fluid domain; assess any cross-scene closure transfer explicitly.",
+    "geometry": "Retain full Niigata after-construction benchmark and SWiFT initially, with no default crop.",
+    "holdouts": "Reserve whole conditions before method selection; current six SWiFT periods are exposed development evidence.",
+    "joint_closure": "Select one compatible closure for both scenes from development comparisons; no per-obstacle mixture or independent wind-field addition."
+  },
+  "conditions": {
+    "niigata": {
+      "development_directions": [
+        "N",
+        "NE",
+        "NW"
+      ],
+      "final_holdout_directions": [
+        "E",
+        "S",
+        "W"
+      ],
+      "reference_speed": "8.7 m/s at 32.1 m above flat ground; z0=0.01158 m, coherent neutral k/epsilon derived with the chosen closure and verified in an empty domain.",
+      "study_scope": "Full source geometry scaled by 250 to full-size local metres; numerical-only neutral ABL optimization study, not a claim of matching original wind-tunnel observations.",
+      "historical_experiment": "Retain original 1:250 N-wind baseline, 77/80 observation comparison, all errors and inlet drift. Do not compare the new ABL toy directly with those observations as matched validation."
+    },
+    "swift_numerical": {
+      "development": [
+        {
+          "Uhub_m_s": 8.7,
+          "z0_m": 0.01158
+        },
+        {
+          "Uhub_m_s": 7.0,
+          "z0_m": 0.006
+        },
+        {
+          "Uhub_m_s": 10.0,
+          "z0_m": 0.02
+        }
+      ],
+      "final_holdout": [
+        {
+          "Uhub_m_s": 8.0,
+          "z0_m": 0.008
+        },
+        {
+          "Uhub_m_s": 9.5,
+          "z0_m": 0.015
+        },
+        {
+          "Uhub_m_s": 8.7,
+          "z0_m": 0.025
+        }
+      ],
+      "interpretation": "Numerical generalization only; derive coherent neutral shear/k/epsilon from speed and roughness rather than varying incompatible turbulence inputs. Interpolate the locked v3 rotor curves consistently."
+    }
+  },
+  "stopping": "Close the bounded comparison when budgets expire or the tested non-dominated methods are established; explicitly report unmet targets. Joint remains empty until separate bounded comparisons close.",
+  "cluster_later": "Scale condition population, geometry extent and fidelity one axis at a time; extra hardware does not resolve missing field evidence.",
+  "revision": 3,
+  "revised_before_new_runs_at_utc": "2026-11-16T19:44:17.127002+00:00",
+  "previous_protocol_sha256": "c601c9f5a89129d8af85f99fb66eadb668ce46470580067b6b3002e11bddd71d",
+  "scope_revision_reason": "Independent audit found the supplied wind-tunnel inflow remains under-specified and the shear-balance epsilon variant leaves about 40% near-ground k drift. Preserve experimental pilot as limited evidence; use a separately declared coherent neutral-ABL city toy for numerical cost reduction.",
+  "common_toy_closure": {
+    "model": "realizableKE",
+    "decision": "Unfitted common numerical-POC model, selected from the existing SWiFT development improvement and matched empty-ABL check before new Studio trials.",
+    "limitation": "This is not evidence of superior physical city accuracy. Optional standard-kEpsilon sensitivity remains separate; never mix closures by obstacle."
+  },
+  "convergence": {
+    "reference_residual_control": {
+      "p": 0.0001,
+      "U": 1e-05,
+      "k": 1e-05,
+      "epsilon": 1e-05
+    },
+    "cheap_residual_control": {
+      "p": 0.001,
+      "U": 0.0001,
+      "k": 0.0001,
+      "epsilon": 0.0001
+    },
+    "relative_flux_imbalance_max": 0.0001,
+    "terminal_probe_vector_change_RMSE_over_Uref_max": 0.002,
+    "assessment": "Declare a reference provisional if its frozen residual/flux/output checks fail. A cheaper stopping rule must still pass the common-ROI field-error targets against a checked reference. Report residual histories; do not relabel failed criteria as convergence.",
+    "iterations": "Allow up to 2000 SIMPLE iterations only within the ten-minute solve cap; iteration numbers are not physical seconds."
+  },
+  "ROI": {
+    "city": {
+      "horizontal_extent": "full source footprint scaled by 250, approximately x/y +-200 m",
+      "horizontal_spacing_m": 5,
+      "heights_AGL_m": [
+        5,
+        10,
+        20,
+        40,
+        80
+      ],
+      "comparison_frame": "world local metres; rotate geometry/inflow/queries consistently and recompute each new direction"
+    },
+    "turbine": "Use fixed matched-coordinate wake bins at 2-5D and a declared common wake volume; preserve original observation positions and masks.",
+    "broader_domain": "Report separately so undisturbed cells cannot hide obstacle/wake error."
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "dataset": "AIJ E v15429018",
+  "configuration": "after-construction",
+  "wind_direction": "N",
+  "fit_performed": false,
+  "sample_iteration": "600",
+  "solver_final_iteration": "600",
+  "metrics": {
+    "bias_ratio": -0.14291803089045896,
+    "MAE_ratio": 0.16326525880822929,
+    "RMSE_ratio": 0.19766614592986384,
+    "valid_samples": 77,
+    "total_matched_observations": 80,
+    "bias_m_s": -0.5614243290748663,
+    "MAE_m_s": 0.6413542631153318,
+    "RMSE_m_s": 0.7764911303917004
+  },
+  "cells": 208007,
+  "last_initial_residuals": {
+    "Ux": 8.517473388e-05,
+    "Uy": 6.72032941e-07,
+    "Uz": 2.590895081e-05,
+    "p": 8.955467918e-05,
+    "epsilon": 1.371747032e-06,
+    "k": 2.713537142e-06
+  },
+  "last_continuity_errors": [
+    2.467778033e-07,
+    -1.290484429e-08,
+    -0.0005789053757
+  ],
+  "boundary_flux_m3_s": {
+    "flux": -38.735231204,
+    "outflux": 38.735230729
+  },
+  "normalized_flux_imbalance": 1.2262738221961996e-08,
+  "solver_reported_convergence": false,
+  "sample_settling": [
+    {
+      "iterations": [
+        "500",
+        "550"
+      ],
+      "vector_change_RMSE_m_s": 0.00179724175181909,
+      "vector_change_RMSE_over_Uref": 0.00045751179438084357
+    },
+    {
+      "iterations": [
+        "550",
+        "600"
+      ],
+      "vector_change_RMSE_m_s": 0.0023593376195538227,
+      "vector_change_RMSE_over_Uref": 0.0006006007743698089
+    }
+  ],
+  "approach_profile_diagnostic": [
+    {
+      "z_model_m": 0.005,
+      "downstream_mean_speed_m_s": 0.25315983286958454,
+      "prescribed_inlet_speed_m_s": 2.847
+    },
+    {
+      "z_model_m": 0.01,
+      "downstream_mean_speed_m_s": 0.5045340305089291,
+      "prescribed_inlet_speed_m_s": 3.042
+    },
+    {
+      "z_model_m": 0.02,
+      "downstream_mean_speed_m_s": 1.0072824264925988,
+      "prescribed_inlet_speed_m_s": 3.26
+    },
+    {
+      "z_model_m": 0.03,
+      "downstream_mean_speed_m_s": 1.5100308216997407,
+      "prescribed_inlet_speed_m_s": 3.409
+    },
+    {
+      "z_model_m": 0.05,
+      "downstream_mean_speed_m_s": 2.515527613128136,
+      "prescribed_inlet_speed_m_s": 3.767
+    },
+    {
+      "z_model_m": 0.1,
+      "downstream_mean_speed_m_s": 4.212318714046915,
+      "prescribed_inlet_speed_m_s": 4.36
+    },
+    {
+      "z_model_m": 0.2,
+      "downstream_mean_speed_m_s": 5.048325843405305,
+      "prescribed_inlet_speed_m_s": 5.109
+    },
+    {
+      "z_model_m": 0.3,
+      "downstream_mean_speed_m_s": 5.64333072177088,
+      "prescribed_inlet_speed_m_s": 5.694
+    },
+    {
+      "z_model_m": 0.4,
+      "downstream_mean_speed_m_s": 6.132920120352742,
+      "prescribed_inlet_speed_m_s": 6.162
+    },
+    {
+      "z_model_m": 0.6,
+      "downstream_mean_speed_m_s": 6.878714865109254,
+      "prescribed_inlet_speed_m_s": 6.965
+    },
+    {
+      "z_model_m": 0.8,
+      "downstream_mean_speed_m_s": 7.385980851476681,
+      "prescribed_inlet_speed_m_s": 7.394
+    },
+    {
+      "z_model_m": 1.0,
+      "downstream_mean_speed_m_s": 7.712293362310496,
+      "prescribed_inlet_speed_m_s": 7.8
+    }
+  ],
+  "cost": {
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 57.4060355410038,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 57.252194,
+      "peak_cgroup_memory_bytes_including_cache": 368603136,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289"
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 93.16503979200206,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 270.682438,
+      "peak_cgroup_memory_bytes_including_cache": 543686656,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289"
+    }
+  },
+  "total_meshing_plus_solve_elapsed_s": 150.57107533300587,
+  "total_cpu_s": 327.93463199999997,
+  "limitations": [
+    "magnitude of RANS mean vector compared to thermistor mean scalar speed; these are not exactly identical statistics",
+    "Single wind direction, no held-out generalization result.",
+    "No measured roughness/epsilon/facility confinement or quantitative experimental uncertainty provided.",
+    "No mesh/domain independence or drone-height/vector validation established.",
+    "AllGeometry check retains concave-cell diagnostic; standard/custom numerical mesh checks pass."
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "case": "poc-N-empty-reference",
+  "scenario": "numerical-abl",
+  "scope": "Numerical-only full source Niigata geometry; does not reproduce the wind-tunnel inflow or validate physical city flow.",
+  "closure": "realizableKE",
+  "resolution": "reference",
+  "host": "Host-017.homenet.telecomitalia.it",
+  "cells": 279270,
+  "solver_final_iteration": "518",
+  "last_initial_residuals": {
+    "Ux": 9.82146966e-06,
+    "Uy": 4.790817863e-08,
+    "Uz": 1.743643947e-06,
+    "p": 1.646427356e-07,
+    "epsilon": 9.58064451e-08,
+    "k": 6.644530448e-07
+  },
+  "frozen_residual_checks": {
+    "p": true,
+    "U": true,
+    "k": true,
+    "epsilon": true
+  },
+  "solver_reported_convergence": true,
+  "boundary_flux_m3_s": {
+    "flux": -4438617.5613,
+    "outflux": 4438617.5616
+  },
+  "normalized_flux_imbalance": 6.758849714739157e-11,
+  "probe_settling": [
+    {
+      "iterations": [
+        "475",
+        "500"
+      ],
+      "samples": 9,
+      "vector_change_RMSE_over_Uref": 1.2991889818902561e-05
+    }
+  ],
+  "frozen_numerical_checks_pass": true,
+  "status": "checked numerical result",
+  "cost": {
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 10.079234624998207,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 9.822024,
+      "peak_cgroup_memory_bytes_including_cache": 545411072,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-017.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 152.333111750002,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 442.467655,
+      "peak_cgroup_memory_bytes_including_cache": 757669888,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-017.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "sample": {
+      "stage": "sample",
+      "elapsed_s": 3.797857625002507,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 3.61987,
+      "peak_cgroup_memory_bytes_including_cache": 344850432,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-017.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "complete_map_generation_elapsed_s": 166.2102040000027,
+  "complete_map_generation_cpu_s": 455.90954899999997,
+  "peak_cgroup_memory_bytes_including_cache": 757669888,
+  "physical_validation": "not performed: numerical-only ABL toy; experimental conditions intentionally differ",
+  "sample_iteration": "518",
+  "sampling_counts": {
+    "city": {
+      "total_requested": 32805,
+      "valid_fluid": 32805
+    },
+    "domain": {
+      "total_requested": 4940,
+      "valid_fluid": 4940
+    },
+    "inflow": {
+      "total_requested": 7,
+      "valid_fluid": 7
+    }
+  },
+  "upstream_profile": [
+    {
+      "z_m": 5.0,
+      "mean_speed_m_s": 6.602008327254014,
+      "prescribed_speed_m_s": 6.661582185534686,
+      "speed_error_over_Uref": -0.006847569917318694
+    },
+    {
+      "z_m": 10.0,
+      "mean_speed_m_s": 7.416107653353034,
+      "prescribed_speed_m_s": 7.420986428839567,
+      "speed_error_over_Uref": -0.0005607787915554578
+    },
+    {
+      "z_m": 20.0,
+      "mean_speed_m_s": 8.185112549288768,
+      "prescribed_speed_m_s": 8.181024425639528,
+      "speed_error_over_Uref": 0.00046989927002754093
+    },
+    {
+      "z_m": 32.1,
+      "mean_speed_m_s": 8.702580023939648,
+      "prescribed_speed_m_s": 8.7,
+      "speed_error_over_Uref": 0.0002965544758216681
+    },
+    {
+      "z_m": 40.0,
+      "mean_speed_m_s": 8.94444278596444,
+      "prescribed_speed_m_s": 8.941379711772653,
+      "speed_error_over_Uref": 0.00035207749330894974
+    },
+    {
+      "z_m": 80.0,
+      "mean_speed_m_s": 9.705618002046165,
+      "prescribed_speed_m_s": 9.701893745881286,
+      "speed_error_over_Uref": 0.00042807542125052777
+    },
+    {
+      "z_m": 160.0,
+      "mean_speed_m_s": 10.468672680423005,
+      "prescribed_speed_m_s": 10.462487179825255,
+      "speed_error_over_Uref": 0.0007109770802011781
+    }
+  ]
+}

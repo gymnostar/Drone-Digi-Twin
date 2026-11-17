@@ -1,0 +1,134 @@
+{
+  "same_observation_reference_coordinates_bins_and_masks": true,
+  "grid_check_scope": "Three fixed-physics meshes, matched observed bins; finest is a numerical comparison, not physical truth.",
+  "grid_sequence": [
+    {
+      "run": "baseline-v2",
+      "cell_count": 46504,
+      "physical_accuracy": {
+        "n_periods": 6,
+        "n_distance_groups": 4,
+        "common_bins_by_distance": [
+          201,
+          255,
+          211,
+          250
+        ],
+        "bias_m_s": 0.6855553623087278,
+        "MAE_m_s": 0.7775107880529912,
+        "RMSE_m_s": 1.1087901640068887,
+        "RMSE_divided_by_prescribed_hub_speed": 0.12744714528814813,
+        "weighting": "Form equal-period observed and actual-location CFD mean for each bin first; equal-bin means within each distance; equal four-distance means of MSE, then square root.",
+        "normalization_m_s": 8.7,
+        "normalization_kind": "published ensemble hub speed"
+      },
+      "wall_seconds": 6.235327166985371,
+      "cpu_hours": 0.0035845263888888887,
+      "numerical_difference_vs_finest_mean_bins_RMSE_m_s": 0.08016396694777173
+    },
+    {
+      "run": "verification-mid",
+      "cell_count": 155306,
+      "physical_accuracy": {
+        "n_periods": 6,
+        "n_distance_groups": 4,
+        "common_bins_by_distance": [
+          201,
+          255,
+          211,
+          250
+        ],
+        "bias_m_s": 0.6982292585043482,
+        "MAE_m_s": 0.783545283863312,
+        "RMSE_m_s": 1.120347323718648,
+        "RMSE_divided_by_prescribed_hub_speed": 0.12877555445041933,
+        "weighting": "Form equal-period observed and actual-location CFD mean for each bin first; equal-bin means within each distance; equal four-distance means of MSE, then square root.",
+        "normalization_m_s": 8.7,
+        "normalization_kind": "published ensemble hub speed"
+      },
+      "wall_seconds": 27.236721417008084,
+      "cpu_hours": 0.019078737777777778,
+      "numerical_difference_vs_finest_mean_bins_RMSE_m_s": 0.05005667936611328
+    },
+    {
+      "run": "verification-fine",
+      "cell_count": 302354,
+      "physical_accuracy": {
+        "n_periods": 6,
+        "n_distance_groups": 4,
+        "common_bins_by_distance": [
+          201,
+          255,
+          211,
+          250
+        ],
+        "bias_m_s": 0.7053287805815924,
+        "MAE_m_s": 0.7734405597084942,
+        "RMSE_m_s": 1.1099259741956247,
+        "RMSE_divided_by_prescribed_hub_speed": 0.12757769818340514,
+        "weighting": "Form equal-period observed and actual-location CFD mean for each bin first; equal-bin means within each distance; equal four-distance means of MSE, then square root.",
+        "normalization_m_s": 8.7,
+        "normalization_kind": "published ensemble hub speed"
+      },
+      "wall_seconds": 70.3604626669985,
+      "cpu_hours": 0.05192650583333333,
+      "numerical_difference_vs_finest_mean_bins_RMSE_m_s": 0.0
+    }
+  ],
+  "limitation": "Nonuniform refinement ratios, changing cylinder-cell support approximation and no asymptotic-order proof; no automatic GCI claim.",
+  "force_support_discretization_warning": "The middle grid places cell centers on the cylinder end boundaries, so binary center selection represents only about 71% of nominal cylinder volume. Thrust normalization still passes, but source-support aliasing confounds a clean three-grid convergence estimate. Do not call this study mesh independent; coarse/fine differences remain numerical sensitivity evidence only.",
+  "fixed_mesh_velocity_scheme_sensitivity": {
+    "run": "scheme-linearUpwind",
+    "cell_count": 46504,
+    "velocity_scheme": "bounded Gauss linearUpwind grad(U)",
+    "physical_accuracy": {
+      "n_periods": 6,
+      "n_distance_groups": 4,
+      "common_bins_by_distance": [
+        201,
+        255,
+        211,
+        250
+      ],
+      "bias_m_s": 0.7303742512469185,
+      "MAE_m_s": 0.8153454333008123,
+      "RMSE_m_s": 1.1373180842978858,
+      "RMSE_divided_by_prescribed_hub_speed": 0.1307262165859639,
+      "weighting": "Form equal-period observed and actual-location CFD mean for each bin first; equal-bin means within each distance; equal four-distance means of MSE, then square root.",
+      "normalization_m_s": 8.7,
+      "normalization_kind": "published ensemble hub speed"
+    },
+    "wall_seconds": 6.700896708003711,
+    "interpretation": "Separate same-grid, same-physics scheme comparison; this did not improve measured ensemble mean accuracy."
+  },
+  "empty_ABL": {
+    "run": "empty-v2",
+    "scope": "Undisturbed ABL Ux versus prescribed inlet log profile; |y|<27m,z13.5..67.5m",
+    "n_sampled_points": 9360,
+    "bias_m_s": 0.015912262045663778,
+    "RMSE_m_s": 0.020534457510025753,
+    "maximum_absolute_error_m_s": 0.06563051125980124,
+    "final_probe_Ux": [
+      8.756425972,
+      8.701982666,
+      8.708795684,
+      8.714743209,
+      8.72129688,
+      8.728538064
+    ],
+    "probe_x_m": [
+      -65,
+      0,
+      54,
+      81,
+      108,
+      135
+    ],
+    "iterations": 211,
+    "reference_Uhub_m_s": 8.7,
+    "limitations": [
+      "cellPoint/grid sampling alters values in coarse first ground-adjacent cells; z<13.5m is excluded only from this explicitly defined transport diagnostic, not from physical wake errors.",
+      "Top slip and standard kEpsilon/default coefficients do not exactly preserve analytical equilibrium everywhere."
+    ]
+  }
+}

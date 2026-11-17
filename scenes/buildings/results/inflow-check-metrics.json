@@ -1,0 +1,159 @@
+{
+  "study": "empty-domain inlet-transport verification; no comparison to city observations",
+  "sample_iteration": "600",
+  "approach_location_model_xy_m": [
+    0,
+    1.2
+  ],
+  "distance_from_inlet_model_m": 0.8,
+  "profiles": [
+    {
+      "z_model_m": 0.005,
+      "z_full_equivalent_m": 1.25,
+      "prescribed_U_m_s": 2.847,
+      "downstream_U_m_s": 1.45127496979887,
+      "relative_U_drift": -0.4902441272220337,
+      "prescribed_k_m2_s2": 0.487,
+      "downstream_k_m2_s2": 0.2890378493,
+      "relative_k_drift": -0.406493122587269
+    },
+    {
+      "z_model_m": 0.01,
+      "z_full_equivalent_m": 2.5,
+      "prescribed_U_m_s": 3.042,
+      "downstream_U_m_s": 2.9025499405977397,
+      "relative_U_drift": -0.045841571138152556,
+      "prescribed_k_m2_s2": 0.548,
+      "downstream_k_m2_s2": 0.3020420993,
+      "relative_k_drift": -0.44882828594890517
+    },
+    {
+      "z_model_m": 0.02,
+      "z_full_equivalent_m": 5.0,
+      "prescribed_U_m_s": 3.26,
+      "downstream_U_m_s": 3.346805906034755,
+      "relative_U_drift": 0.02662757853826848,
+      "prescribed_k_m2_s2": 0.548,
+      "downstream_k_m2_s2": 0.3436386531,
+      "relative_k_drift": -0.3729221658759124
+    },
+    {
+      "z_model_m": 0.03,
+      "z_full_equivalent_m": 7.5,
+      "prescribed_U_m_s": 3.409,
+      "downstream_U_m_s": 3.5851995857578833,
+      "relative_U_drift": 0.05168659013138267,
+      "prescribed_k_m2_s2": 0.548,
+      "downstream_k_m2_s2": 0.3731403323,
+      "relative_k_drift": -0.31908698485401465
+    },
+    {
+      "z_model_m": 0.05,
+      "z_full_equivalent_m": 12.5,
+      "prescribed_U_m_s": 3.767,
+      "downstream_U_m_s": 3.89101479787765,
+      "relative_U_drift": 0.03292136922687816,
+      "prescribed_k_m2_s2": 0.608,
+      "downstream_k_m2_s2": 0.423631208,
+      "relative_k_drift": -0.30323814473684213
+    },
+    {
+      "z_model_m": 0.1,
+      "z_full_equivalent_m": 25.0,
+      "prescribed_U_m_s": 4.36,
+      "downstream_U_m_s": 4.4014932729413605,
+      "relative_U_drift": 0.009516805720495455,
+      "prescribed_k_m2_s2": 0.608,
+      "downstream_k_m2_s2": 0.5129016685,
+      "relative_k_drift": -0.15641172944078952
+    },
+    {
+      "z_model_m": 0.2,
+      "z_full_equivalent_m": 50.0,
+      "prescribed_U_m_s": 5.109,
+      "downstream_U_m_s": 5.135057958877231,
+      "relative_U_drift": 0.005100402990258509,
+      "prescribed_k_m2_s2": 0.548,
+      "downstream_k_m2_s2": 0.5762389686,
+      "relative_k_drift": 0.051530964598540084
+    },
+    {
+      "z_model_m": 0.3,
+      "z_full_equivalent_m": 75.0,
+      "prescribed_U_m_s": 5.694,
+      "downstream_U_m_s": 5.690376940965012,
+      "relative_U_drift": -0.000636294175445683,
+      "prescribed_k_m2_s2": 0.487,
+      "downstream_k_m2_s2": 0.5621234505,
+      "relative_k_drift": 0.15425759856262838
+    },
+    {
+      "z_model_m": 0.4,
+      "z_full_equivalent_m": 100.0,
+      "prescribed_U_m_s": 6.162,
+      "downstream_U_m_s": 6.161219627438855,
+      "relative_U_drift": -0.0001266427395561945,
+      "prescribed_k_m2_s2": 0.426,
+      "downstream_k_m2_s2": 0.5243197808,
+      "relative_k_drift": 0.23079760751173706
+    },
+    {
+      "z_model_m": 0.6,
+      "z_full_equivalent_m": 150.0,
+      "prescribed_U_m_s": 6.965,
+      "downstream_U_m_s": 6.886207084917838,
+      "relative_U_drift": -0.011312694197008187,
+      "prescribed_k_m2_s2": 0.365,
+      "downstream_k_m2_s2": 0.4089467888,
+      "relative_k_drift": 0.12040216109589048
+    },
+    {
+      "z_model_m": 0.8,
+      "z_full_equivalent_m": 200.0,
+      "prescribed_U_m_s": 7.394,
+      "downstream_U_m_s": 7.383502042105846,
+      "relative_U_drift": -0.0014197941431098454,
+      "prescribed_k_m2_s2": 0.243,
+      "downstream_k_m2_s2": 0.274682926,
+      "relative_k_drift": 0.13038241152263375
+    },
+    {
+      "z_model_m": 1.0,
+      "z_full_equivalent_m": 250.0,
+      "prescribed_U_m_s": 7.8,
+      "downstream_U_m_s": 7.7047033770376645,
+      "relative_U_drift": -0.012217515764401964,
+      "prescribed_k_m2_s2": 0.122,
+      "downstream_k_m2_s2": 0.1638927175,
+      "relative_k_drift": 0.34338293032786893
+    }
+  ],
+  "cost": {
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 3.1523978330078535,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 2.995988,
+      "peak_cgroup_memory_bytes_including_cache": 197582848,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289"
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 44.853034250001656,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 129.4763,
+      "peak_cgroup_memory_bytes_including_cache": 299737088,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289"
+    }
+  },
+  "limitations": [
+    "Empirical inlet U/k with assumed epsilon and roughness need not be equilibrium profiles.",
+    "A refined-profile transport result does not validate city-flow physics."
+  ]
+}

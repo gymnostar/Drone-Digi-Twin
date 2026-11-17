@@ -1,0 +1,8 @@
+{
+  "analysis_runtime": "uv run --with numpy python",
+  "numpy_version": "2.5.5",
+  "setup_wall_seconds": 2.395603792,
+  "host_model": "Mac13,1",
+  "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+  "cost_scope": "One-time ephemeral analysis dependency setup, outside CFD map-generation timing; no repository dependency manifests modified."
+}

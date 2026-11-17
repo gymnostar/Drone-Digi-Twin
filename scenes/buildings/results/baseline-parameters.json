@@ -1,0 +1,64 @@
+{
+  "dataset_record": "15429018",
+  "case": "ac",
+  "direction": "N",
+  "wind_from_deg": 0,
+  "empty_inflow_verification": false,
+  "coordinate_frame": "x east, y north, z up; wind N -> (0,-U,0)",
+  "coordinate_scale_csv_to_model": 0.004,
+  "stl_already_model_scale": true,
+  "Uref_height_model_m": 0.0636,
+  "Uref_m_s": 3.9282959999999996,
+  "measurement_height_model_m": 0.008,
+  "held_out_directions": [
+    "E",
+    "S",
+    "W"
+  ],
+  "fit_performed": false,
+  "mesh_background_m": 0.08,
+  "surface_levels": [
+    2,
+    3
+  ],
+  "ground_roughness_model_m": 0.0001,
+  "roughness_status": "assumed, not measured or fitted",
+  "epsilon_model": "Cmu^0.75 k^1.5 / [kappa*(z+z0)]; Cmu=.09,kappa=.41; assumed mixing length",
+  "inlet_U_k": "piecewise linear measured profile, clamp above last point; zero U at floor",
+  "boundary_assumption": "open-domain sides/top slip; exact facility confinement not supplied",
+  "nu_m2_s": 1.5e-05,
+  "closure": "standard kEpsilon",
+  "iterations_cap": 600,
+  "Re_source_discrepancy": "Source README quotes Re approximately17000; supplied inletU at H=.24m with nu1.5e-5 gives approximately8e4. Preserve suppliedU and statedairnu; unresolved definition/metadata discrepancy.",
+  "measurement_operator_limitation": "magnitude of RANS mean vector compared to thermistor mean scalar speed; these are not exactly identical statistics",
+  "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+  "source_hashes": {
+    "MP_caseE.png": "0fc868d42899783dea655cee10a47c79e148bf5febef6dfed7d293f6b50c96a3",
+    "AF_caseE.csv": "267ae89113e9f51a8c437543bdc0549c9f352dced7ed571a3e6844082b555f77",
+    "RS_caseE.csv": "d2f687c052c21d734c0de2ade677984d62a348f2660e09dd6d2fc09e7586c799",
+    "BD_caseE.stl": "eef5cae06ea5be7b02f837ba291959e3de25aa47628f5eda1f164f5e4eb549d9",
+    "readme_caseE.md": "a879d029decf0ebd41362fb4693b246fb9629c518167aa02e82c8d861e86ecb5"
+  },
+  "frozen_input_hashes": {
+    "0/epsilon": "6446734424dc5a2b9c03218ca912910e15617923a4f8f0d8c17875dced9916df",
+    "0/U": "2e539d9eb390fb81ed64b88546898caf2111b1a8d2b5fca342674bfa7ea1ae05",
+    "0/k": "fcb051699174c110ea747e9c7917aabb28be88ae62b526df9947ff05c351bcf0",
+    "0/nut": "143d4ab6eecabf96fbf2176dc31182dfc2ae8f032e403ed8948e6b009cebae80",
+    "0/p": "770bdbb78e509b4c9323598ca2a35257c095c5bb61ba0cfabfd613c77c4e64dd",
+    "system/snappyHexMeshDict": "50103a6c7d6b62a39345f4be04fbd581d840bc62ce69ea4130b87404bfc6c315",
+    "system/decomposeParDict": "aab11e63c32342108c918e0b3f9625e652a65b942f3d57f4f5208c3ff7bde987",
+    "system/fvSchemes": "34b6665f953c662d4182d5bc97fb04f4833c6457985180f3be96069667e8e157",
+    "system/fvSolution": "30a1f33c77d491a3ac7ec11233b9010c34549edde5a57518f47151558e99df18",
+    "system/blockMeshDict": "adace014577d29dccf75b97b4eb89897abda3a872985e40acc2d845ec78dbed3",
+    "system/meshQualityDict": "2563ecf496395fd2ffb150a1b2074b8317454b318137b99366ccdc064dfb076f",
+    "system/controlDict": "730152ca806b52eda605d313d9bc8e3143058d8da9064c378ed6472deabc15d9",
+    "constant/turbulenceProperties": "83d2b72fe2156e53dad65b0c10c789121316ce5ae4c057dc41e3e7cf4156794b",
+    "constant/transportProperties": "7f53e3b9dd079342e7a9be7cb1b852679922d0a174b2d3ce95c820a2ed0ebd4f"
+  },
+  "source_script_hashes_at_snapshot": {
+    "build.py": "5574736904a3aa84be321fdcfceec2b55b7de1bb63b6a1cedb6aa110cc970c9b",
+    "run.py": "976bab8b4e7588fcdb8799fd5456213fadd070e3acd0471b882d3ff4b89d7952",
+    "evaluate.py": "57da15c26252a994d3f7da935bb427a443adf032f7f5e47968271c8455e2d28e"
+  },
+  "snapshot_utc": "2026-11-15T19:33:56.302047+00:00"
+}

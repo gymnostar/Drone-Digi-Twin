@@ -1,0 +1,757 @@
+{
+  "run": "verification-mid",
+  "CFD_sample_time": 329.0,
+  "validation_scope": "Unfitted six-period near-neutral ensemble; binned mean projected-LOS/streamwise proxy, not full-vector validation or a held-out correction test.",
+  "measurement_operator": {
+    "reference": "released vlos / streamwiseCS.vlos_projection",
+    "prediction": "CFD Ux interpolated at each original measured x,y,z; sampled CFD grid spacing 3.375m",
+    "limitations": [
+      "Projection assumes negligible transverse/vertical LOS contribution; no virtual lidar beam-volume convolution.",
+      "3D interpolation of an exported grid adds sampling error beyond the native mesh.",
+      "Samples share bins but retain actual curved focal-surface x coordinates.",
+      "Binned means are sample-weighted within each period; periods and distances are equally weighted in summary."
+    ],
+    "minimum_samples_per_period_bin": 10,
+    "interpolation_extrapolation": false,
+    "comparison_window_m": {
+      "y": [
+        -40.5,
+        40.5
+      ],
+      "z": [
+        0,
+        81
+      ]
+    },
+    "bin_width_m": 3.375,
+    "common_mask": "Bins finite in all six periods at each downstream distance"
+  },
+  "periods": [
+    "lidar.z01.b0.20170123.225000.mat",
+    "lidar.z01.b0.20170622.012000.mat",
+    "lidar.z01.b0.20170622.013000.mat",
+    "lidar.z01.b0.20170622.014000.mat",
+    "lidar.z01.b0.20170622.015000.mat",
+    "lidar.z01.b0.20170703.141000.mat"
+  ],
+  "populations": [
+    [
+      {
+        "distance_D": 2,
+        "selected_scans": 10,
+        "sample_slots": 9844,
+        "finite_xyz_vlos_positive_projection": 8997,
+        "inside_comparison_window_and_CFD": 8997,
+        "minimum_accepted_projection": 0.7491735053712282,
+        "bins_with_at_least_10_samples": 265,
+        "sample_count_in_common_mask": 7342
+      },
+      {
+        "distance_D": 3,
+        "selected_scans": 10,
+        "sample_slots": 9844,
+        "finite_xyz_vlos_positive_projection": 8053,
+        "inside_comparison_window_and_CFD": 7436,
+        "minimum_accepted_projection": 0.7861161608633693,
+        "bins_with_at_least_10_samples": 337,
+        "sample_count_in_common_mask": 5260
+      },
+      {
+        "distance_D": 4,
+        "selected_scans": 10,
+        "sample_slots": 9843,
+        "finite_xyz_vlos_positive_projection": 7557,
+        "inside_comparison_window_and_CFD": 5609,
+        "minimum_accepted_projection": 0.8156795678134033,
+        "bins_with_at_least_10_samples": 262,
+        "sample_count_in_common_mask": 3577
+      },
+      {
+        "distance_D": 5,
+        "selected_scans": 231,
+        "sample_slots": 227393,
+        "finite_xyz_vlos_positive_projection": 169302,
+        "inside_comparison_window_and_CFD": 94063,
+        "minimum_accepted_projection": 0.8804624166436855,
+        "bins_with_at_least_10_samples": 576,
+        "sample_count_in_common_mask": 45955
+      }
+    ],
+    [
+      {
+        "distance_D": 2,
+        "selected_scans": 22,
+        "sample_slots": 21655,
+        "finite_xyz_vlos_positive_projection": 20062,
+        "inside_comparison_window_and_CFD": 19760,
+        "minimum_accepted_projection": 0.6067371609859533,
+        "bins_with_at_least_10_samples": 269,
+        "sample_count_in_common_mask": 15853
+      },
+      {
+        "distance_D": 3,
+        "selected_scans": 22,
+        "sample_slots": 21652,
+        "finite_xyz_vlos_positive_projection": 18043,
+        "inside_comparison_window_and_CFD": 14599,
+        "minimum_accepted_projection": 0.7224595859214576,
+        "bins_with_at_least_10_samples": 384,
+        "sample_count_in_common_mask": 10208
+      },
+      {
+        "distance_D": 4,
+        "selected_scans": 24,
+        "sample_slots": 23628,
+        "finite_xyz_vlos_positive_projection": 18254,
+        "inside_comparison_window_and_CFD": 11716,
+        "minimum_accepted_projection": 0.805939511339249,
+        "bins_with_at_least_10_samples": 453,
+        "sample_count_in_common_mask": 5729
+      },
+      {
+        "distance_D": 5,
+        "selected_scans": 24,
+        "sample_slots": 23628,
+        "finite_xyz_vlos_positive_projection": 17495,
+        "inside_comparison_window_and_CFD": 8377,
+        "minimum_accepted_projection": 0.8815734553497643,
+        "bins_with_at_least_10_samples": 383,
+        "sample_count_in_common_mask": 5384
+      }
+    ],
+    [
+      {
+        "distance_D": 2,
+        "selected_scans": 28,
+        "sample_slots": 27561,
+        "finite_xyz_vlos_positive_projection": 25811,
+        "inside_comparison_window_and_CFD": 24907,
+        "minimum_accepted_projection": 0.5481158823761013,
+        "bins_with_at_least_10_samples": 295,
+        "sample_count_in_common_mask": 19030
+      },
+      {
+        "distance_D": 3,
+        "selected_scans": 30,
+        "sample_slots": 29535,
+        "finite_xyz_vlos_positive_projection": 24591,
+        "inside_comparison_window_and_CFD": 18735,
+        "minimum_accepted_projection": 0.719994808154138,
+        "bins_with_at_least_10_samples": 424,
+        "sample_count_in_common_mask": 12461
+      },
+      {
+        "distance_D": 4,
+        "selected_scans": 28,
+        "sample_slots": 27566,
+        "finite_xyz_vlos_positive_projection": 21349,
+        "inside_comparison_window_and_CFD": 12067,
+        "minimum_accepted_projection": 0.8039752179691892,
+        "bins_with_at_least_10_samples": 443,
+        "sample_count_in_common_mask": 5991
+      },
+      {
+        "distance_D": 5,
+        "selected_scans": 28,
+        "sample_slots": 27564,
+        "finite_xyz_vlos_positive_projection": 20480,
+        "inside_comparison_window_and_CFD": 8327,
+        "minimum_accepted_projection": 0.8852066593231311,
+        "bins_with_at_least_10_samples": 392,
+        "sample_count_in_common_mask": 5266
+      }
+    ],
+    [
+      {
+        "distance_D": 2,
+        "selected_scans": 26,
+        "sample_slots": 25593,
+        "finite_xyz_vlos_positive_projection": 23946,
+        "inside_comparison_window_and_CFD": 23861,
+        "minimum_accepted_projection": 0.6344579053904263,
+        "bins_with_at_least_10_samples": 274,
+        "sample_count_in_common_mask": 19310
+      },
+      {
+        "distance_D": 3,
+        "selected_scans": 28,
+        "sample_slots": 27560,
+        "finite_xyz_vlos_positive_projection": 23057,
+        "inside_comparison_window_and_CFD": 19351,
+        "minimum_accepted_projection": 0.7391245832687496,
+        "bins_with_at_least_10_samples": 405,
+        "sample_count_in_common_mask": 13067
+      },
+      {
+        "distance_D": 4,
+        "selected_scans": 30,
+        "sample_slots": 29528,
+        "finite_xyz_vlos_positive_projection": 22937,
+        "inside_comparison_window_and_CFD": 15736,
+        "minimum_accepted_projection": 0.7988985982221527,
+        "bins_with_at_least_10_samples": 501,
+        "sample_count_in_common_mask": 7210
+      },
+      {
+        "distance_D": 5,
+        "selected_scans": 29,
+        "sample_slots": 28548,
+        "finite_xyz_vlos_positive_projection": 21314,
+        "inside_comparison_window_and_CFD": 10700,
+        "minimum_accepted_projection": 0.8750976890935683,
+        "bins_with_at_least_10_samples": 484,
+        "sample_count_in_common_mask": 6622
+      }
+    ],
+    [
+      {
+        "distance_D": 2,
+        "selected_scans": 28,
+        "sample_slots": 27564,
+        "finite_xyz_vlos_positive_projection": 25866,
+        "inside_comparison_window_and_CFD": 24944,
+        "minimum_accepted_projection": 0.5493099291392114,
+        "bins_with_at_least_10_samples": 287,
+        "sample_count_in_common_mask": 19151
+      },
+      {
+        "distance_D": 3,
+        "selected_scans": 28,
+        "sample_slots": 27563,
+        "finite_xyz_vlos_positive_projection": 23219,
+        "inside_comparison_window_and_CFD": 17571,
+        "minimum_accepted_projection": 0.7102168166523768,
+        "bins_with_at_least_10_samples": 396,
+        "sample_count_in_common_mask": 11915
+      },
+      {
+        "distance_D": 4,
+        "selected_scans": 31,
+        "sample_slots": 30513,
+        "finite_xyz_vlos_positive_projection": 23863,
+        "inside_comparison_window_and_CFD": 14183,
+        "minimum_accepted_projection": 0.7888636486110495,
+        "bins_with_at_least_10_samples": 462,
+        "sample_count_in_common_mask": 6757
+      },
+      {
+        "distance_D": 5,
+        "selected_scans": 27,
+        "sample_slots": 26575,
+        "finite_xyz_vlos_positive_projection": 19907,
+        "inside_comparison_window_and_CFD": 8648,
+        "minimum_accepted_projection": 0.8835036635477976,
+        "bins_with_at_least_10_samples": 395,
+        "sample_count_in_common_mask": 5572
+      }
+    ],
+    [
+      {
+        "distance_D": 2,
+        "selected_scans": 30,
+        "sample_slots": 29530,
+        "finite_xyz_vlos_positive_projection": 28302,
+        "inside_comparison_window_and_CFD": 27813,
+        "minimum_accepted_projection": 0.6027696344497847,
+        "bins_with_at_least_10_samples": 304,
+        "sample_count_in_common_mask": 20848
+      },
+      {
+        "distance_D": 3,
+        "selected_scans": 28,
+        "sample_slots": 27559,
+        "finite_xyz_vlos_positive_projection": 23639,
+        "inside_comparison_window_and_CFD": 18767,
+        "minimum_accepted_projection": 0.7281446558746572,
+        "bins_with_at_least_10_samples": 431,
+        "sample_count_in_common_mask": 12433
+      },
+      {
+        "distance_D": 4,
+        "selected_scans": 28,
+        "sample_slots": 27563,
+        "finite_xyz_vlos_positive_projection": 21865,
+        "inside_comparison_window_and_CFD": 13221,
+        "minimum_accepted_projection": 0.8051151446339929,
+        "bins_with_at_least_10_samples": 454,
+        "sample_count_in_common_mask": 6652
+      },
+      {
+        "distance_D": 5,
+        "selected_scans": 28,
+        "sample_slots": 27566,
+        "finite_xyz_vlos_positive_projection": 20749,
+        "inside_comparison_window_and_CFD": 8928,
+        "minimum_accepted_projection": 0.8874264256412401,
+        "bins_with_at_least_10_samples": 439,
+        "sample_count_in_common_mask": 5415
+      }
+    ]
+  ],
+  "by_period_distance": [
+    {
+      "period": "lidar.z01.b0.20170123.225000.mat",
+      "distance_D": 2,
+      "n": 201,
+      "bias_m_s": 1.22507531637183,
+      "MAE_m_s": 1.2602071517649798,
+      "RMSE_m_s": 1.5800100832662527
+    },
+    {
+      "period": "lidar.z01.b0.20170123.225000.mat",
+      "distance_D": 3,
+      "n": 255,
+      "bias_m_s": 1.2362173283798457,
+      "MAE_m_s": 1.2646856403653157,
+      "RMSE_m_s": 1.5733022820236833
+    },
+    {
+      "period": "lidar.z01.b0.20170123.225000.mat",
+      "distance_D": 4,
+      "n": 211,
+      "bias_m_s": 1.41004953593349,
+      "MAE_m_s": 1.422003864054553,
+      "RMSE_m_s": 1.662405620456798
+    },
+    {
+      "period": "lidar.z01.b0.20170123.225000.mat",
+      "distance_D": 5,
+      "n": 250,
+      "bias_m_s": 0.9766709821289017,
+      "MAE_m_s": 1.044677145386846,
+      "RMSE_m_s": 1.189449738425655
+    },
+    {
+      "period": "lidar.z01.b0.20170622.012000.mat",
+      "distance_D": 2,
+      "n": 201,
+      "bias_m_s": 0.4117271140830357,
+      "MAE_m_s": 0.9895959636233731,
+      "RMSE_m_s": 1.3101001846600662
+    },
+    {
+      "period": "lidar.z01.b0.20170622.012000.mat",
+      "distance_D": 3,
+      "n": 255,
+      "bias_m_s": 0.38135806873590233,
+      "MAE_m_s": 0.7525105401213577,
+      "RMSE_m_s": 1.1449330458293212
+    },
+    {
+      "period": "lidar.z01.b0.20170622.012000.mat",
+      "distance_D": 4,
+      "n": 211,
+      "bias_m_s": 0.6402531382709579,
+      "MAE_m_s": 0.79033441377478,
+      "RMSE_m_s": 1.1387312547243733
+    },
+    {
+      "period": "lidar.z01.b0.20170622.012000.mat",
+      "distance_D": 5,
+      "n": 250,
+      "bias_m_s": 0.5914513652021351,
+      "MAE_m_s": 0.7401587284023746,
+      "RMSE_m_s": 1.0021294549333801
+    },
+    {
+      "period": "lidar.z01.b0.20170622.013000.mat",
+      "distance_D": 2,
+      "n": 201,
+      "bias_m_s": 0.8012191220589439,
+      "MAE_m_s": 1.008832424628006,
+      "RMSE_m_s": 1.369606302497192
+    },
+    {
+      "period": "lidar.z01.b0.20170622.013000.mat",
+      "distance_D": 3,
+      "n": 255,
+      "bias_m_s": 0.6007360477835008,
+      "MAE_m_s": 0.7618594343765975,
+      "RMSE_m_s": 1.0425803305107675
+    },
+    {
+      "period": "lidar.z01.b0.20170622.013000.mat",
+      "distance_D": 4,
+      "n": 211,
+      "bias_m_s": 0.6125056913807366,
+      "MAE_m_s": 0.6865579898016568,
+      "RMSE_m_s": 0.8895835245979907
+    },
+    {
+      "period": "lidar.z01.b0.20170622.013000.mat",
+      "distance_D": 5,
+      "n": 250,
+      "bias_m_s": 0.42538969204076627,
+      "MAE_m_s": 0.5857246599080217,
+      "RMSE_m_s": 0.7617160339790048
+    },
+    {
+      "period": "lidar.z01.b0.20170622.014000.mat",
+      "distance_D": 2,
+      "n": 201,
+      "bias_m_s": 0.8109201443149469,
+      "MAE_m_s": 1.0808017736390927,
+      "RMSE_m_s": 1.440269718465127
+    },
+    {
+      "period": "lidar.z01.b0.20170622.014000.mat",
+      "distance_D": 3,
+      "n": 255,
+      "bias_m_s": 0.5986404891519427,
+      "MAE_m_s": 0.8050434449439284,
+      "RMSE_m_s": 1.1621052666117428
+    },
+    {
+      "period": "lidar.z01.b0.20170622.014000.mat",
+      "distance_D": 4,
+      "n": 211,
+      "bias_m_s": 0.7005996077179433,
+      "MAE_m_s": 0.8359123188744435,
+      "RMSE_m_s": 1.122965373973144
+    },
+    {
+      "period": "lidar.z01.b0.20170622.014000.mat",
+      "distance_D": 5,
+      "n": 250,
+      "bias_m_s": 0.6434432091699545,
+      "MAE_m_s": 0.7755313509320545,
+      "RMSE_m_s": 1.0445528098524022
+    },
+    {
+      "period": "lidar.z01.b0.20170622.015000.mat",
+      "distance_D": 2,
+      "n": 201,
+      "bias_m_s": 0.6554135058151298,
+      "MAE_m_s": 0.9040094523376536,
+      "RMSE_m_s": 1.3135610383078478
+    },
+    {
+      "period": "lidar.z01.b0.20170622.015000.mat",
+      "distance_D": 3,
+      "n": 255,
+      "bias_m_s": 0.7601043060467519,
+      "MAE_m_s": 0.8273884893423598,
+      "RMSE_m_s": 1.2854308135191719
+    },
+    {
+      "period": "lidar.z01.b0.20170622.015000.mat",
+      "distance_D": 4,
+      "n": 211,
+      "bias_m_s": 0.868991813188943,
+      "MAE_m_s": 0.9038854920501632,
+      "RMSE_m_s": 1.2519998907739658
+    },
+    {
+      "period": "lidar.z01.b0.20170622.015000.mat",
+      "distance_D": 5,
+      "n": 250,
+      "bias_m_s": 0.6561397067648249,
+      "MAE_m_s": 0.7519281229577848,
+      "RMSE_m_s": 1.0070429107183434
+    },
+    {
+      "period": "lidar.z01.b0.20170703.141000.mat",
+      "distance_D": 2,
+      "n": 201,
+      "bias_m_s": 0.4134858188733492,
+      "MAE_m_s": 1.132217778560086,
+      "RMSE_m_s": 1.4064150362904833
+    },
+    {
+      "period": "lidar.z01.b0.20170703.141000.mat",
+      "distance_D": 3,
+      "n": 255,
+      "bias_m_s": 0.3808280680420965,
+      "MAE_m_s": 0.7897755912251163,
+      "RMSE_m_s": 1.067251525252826
+    },
+    {
+      "period": "lidar.z01.b0.20170703.141000.mat",
+      "distance_D": 4,
+      "n": 211,
+      "bias_m_s": 0.5069035022248889,
+      "MAE_m_s": 0.763495196685186,
+      "RMSE_m_s": 0.994599274439953
+    },
+    {
+      "period": "lidar.z01.b0.20170703.141000.mat",
+      "distance_D": 5,
+      "n": 250,
+      "bias_m_s": 0.44937863042354054,
+      "MAE_m_s": 0.728110276919821,
+      "RMSE_m_s": 0.9195842720868097
+    }
+  ],
+  "by_distance": [
+    {
+      "distance_D": 2,
+      "common_bins": 201,
+      "total_window_bins": 576,
+      "equal_period_mean_field_errors": {
+        "n": 201,
+        "bias_m_s": 0.7196401702528727,
+        "MAE_m_s": 0.8905661035563404,
+        "RMSE_m_s": 1.3120148596451373
+      },
+      "hub_profile": {
+        "observed": {
+          "height_m": 32.0625,
+          "valid_bins": 15,
+          "center_m": -1.9866114678350546,
+          "deficit_second_moment_width_m": 9.364607322391858,
+          "maximum_deficit_fraction": 0.5696747226774594
+        },
+        "CFD": {
+          "height_m": 32.0625,
+          "valid_bins": 15,
+          "center_m": -0.9219593971965725,
+          "deficit_second_moment_width_m": 10.834549861107206,
+          "maximum_deficit_fraction": 0.2025081023219637
+        }
+      }
+    },
+    {
+      "distance_D": 3,
+      "common_bins": 255,
+      "total_window_bins": 576,
+      "equal_period_mean_field_errors": {
+        "n": 255,
+        "bias_m_s": 0.6596473846900067,
+        "MAE_m_s": 0.7308981408110216,
+        "RMSE_m_s": 1.128556773907223
+      },
+      "hub_profile": {
+        "observed": {
+          "height_m": 32.0625,
+          "valid_bins": 16,
+          "center_m": -2.520911198202348,
+          "deficit_second_moment_width_m": 10.309696657308754,
+          "maximum_deficit_fraction": 0.49561046999206315
+        },
+        "CFD": {
+          "height_m": 32.0625,
+          "valid_bins": 16,
+          "center_m": 0.24611430010915175,
+          "deficit_second_moment_width_m": 11.653788072027625,
+          "maximum_deficit_fraction": 0.157869160696128
+        }
+      }
+    },
+    {
+      "distance_D": 4,
+      "common_bins": 211,
+      "total_window_bins": 576,
+      "equal_period_mean_field_errors": {
+        "n": 211,
+        "bias_m_s": 0.7898838814528266,
+        "MAE_m_s": 0.8068219259931855,
+        "RMSE_m_s": 1.095214153640684
+      },
+      "hub_profile": {
+        "observed": {
+          "height_m": 32.0625,
+          "valid_bins": 14,
+          "center_m": -3.4405738947358757,
+          "deficit_second_moment_width_m": 11.339537464583046,
+          "maximum_deficit_fraction": 0.40375887254512777
+        },
+        "CFD": {
+          "height_m": 32.0625,
+          "valid_bins": 14,
+          "center_m": -1.7779377280081068,
+          "deficit_second_moment_width_m": 12.009997580156822,
+          "maximum_deficit_fraction": 0.1304188269223644
+        }
+      }
+    },
+    {
+      "distance_D": 5,
+      "common_bins": 250,
+      "total_window_bins": 576,
+      "equal_period_mean_field_errors": {
+        "n": 250,
+        "bias_m_s": 0.6237455976216872,
+        "MAE_m_s": 0.7058949650927007,
+        "RMSE_m_s": 0.908952736316768
+      },
+      "hub_profile": {
+        "observed": {
+          "height_m": 32.0625,
+          "valid_bins": 16,
+          "center_m": -7.494824474786084,
+          "deficit_second_moment_width_m": 13.1787448272358,
+          "maximum_deficit_fraction": 0.32223494972748
+        },
+        "CFD": {
+          "height_m": 32.0625,
+          "valid_bins": 16,
+          "center_m": -5.6132841232318205,
+          "deficit_second_moment_width_m": 13.109212369894173,
+          "maximum_deficit_fraction": 0.11087036437175568
+        }
+      }
+    }
+  ],
+  "secondary_period_variability_summary": {
+    "n_groups": 24,
+    "bias_m_s": 0.6982292585043482,
+    "MAE_m_s": 0.9002186351948147,
+    "RMSE_m_s": 1.216226752937964,
+    "RMSE_divided_by_prescribed_hub_speed": 0.13979617849861656,
+    "normalization_m_s": 8.7,
+    "normalization_kind": "published ensemble hub speed",
+    "interpretation": "Same prescribed ensemble CFD compared with individual periods; includes between-period variability, not matched-condition model accuracy."
+  },
+  "primary_ensemble_mean_accuracy": {
+    "n_periods": 6,
+    "n_distance_groups": 4,
+    "common_bins_by_distance": [
+      201,
+      255,
+      211,
+      250
+    ],
+    "bias_m_s": 0.6982292585043482,
+    "MAE_m_s": 0.783545283863312,
+    "RMSE_m_s": 1.120347323718648,
+    "RMSE_divided_by_prescribed_hub_speed": 0.12877555445041933,
+    "weighting": "Form equal-period observed and actual-location CFD mean for each bin first; equal-bin means within each distance; equal four-distance means of MSE, then square root.",
+    "normalization_m_s": 8.7,
+    "normalization_kind": "published ensemble hub speed"
+  },
+  "numerical_diagnostics": {
+    "iterations": 329,
+    "convergence_status": "SIMPLE residualControl reported convergence",
+    "last_50_iteration_Ux_probe_range_m_s": [
+      3.039999985077202e-07,
+      1.587999999941303e-06,
+      1.7086999999804675e-05,
+      4.6267000000099756e-05,
+      7.749300000003956e-05,
+      8.439900000034584e-05
+    ],
+    "final_U_probe_vectors": [
+      [
+        8.652488226,
+        -0.003747726722,
+        0.007828420474
+      ],
+      [
+        6.693123986,
+        -0.08020860043,
+        0.09040589077
+      ],
+      [
+        6.847777333,
+        0.01195244863,
+        -0.006849735704
+      ],
+      [
+        7.283484805,
+        0.00681411244,
+        -0.007299984654
+      ],
+      [
+        7.547000864,
+        -0.004292168929,
+        -0.009020184233
+      ],
+      [
+        7.725049466,
+        0.003086173429,
+        -0.01137739835
+      ]
+    ],
+    "inlet_flux_m3_s": -411136.44646,
+    "outlet_flux_m3_s": 411136.44651,
+    "absolute_flux_imbalance_over_inlet": 1.2161406195329042e-10,
+    "cells": 155306,
+    "selected_rotor_cells": 241,
+    "selected_rotor_volume_m3": 2745.140625,
+    "geometric_disk_cylinder_volume_m3": 3864.7480125379934,
+    "selected_volume_note": "Selected cells lie in the uniform innermost refinement; native V_i/totalV weights sum to one.",
+    "mesh_OK": true,
+    "force_monitor_U_m_s": [
+      8.6524882217,
+      -0.0037477270774,
+      0.0078284225113
+    ],
+    "disk_volume_mean_U_m_s": [
+      6.7898102885,
+      -0.00012505610981,
+      -0.020785225397
+    ],
+    "source_thrust_kinematic_m4_s2": 16487.112856,
+    "physical_thrust_N": 16816.85511312,
+    "source_formula_relative_error": 1.9687140495056235e-11,
+    "force_direction_check": "upstream monitoring flow positive x; disk and downstream probes have lower Ux, confirming momentum sink",
+    "force_density_note": "simpleFoam native source uses unit density; multiply logged thrust by chosen density for N."
+  },
+  "model_limitations": [
+    "Tower/nacelle drag omitted in this first pilot; retained display geometry is not a force model.",
+    "Neutral equilibrium k differs from measured component variance and published horizontal TI.",
+    "Uniform initial field; equilibrium inlet is transported during convergence.",
+    "Flat ground, zero tilt/yaw and no swirl; averaged near-neutral comparison.",
+    "No mesh/domain independence established by this pilot."
+  ],
+  "stage_costs": {
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_wall_seconds": 2.258291999998619,
+      "returncode": 0,
+      "container_cpu_limit": 3,
+      "container_memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+      "architecture": "arm64",
+      "solver": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+      "timing_scope": "Host elapsed includes container startup, sourcing and complete stage command.",
+      "memory_scope": "cgroup v2 memory.peak includes cache; not process RSS",
+      "timeout_seconds": 600,
+      "cpu_usage_usec": 2080433,
+      "peak_cgroup_memory_bytes": 197623808,
+      "cpu_hours": 0.0005778980555555556
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_wall_seconds": 23.464801334004733,
+      "returncode": 0,
+      "container_cpu_limit": 3,
+      "container_memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+      "architecture": "arm64",
+      "solver": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+      "timing_scope": "Host elapsed includes container startup, sourcing and complete stage command.",
+      "memory_scope": "cgroup v2 memory.peak includes cache; not process RSS",
+      "timeout_seconds": 1200,
+      "cpu_usage_usec": 65225108,
+      "peak_cgroup_memory_bytes": 308154368,
+      "cpu_hours": 0.018118085555555555
+    },
+    "sample": {
+      "stage": "sample",
+      "elapsed_wall_seconds": 1.5136280830047326,
+      "returncode": 0,
+      "container_cpu_limit": 3,
+      "container_memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+      "architecture": "arm64",
+      "solver": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+      "timing_scope": "Host elapsed includes container startup, sourcing and complete stage command.",
+      "memory_scope": "cgroup v2 memory.peak includes cache; not process RSS",
+      "timeout_seconds": 600,
+      "cpu_usage_usec": 1377915,
+      "peak_cgroup_memory_bytes": 178970624,
+      "cpu_hours": 0.00038275416666666665
+    },
+    "total_elapsed_wall_seconds": 27.236721417008084,
+    "total_cpu_hours": 0.019078737777777778,
+    "total_timing_scope": "Meshing + solve/decompose/reconstruct + native sampling, each including container startup; excludes source acquisition, preparation and this observational assessment.",
+    "evaluation_wall_seconds": 0.9550504590006312,
+    "complete_assessment_wall_seconds": 0.983724916994106
+  },
+  "hub_profile_definition": "Positive deficits max(1-U/8.7,0), height32.0625m, common observed crosswind bins only; coverage-limited moments, not complete fitted wake widths.",
+  "current_population_role": "DEVELOPMENT reference used for method selection; prior date-based groups are exploratory, not a confirmatory test of the selected method."
+}

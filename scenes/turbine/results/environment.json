@@ -1,0 +1,25 @@
+{
+  "host_model": "Mac16,5",
+  "host_physical_memory_bytes": 51539607552,
+  "host_platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "docker_image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+  "docker_image_platform": "linux/arm64",
+  "docker_VM_CPUs": 16,
+  "docker_VM_memory_bytes": 16818020352,
+  "per_stage_cpu_limit": 3,
+  "per_stage_memory_limit_bytes": 5368709120,
+  "OpenFOAM": "OpenCFD v2306 build fbf00d6b-20230626 linuxARM64GccDPInt32Opt",
+  "source_lock_sha256": "9777c4b0026910194eb62868b542e45a6c19e81e582bf0104e59b921601b8885",
+  "executed_validation_scope": "mean near-neutral SWiFT ensemble, no learned correction, no full-vector/gust validation",
+  "failed_run": {
+    "name": "baseline",
+    "cause": "Missing required d PatchFunction1 in ABL patch",
+    "resolution": "Added d uniform 0; preserved failed case and generated fresh baseline-v2."
+  },
+  "study_data_status": {
+    "as_of": "2026-11-15",
+    "six_period_neutral_ensemble": "DEVELOPMENT reference used for unfitted model selection",
+    "previous_date_groups": "exploratory only; no confirmatory holdout remains for current model selection",
+    "new_independent_data_required_for_confirmatory_generalization": true
+  }
+}
