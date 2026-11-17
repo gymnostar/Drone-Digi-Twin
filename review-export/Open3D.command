@@ -11,4 +11,5 @@ if (( ${#apps} == 0 )); then
   print 'Install ParaView, then run this launcher again.'; exit 1
 fi
 export DRONE_VIEW="$scene"
+export DRONE_VIEW_DIR="$PWD"
 exec "${apps[-1]}/Contents/MacOS/paraview" --script="$PWD/view.py"

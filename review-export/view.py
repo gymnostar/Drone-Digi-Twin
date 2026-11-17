@@ -6,7 +6,9 @@ from pathlib import Path
 import sys
 from paraview.simple import *
 
-ROOT=Path(__file__).resolve().parent
+# The ParaView GUI executes --script without defining __file__.
+ROOT=(Path(os.environ['DRONE_VIEW_DIR']).resolve() if 'DRONE_VIEW_DIR' in os.environ
+      else Path(globals().get('__file__', 'view.py')).resolve().parent)
 PROJECT=ROOT.parent
 SCENES={
     'joint-baseline':('scenes/joint/runs/poc-N-baseline-common',True),
@@ -103,3 +105,4 @@ else:
     if name not in SCENES:raise ValueError('Choose joint-baseline, turbine-cheap or turbine-reference')
     LoadState(str(ROOT/f'{name}.pvsm'),data_directory=str(ROOT),restrict_to_data_directory=True)
     RenderAllViews()
+    print(f"Loaded 3D simulation: {name}", flush=True)
