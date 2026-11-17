@@ -1,0 +1,147 @@
+% Slides for the mesh-study meeting. Same pictures and tables as mesh_study.tex.
+% Build with:  sh DLR/meshStudy/report/build.sh   (Overleaf: pdfLaTeX)
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{default}
+\usecolortheme{dove}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamerfont{caption}{size=\scriptsize}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\graphicspath{{fig/}}
+
+% \pic{width}{file}: the picture, or a placeholder box if it has not been generated yet
+\newcommand{\pic}[2]{\IfFileExists{fig/#2}{\includegraphics[width=#1]{#2}}{%
+  \fbox{\parbox[c][2.2cm][c]{\dimexpr#1-2\fboxsep-2\fboxrule}{\centering\scriptsize
+  \texttt{\detokenize{#2}}\\not generated yet}}}}
+% \tab{file}: a generated tabular, scaled to the slide width if needed
+\newcommand{\tab}[2]{\IfFileExists{#1}{\resizebox{#2}{!}{\input{#1}}}{\textit{#1 missing: run make\_tex.py}}}
+
+\IfFileExists{summary.tex}{\input{summary.tex}}{%
+  \newcommand{\StudyStatus}{summary.tex is missing: run make\_tex.py.}%
+  \newcommand{\CellsCoarse}{--}\newcommand{\CellsMedium}{--}\newcommand{\CellsFine}{--}%
+  \newcommand{\FindingsQuality}{}\newcommand{\FindingsConvergence}{}\newcommand{\FindingsIndependence}{}%
+  \newcommand{\SkewSentence}{}\newcommand{\NFinished}{0}}
+
+\title{Mesh-independence study\\of the DLR Oberpfaffenhofen wind model}
+\author{Henry Delacroix}
+\institute{Politecnico di Milano, Multidisciplinary Project SWARM-LINK}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\vspace{-1em}
+\begin{center}\scriptsize\textit{\StudyStatus}\end{center}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Goal and set-up}
+\begin{columns}[T]
+\begin{column}{0.40\textwidth}\small
+\textbf{Goal:} refine the campus mesh to drone scale ($\le1$\,m cells) around a few buildings and show
+that the wind no longer depends on the mesh.
+
+\medskip
+\begin{itemize}\setlength{\itemsep}{2pt}
+  \item Steady RANS $k$--$\varepsilon$, \texttt{simpleFoam} (OpenFOAM v2306)
+  \item West wind, 5\,m/s at 10\,m, log-law inflow
+  \item 1000 iterations per mesh, no turbine
+  \item 3 meshes: \textbf{only} the cell size in the red box changes: 4 / 2 / 1\,m (ratio 2)
+  \item Box covers the weather station $\pm50$\,m, for later validation
+  \item 19 probes on 4 vertical lines
+\end{itemize}
+\end{column}
+\begin{column}{0.58\textwidth}
+\centering\pic{\linewidth}{box_topview.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{The three meshes: horizontal cut at $z=24$\,m (about 7\,m above ground)}
+\centering
+\begin{minipage}[t]{0.325\textwidth}\centering\pic{\linewidth}{mesh_slice_coarse.png}\\\scriptsize coarse: 4\,m, \CellsCoarse{} cells\end{minipage}\hfill
+\begin{minipage}[t]{0.325\textwidth}\centering\pic{\linewidth}{mesh_slice_medium.png}\\\scriptsize medium: 2\,m, \CellsMedium{} cells\end{minipage}\hfill
+\begin{minipage}[t]{0.325\textwidth}\centering\pic{\linewidth}{mesh_slice_fine.png}\\\scriptsize fine: 1\,m, \CellsFine{} cells\end{minipage}
+
+\medskip
+\scriptsize Each polygon is one cell; grey = buildings; red dashed = refinement box.
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Fine mesh along the vertical (cut at $y=206$\,m, through the station)}
+\centering\pic{\textwidth}{mesh_vertical_fine.png}
+
+\medskip
+\small 1\,m cells inside the red box (up to $z=60$\,m), then coarser cells (2 and 4\,m) above and around it.
+Stars: the station probes, 15--40\,m above ground. Blue dotted: height of the horizontal cut.
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Mesh quality and convergence}
+\begin{columns}[T]
+\begin{column}{0.49\textwidth}\centering\scriptsize\textbf{Mesh quality} (bold: outside the usual limit)\\[2pt]
+\tab{tab_quality.tex}{\linewidth}
+\end{column}
+\begin{column}{0.49\textwidth}\centering\scriptsize\textbf{Convergence} (last iteration)\\[2pt]
+\tab{tab_convergence.tex}{\linewidth}
+\end{column}
+\end{columns}
+
+\medskip
+\centering\pic{0.72\textwidth}{residuals.png}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Mesh independence: wind speed at the probes}
+\centering
+\tab{tab_independence.tex}{0.88\textwidth}
+
+\medskip
+\begin{minipage}{0.88\textwidth}\scriptsize\FindingsIndependence\end{minipage}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Differences along the vertical, and the wind on the cut at $z=24$\,m}
+\centering
+\pic{0.8\textwidth}{mesh_study_profiles.png}
+
+\smallskip
+\begin{minipage}[t]{0.28\textwidth}\centering\pic{\linewidth}{wind_slice_coarse.png}\end{minipage}\hfill
+\begin{minipage}[t]{0.28\textwidth}\centering\pic{\linewidth}{wind_slice_medium.png}\end{minipage}\hfill
+\begin{minipage}[t]{0.28\textwidth}\centering\pic{\linewidth}{wind_slice_fine.png}\end{minipage}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Caveats and next steps}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}\small
+\textbf{Caveats}
+\begin{itemize}\setlength{\itemsep}{2pt}
+  \item \SkewSentence
+  \item Station position known to $\pm50$\,m only; mast height unknown
+  \item RANS: mean wind only, no gusts
+  \item First-order upwind convection (from the tutorial)
+  \item GCI is an indicator: snappyHexMesh is not a perfectly systematic refinement
+  \item One wind direction, placeholder inflow
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}\small
+\textbf{Next steps}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+  \item Choose the production mesh from the table
+  \item Add the wind turbine (actuator disk)
+  \item Compare its wake with published data
+  \item Validate with the campus weather station (raw data and mast details from DLR)
+  \item Prevailing SW wind, real terrain (DGM1)
+\end{enumerate}
+\end{column}
+\end{columns}
+\end{frame}
+
+\end{document}

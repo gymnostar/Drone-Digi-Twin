@@ -1,0 +1,38 @@
+# DLR mesh-independence study
+
+West wind 5 m/s @ 10 m, steady RANS k-ε (simpleFoam). The 3 meshes differ **only** in the cell size inside a 185 × 117 × 48 m box around the DLR weather-station building (4 → 2 → 1 m, ratio 2).
+
+## 1. Mesh quality
+
+| Mesh | Box cells | Total cells | Max skewness (bad faces) | Non-ortho max / avg | Max aspect ratio | Failed checks |
+|---|---|---|---|---|---|---|
+| coarse | 4 m | 1,190,168 | 8.61 (5) | 64.6° / 10.6° | 11.5 | 1 |
+
+Usual limits: skewness < 4, non-orthogonality < 70°, no negative volumes. `checkMesh -writeSets` saved the bad faces to `<case>/postProcessing` / `constant/polyMesh/sets` so you can see where they are.
+
+## 2. Convergence
+
+| Mesh | Iterations | Final residuals Ux / p / k | Continuity error (sum local) | Max probe drift, last 100 it | Wall time |
+|---|---|---|---|---|---|
+| coarse | 1000 | 2e-09 / 3e-06 / 1e-07 | 3e-11 | 0.00 % | 1.4 h |
+
+Residuals say how unbalanced the equations still are; the **probe drift** says whether the answer still moves. Under ~0.5 % = converged.
+
+## 3. Mesh independence (wind speed |U| in m/s at the probes)
+
+| Probe (height above ground) | coarse | medium | fine | coarse→medium | medium→fine | GCI fine |
+|---|---|---|---|---|---|---|
+| upstream 10 m | 4.98 | – | – | – | – | needs 3 meshes |
+| gap 5 m | 2.39 | – | – | – | – | needs 3 meshes |
+| gap 20 m | 4.84 | – | – | – | – | needs 3 meshes |
+| wake 5 m | 1.91 | – | – | – | – | needs 3 meshes |
+| wake 20 m | 5.40 | – | – | – | – | needs 3 meshes |
+| station 20 m | 5.48 | – | – | – | – | needs 3 meshes |
+| station 40 m | 6.59 | – | – | – | – | needs 3 meshes |
+| **Δp upstream→wake, 5 m (Pa)** | 0.17 | – | – | | | needs 3 meshes |
+
+**How to read it:** the upstream probe is the control (should be ≈ identical). If medium→fine is below ~2–5 % at the other probes, the medium mesh is mesh-independent and is good enough. GCI = Grid Convergence Index (Roache): an error band on the fine-mesh value.
+
+![convergence](mesh_study_convergence.png)
+
+![profiles](mesh_study_profiles.png)
