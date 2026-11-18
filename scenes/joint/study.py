@@ -37,18 +37,35 @@ def dump(path,value):
 
 def validate_solver(case,p):
     text=(case/'system/fvSolution').read_text()
+    variant=p.get('reference_variant')
+    if variant is not None:
+        if variant!='damped-momentum' or p['role']!='reference' or not p['common_reference_mesh_recipe']:
+            raise ValueError('Damped momentum requires the common-mesh reference')
+        protocol_bytes=city.PROTOCOL.read_bytes()
+        convergence=json.loads(protocol_bytes)['convergence']
+        if (p['protocol_sha256']!=hashlib.sha256(protocol_bytes).hexdigest()
+                or p['residual_thresholds']!=convergence['reference_residual_control']
+                or p['flux_threshold']!=convergence['relative_flux_imbalance_max']
+                or p['probe_change_RMSE_over_Uref_threshold']!=
+                    convergence['terminal_probe_vector_change_RMSE_over_Uref_max']):
+            raise ValueError('Damped momentum requires the frozen reference protocol')
     block=re.search(r'residualControl \{([^}]+)\}',text)[1]
     actual={key:float(value) for key,value in re.findall(r'(p|U|k|epsilon) ([0-9.eE+-]+);',block)}
     if actual!=p['residual_thresholds']:raise ValueError('Frozen outer residual controls changed')
     relaxation=text.split('relaxationFactors',1)[1]
-    expected={'p':.3,'U':.6,'k':.6,'epsilon':.6}
+    expected={'p':.3,'U':.45 if variant else .6,'k':.6,'epsilon':.6}
     actual={key:float(value) for key,value in re.findall(r'(p|U|k|epsilon) ([0-9.eE+-]+);',relaxation)}
     if actual!=expected:raise ValueError('Retained relaxation factors changed')
+    if variant and (p['momentum_equation_relaxation']!=actual['U']
+                    or not re.search(r'equations\s*\{[^}]*\bU\s+0\.45;',relaxation)):
+        raise ValueError('Damped momentum equation relaxation changed')
     if ('consistent yes;' in text)!=(p['role']!='baseline'):raise ValueError('Unmatched SIMPLE convention')
 
-def build(name,role,common_mesh=False):
+def build(name,role,common_mesh=False,reference_variant=None):
     started=time.monotonic();cpu=time.process_time()
     if Path(name).name!=name:raise ValueError('One fresh case name required')
+    if reference_variant is not None and (reference_variant!='damped-momentum' or role!='reference' or not common_mesh):
+        raise ValueError('Damped momentum requires --role reference --common-mesh')
     case=ROOT/'runs'/name
     args=SimpleNamespace(case=name,closure='realizableKE',direction='N',resolution='reference',empty=False,background_m=20.,mesh_repair=False,solver_repair=role!='baseline',consistent_simple=role!='baseline')
     city.build_poc(args, case_root=ROOT/'runs')
@@ -60,6 +77,10 @@ def build(name,role,common_mesh=False):
     fv=case/'system/fvSolution';text=fv.read_text()
     residual='residualControl {'+' '.join(f'{field} {val};' for field,val in thresholds.items())+'}'
     text=re.sub(r'residualControl \{[^}]*\}',residual,text)
+    if reference_variant:
+        text,replacements=re.subn(r'(equations \{U )0\.6;',r'\g<1>0.45;',text)
+        if replacements!=1:raise ValueError('Expected one original momentum equation relaxation')
+        p.update(reference_variant=reference_variant,momentum_equation_relaxation=.45)
     fv.write_text(text)
     wake_level=3 if common_mesh else {'reference':3,'baseline':2,'candidate':1}[role]
     support_box=((-20.25,-286.75,6.75),(20.25,-273.25,60.75))
@@ -98,7 +119,10 @@ def build(name,role,common_mesh=False):
     p['query_sha256']=hashlib.sha256((case/'queries.json').read_bytes()).hexdigest()
     validate_solver(case,p)
     dump(case/'parameters.json',p)
-    dump(case/'cost.prepare.json',{'stage':'prepare','elapsed_s':time.monotonic()-started,'cpu_s':time.process_time()-cpu,'peak_cgroup_memory_bytes_including_cache':None,'scope':'Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded'})
+    preparation_cost={'stage':'prepare','elapsed_s':time.monotonic()-started,'cpu_s':time.process_time()-cpu,'peak_cgroup_memory_bytes_including_cache':None,'scope':'Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded'}
+    if reference_variant:
+        preparation_cost.update(reference_variant=reference_variant,momentum_equation_relaxation=p['momentum_equation_relaxation'])
+    dump(case/'cost.prepare.json',preparation_cost)
     print(json.dumps({'case':str(case),'role':role,'queries':len(queries),'max_cells':p['max_cells']}))
 
 def mesh(case):
@@ -118,12 +142,12 @@ def sample(case):
     runner.run_stage(case,'sample',commands+'simpleFoam -postProcess -dict system/roiSampling -latestTime > log.roiSampling 2>&1',120)
 
 def samples(case):
-    p=json.loads((case/'parameters.json').read_text());queries=json.loads((case/'queries.json').read_text())
+    queries=json.loads((case/'queries.json').read_text())
     folder=city.numeric_times(case/'postProcessing/roi')[-1];data={}
     for region in dict.fromkeys(q['region'] for q in queries):
         combined=folder/f'{region}_k_U.xy'
         rows=[r[:3]+r[4:7] for r in city.raw_rows(combined)] if combined.exists() else city.raw_rows(folder/f'{region}_U.xy')
-        values={tuple(round(v,7) for v in r[:3]):r[3:6] for r in rows if all(math.isfinite(v) and abs(v)<1e10 for v in r[3:6])}
+        values={tuple(round(v,7) for v in r[:3]):r[3:6] for r in rows if len(r)>=6 and all(math.isfinite(v) and abs(v)<1e10 for v in r[3:6])}
         for q in (q for q in queries if q['region']==region):
             u=values.get(tuple(round(v,7) for v in q['solver_xyz_m']))
             if u is not None:data[(region,q['id'])]={'xyz':q['world_xyz_m'],'U':u}
@@ -150,35 +174,155 @@ def wake_settling(case):
     error=math.sqrt(sum(math.dist(aa[k],bb[k])**2 for k in keys)/len(keys))/8.7 if keys else None
     return {'iterations':[a.name,b.name],'valid_wake_probes':len(keys),'vector_change_RMSE_over_Uref':error,'passed':len(keys)==4 and error is not None and error<=.002}
 
+def elapsed_recorded(cost, *, allow_zero=False):
+    elapsed=cost.get('elapsed_s')
+    return type(elapsed) in (int,float) and math.isfinite(elapsed) and (
+        elapsed>=0 if allow_zero else elapsed>0)
+
+def generation_timing(case, diagnostics):
+    audits={path.stem.removeprefix('cost.'):json.loads(path.read_text())
+            for path in case.glob('cost.host-*.json')}
+    elapsed=diagnostics['complete_map_generation_elapsed_s']
+    diagnostics.update(
+        recorded_pipeline_elapsed_s=elapsed,
+        supplemental_host_verification_cost=audits,
+        complete_map_generation_elapsed_s=elapsed+sum(
+            cost['elapsed_s'] for cost in audits.values() if elapsed_recorded(cost,allow_zero=True)),
+        generation_timing_complete=(
+            all(elapsed_recorded(diagnostics['cost'].get(stage,{}))
+                for stage in ('prepare','mesh','solve','sample'))
+            and all(elapsed_recorded(audits.get(f'host-{stage}-audit',{}),allow_zero=True)
+                    for stage in ('mesh','solve'))
+            and all(elapsed_recorded(cost,allow_zero=True) for cost in audits.values())),
+        generation_timing_note=(
+            'Recorded stage wall time plus measured automated host verification. '
+            'Incomplete totals omit unrecorded intervals. Comparative scientific evaluation '
+            'and manual implementation work excluded.'))
+
+def cost_environment_matches(a,b):
+    stages=[result['cost'].get(stage,{}) for result in (a,b) for stage in ('mesh','solve','sample')]
+    first=stages[0]
+    for field in ('host','image','cpu_limit','memory_limit_bytes'):
+        value=first.get(field)
+        if field in ('host','image'):
+            if not isinstance(value,str) or not value.strip():
+                return False
+        elif type(value) not in (int,float) or not math.isfinite(value) or value<=0:
+            return False
+        if any(stage.get(field)!=value for stage in stages):
+            return False
+    return (all(result.get('host')==first['host'] for result in (a,b))
+            and all(stage.get('host_platform')==first.get('host_platform') for stage in stages))
+
+def strict_reference_configuration(case, parameters):
+    protocol_bytes=city.PROTOCOL.read_bytes()
+    convergence=json.loads(protocol_bytes)['convergence']
+    matches=(parameters.get('role')=='reference'
+             and parameters.get('protocol_sha256')==hashlib.sha256(protocol_bytes).hexdigest()
+             and parameters.get('residual_thresholds')==convergence['reference_residual_control']
+             and parameters.get('flux_threshold')==convergence['relative_flux_imbalance_max']
+             and parameters.get('probe_change_RMSE_over_Uref_threshold')==
+                 convergence['terminal_probe_vector_change_RMSE_over_Uref_max'])
+    if matches:
+        try:
+            validate_solver(case,parameters)
+        except (OSError,TypeError,ValueError):
+            return False
+    return matches
+
+def region_errors(data, ref, keys):
+    common=sorted(keys&data.keys())
+    errors=sorted(math.dist(data[k]['U'],ref[k]['U']) for k in common)
+    rmse=math.sqrt(sum(e*e for e in errors)/len(errors)) if errors else None
+    position=.95*(len(errors)-1)
+    lo=int(position) if errors else 0
+    p95=errors[lo]+(errors[min(lo+1,len(errors)-1)]-errors[lo])*(position-lo) if errors else None
+    return {'reference_valid':len(keys),'common_valid':len(common),
+            'coverage':len(common)/len(keys) if keys else 0,
+            'vector_RMSE_over_Uref':rmse/8.7 if rmse is not None else None,
+            'P95_over_Uref':p95/8.7 if p95 is not None else None}
+
+def descriptive_city_errors(data, ref, queries):
+    requested_by_height={}
+    for query in queries:
+        if query['region']=='city':
+            x,y,z=query['world_xyz_m']
+            requested_by_height.setdefault(z,{})[x,y]=('city',query['id'])
+
+    heights={}
+    narrow_gap=set()
+    for height, requested in sorted(requested_by_height.items()):
+        valid={key for key in requested.values() if key in ref}
+        invalid={xy for xy,key in requested.items() if key not in ref}
+        heights[f'{height:g}']={'requested':len(requested),**region_errors(data,ref,valid)}
+        for (x,y),key in requested.items():
+            if key in valid and (
+                (any((x-d,y) in invalid for d in (5,10))
+                 and any((x+d,y) in invalid for d in (5,10)))
+                or (any((x,y-d) in invalid for d in (5,10))
+                    and any((x,y+d) in invalid for d in (5,10)))
+            ):
+                narrow_gap.add(key)
+    return {
+        'scope':'Descriptive diagnostics outside the four selection gates.',
+        'city_by_height_agl_m':heights,
+        'narrow_gap_proxy_definition':(
+            'Reference-valid city points bracketed along x or y at the same requested height '
+            'by reference-invalid requested city points within 10 m on each side. '
+            'Reference sampling validity is a geometric proxy.'),
+        'narrow_gap_proxy':region_errors(data,ref,narrow_gap),
+    }
+
 def evaluate(case,reference=None):
     p=json.loads((case/'parameters.json').read_text());d=city.diagnostics(case);data,queries,iteration=samples(case)
     support=support_audit(case,p);force=force_audit(case,p,data)
-    supplemental={path.stem.removeprefix('cost.'):json.loads(path.read_text()) for path in case.glob('cost.host-*.json')}
-    d['recorded_pipeline_elapsed_s']=d['complete_map_generation_elapsed_s']
-    d['supplemental_host_verification_cost']=supplemental
-    d['complete_map_generation_elapsed_s']+=sum(cost['elapsed_s'] for cost in supplemental.values())
-    d['generation_timing_complete']=all((case/f'cost.host-{stage}-audit.json').exists() for stage in ('mesh','solve'))
-    d['generation_timing_note']='Recorded stage total plus measured automated host verification; missing original host support hashing is unrecorded, so incomplete totals are lower bounds. Comparative scientific evaluation and manual implementation work excluded.'
+    generation_timing(case,d)
     d.update(scope=p['scope'],joint=True,role=p['role'],sample_iteration=iteration,force_support=support,force_audit=force,cheap150k_target_met=d['cells']<=150000,cell_limit_adjustment=p['cell_limit_adjustment'],transfer_limitation=p['transfer_limitation'])
+    d['sample_matches_final_iteration']=float(iteration)==float(d['solver_final_iteration'])
     d['rotor_wake_settling']=wake_settling(case)
-    d['checked_coupled_result']=d['frozen_numerical_checks_pass'] and d['rotor_wake_settling']['passed'] and force['passed'] and support['all_selected_cells_at_fixed_level']
+    d['checked_coupled_result']=d['frozen_numerical_checks_pass'] and d['sample_matches_final_iteration'] and d['rotor_wake_settling']['passed'] and force['passed'] and support['all_selected_cells_at_fixed_level']
     d['sampling_counts']={region:{'requested':sum(q['region']==region for q in queries),'valid':sum(k[0]==region for k in data)} for region in dict.fromkeys(q['region'] for q in queries)}
     if reference:
-        rp=json.loads((reference/'parameters.json').read_text());rd=city.diagnostics(reference);ref,_,_=samples(reference);rs=support_audit(reference,rp);rf=force_audit(reference,rp,ref)
+        rp=json.loads((reference/'parameters.json').read_text());rd=city.diagnostics(reference);ref,ref_queries,ref_iteration=samples(reference);rs=support_audit(reference,rp);rf=force_audit(reference,rp,ref)
         for key in ('protocol_sha256','query_sha256','scaled_stl_sha256','Cp','Ct','closure','Uref_m_s','z0_m'):
             if p[key]!=rp[key]:raise ValueError('Unmatched joint '+key)
+        if queries!=ref_queries:
+            raise ValueError('Unmatched joint query records')
         support_match=all(support[k]==rs[k] for k in ('configuration_sha256','selected_cells','spatial_cell_vertices_sha256'))
-        checked=rd['frozen_numerical_checks_pass'] and wake_settling(reference)['passed'] and rf['passed'] and rs['all_selected_cells_at_fixed_level']
-        comparison={'reference':reference.name,'reference_checked':checked,'support_exact_match':support_match,'regions':{},'speedup':rd['complete_map_generation_elapsed_s']/d['complete_map_generation_elapsed_s'] if checked and d['checked_coupled_result'] and support_match else None,'elapsed_ratio_descriptive':rd['complete_map_generation_elapsed_s']/d['complete_map_generation_elapsed_s']}
+        strict_reference=strict_reference_configuration(reference,rp)
+        reference_aligned=float(ref_iteration)==float(rd['solver_final_iteration'])
+        checked=(strict_reference and rd['frozen_numerical_checks_pass'] and reference_aligned
+                 and wake_settling(reference)['passed'] and rf['passed'] and rs['all_selected_cells_at_fixed_level'])
+        generation_timing(reference,rd)
+        timing_complete=d['generation_timing_complete'] and rd['generation_timing_complete']
+        environment_matches=cost_environment_matches(d,rd)
+        elapsed_ratio=(rd['complete_map_generation_elapsed_s']/d['complete_map_generation_elapsed_s']
+                       if elapsed_recorded({'elapsed_s':rd['complete_map_generation_elapsed_s']})
+                       and elapsed_recorded({'elapsed_s':d['complete_map_generation_elapsed_s']}) else None)
+        comparison={
+            'reference':reference.name,'reference_checked':checked,
+            'reference_strict_configuration':strict_reference,
+            'reference_sample_iteration':ref_iteration,
+            'reference_solver_final_iteration':rd['solver_final_iteration'],
+            'reference_sample_matches_final_iteration':reference_aligned,
+            'reference_complete_map_generation_elapsed_s':rd['complete_map_generation_elapsed_s'],
+            'reference_generation_timing_complete':rd['generation_timing_complete'],
+            'reference_supplemental_host_verification_cost':rd['supplemental_host_verification_cost'],
+            'both_generation_timings_complete':timing_complete,
+            'cost_environment_matches':environment_matches,
+            'support_exact_match':support_match,'regions':{},
+            'elapsed_ratio_descriptive':elapsed_ratio,
+            'speedup':elapsed_ratio if (checked and d['checked_coupled_result'] and support_match
+                                        and timing_complete and environment_matches) else None,
+        }
         for region in ('city','building_wake','rotor_wake','flight','domain'):
             base='city' if region=='building_wake' else region
-            keys={k for k in ref if k[0]==base and (region!='building_wake' or ref[k]['xyz'][1]<=-100 and ref[k]['xyz'][2]<=40)};common=sorted(keys&data.keys())
-            errors=sorted(math.dist(data[k]['U'],ref[k]['U']) for k in common)
-            rmse=math.sqrt(sum(e*e for e in errors)/len(errors)) if errors else None
-            position=.95*(len(errors)-1);lo=int(position) if errors else 0
-            p95=errors[lo]+(errors[min(lo+1,len(errors)-1)]-errors[lo])*(position-lo) if errors else None
-            coverage=len(common)/len(keys) if keys else 0
-            comparison['regions'][region]={'reference_valid':len(keys),'common_valid':len(common),'coverage':coverage,'vector_RMSE_over_Uref':rmse/8.7 if rmse is not None else None,'P95_over_Uref':p95/8.7 if p95 is not None else None,'targets_pass':rmse is not None and rmse/8.7<=.05 and p95/8.7<=.15 and coverage>=.95}
+            keys={k for k in ref if k[0]==base and (region!='building_wake' or ref[k]['xyz'][1]<=-100 and ref[k]['xyz'][2]<=40)}
+            metrics=region_errors(data,ref,keys)
+            rmse=metrics['vector_RMSE_over_Uref']
+            metrics['targets_pass']=rmse is not None and rmse<=.05 and metrics['P95_over_Uref']<=.15 and metrics['coverage']>=.95
+            comparison['regions'][region]=metrics
+        comparison['descriptive_diagnostics']=descriptive_city_errors(data,ref,ref_queries)
         comparison['all_declared_ROI_targets_pass']=all(comparison['regions'][k]['targets_pass'] for k in ('city','building_wake','rotor_wake','flight'))
         comparison['overall_target_pass']=bool(checked and d['checked_coupled_result'] and support_match and comparison['all_declared_ROI_targets_pass'] and comparison['speedup'] is not None and comparison['speedup']>=2)
         d['comparison']=comparison
@@ -188,8 +332,19 @@ def evaluate(case,reference=None):
     return d
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--common-mesh',action='store_true',help='Use identical reference wake mesh to enforce exact support; solver/stopping comparison only');parser.add_argument('stage',choices=['build','mesh','solve','sample','evaluate']);parser.add_argument('--case',required=True);parser.add_argument('--role',choices=['reference','baseline','candidate']);parser.add_argument('--reference');args=parser.parse_args();case=ROOT/'runs'/args.case
-    if args.stage=='build':build(args.case,args.role,args.common_mesh)
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--common-mesh',action='store_true',help='Use identical reference wake mesh to enforce exact support; solver/stopping comparison only')
+    parser.add_argument('stage',choices=['build','mesh','solve','sample','evaluate'])
+    parser.add_argument('--case',required=True)
+    parser.add_argument('--role',choices=['reference','baseline','candidate'])
+    parser.add_argument('--reference')
+    parser.add_argument('--reference-variant',choices=['damped-momentum'],
+                        help='Build a common-mesh reference with momentum equation relaxation 0.45')
+    args=parser.parse_args()
+    if args.reference_variant and (args.stage!='build' or args.role!='reference' or not args.common_mesh):
+        parser.error('--reference-variant requires build --role reference --common-mesh')
+    case=ROOT/'runs'/args.case
+    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.reference_variant)
     elif args.stage=='mesh':mesh(case)
     elif args.stage=='solve':
         validate_solver(case,json.loads((case/'parameters.json').read_text()))
