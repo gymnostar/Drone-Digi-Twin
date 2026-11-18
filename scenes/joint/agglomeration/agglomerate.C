@@ -23,11 +23,41 @@ struct Octet
     Octet() { children.fill(-1); }
 };
 
+struct Moments
+{
+    scalar volume = 0;
+    vector first = vector::zero;
+};
+
 struct Parent
 {
     scalar volume;
     point centroid;
+    Moments exact;
 };
+
+// Integrate identical oriented face fans relative to a common local origin.
+void addCellMoments(Moments& total, const point& origin, const cell& faces,
+    const faceList& polygons, const pointField& points, const labelList& owners,
+    const label celli)
+{
+    for (const label facei : faces)
+    {
+        const face& polygon = polygons[facei];
+        vector centre = vector::zero;
+        for (const label vertex : polygon) centre += points[vertex] - origin;
+        centre /= polygon.size();
+        const scalar orientation = owners[facei] == celli ? 1 : -1;
+        forAll(polygon, i)
+        {
+            const vector a = points[polygon[i]] - origin;
+            const vector b = points[polygon[(i+1) % polygon.size()]] - origin;
+            const scalar volume = orientation * (centre & (a ^ b)) / 6;
+            total.volume += volume;
+            total.first += 0.25 * volume * (centre + a + b);
+        }
+    }
+}
 
 bool identicalVertex(const point& a, const point& b)
 {
@@ -255,7 +285,7 @@ int main(int argc, char* argv[])
         if (!valid) continue;
         ++countByLevel[childLevel];
         const label master = *std::min_element(children.begin(), children.end());
-        Parent parent{0, point::zero};
+        Parent parent{0, point::zero, Moments()};
         for (const label child : children)
         {
             masterForCell[child] = master;
@@ -264,6 +294,9 @@ int main(int argc, char* argv[])
             parent.centroid += oldVolumes[child] * centres[child];
         }
         parent.centroid /= parent.volume;
+        for (const label child : children)
+            addCellMoments(parent.exact, parent.centroid, cells[child], faces,
+                oldPoints, owners, child);
         parents.append(parent);
     }
     const label nGroups = parents.size();
@@ -336,7 +369,9 @@ int main(int argc, char* argv[])
     const scalarField& volumes = mesh.V();
     labelList remapped(mesh.nCells());
     boolList visits(nGroups, false);
-    scalar maxRelativeCentroidDifference = 0;
+    scalar maxRelativeCentroidDifference = 0, maxAbsoluteCentroidDifference = 0;
+    scalar maxExactVolumeDifference = 0, maxExactCentroidDifference = 0;
+    label estimatorExceedances = 0;
     forAll(remapped, celli)
     {
         const label oldCell = mapping().cellMap()[celli];
@@ -351,23 +386,40 @@ int main(int argc, char* argv[])
                 << exit(FatalError);
         if (group >= 0)
         {
-            // OpenFOAM uses an approximate face pyramid for warped quads.
-            // The centroid may shift slightly with a different pyramid apex.
-            const scalar relativeCentroidDifference =
-                mag(mesh.cellCentres()[celli] - parents[group].centroid)
-                / std::cbrt(targetVolume);
-            maxRelativeCentroidDifference = max(maxRelativeCentroidDifference, relativeCentroidDifference);
-            if (visits[group] || relativeCentroidDifference > 1e-4)
-                FatalErrorInFunction << "Mapped parent centre mismatch at " << celli
-                    << ": expected " << parents[group].centroid << ", got "
-                    << mesh.cellCentres()[celli] << ", relative difference "
-                    << relativeCentroidDifference << exit(FatalError);
+            const Parent& parent = parents[group];
+            Moments exact;
+            addCellMoments(exact, parent.centroid, mesh.cells()[celli],
+                mesh.faces(), mesh.points(), mesh.faceOwner(), celli);
+            const scalar side = std::cbrt(parent.exact.volume);
+            const scalar exactVolumeDifference = mag(exact.volume - parent.exact.volume)
+                / parent.exact.volume;
+            const scalar exactCentroidDifference =
+                mag(exact.first/exact.volume - parent.exact.first/parent.exact.volume) / side;
+            maxExactVolumeDifference = max(maxExactVolumeDifference, exactVolumeDifference);
+            maxExactCentroidDifference = max(maxExactCentroidDifference, exactCentroidDifference);
+            if (visits[group] || exactVolumeDifference > 1e-9 || exactCentroidDifference > 1e-9)
+                FatalErrorInFunction << "Integrated volume/centroid mismatch at cell " << celli
+                    << ": relative volume " << exactVolumeDifference << ", relative centroid "
+                    << exactCentroidDifference << exit(FatalError);
+
+            // OpenFOAM's face-pyramid approximation can depend on its apex
+            // for warped quads. Record it independently of the geometry gate.
+            const scalar estimatorDifference = mag(mesh.cellCentres()[celli] - parent.centroid);
+            maxAbsoluteCentroidDifference = max(maxAbsoluteCentroidDifference, estimatorDifference);
+            maxRelativeCentroidDifference = max(maxRelativeCentroidDifference, estimatorDifference / side);
+            estimatorExceedances += estimatorDifference / side > 1e-4;
             visits[group] = true;
         }
     }
     for (const bool visited : visits)
         if (!visited) FatalErrorInFunction << "Missing parent cell" << exit(FatalError);
-    Info << "Max centroid difference / parent side: " << maxRelativeCentroidDifference << nl;
+    Info << "Maximum integrated relative volume difference: " << maxExactVolumeDifference << nl
+         << "Maximum integrated centroid difference / parent side: " << maxExactCentroidDifference << nl
+         << "Maximum OpenFOAM centroid estimator difference (m): " << maxAbsoluteCentroidDifference << nl
+         << "Maximum OpenFOAM centroid estimator difference / parent side: "
+         << maxRelativeCentroidDifference << nl
+         << "OpenFOAM centroid estimator differences above 1e-4 of parent side: "
+         << estimatorExceedances << nl;
 
     labelList remappedPoints(mesh.nPoints());
     forAll(remappedPoints, pointi)
