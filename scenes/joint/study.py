@@ -23,6 +23,10 @@ def module(name,path):
 city=module('city_poc',SCENES/'buildings/poc.py')
 runner=module('city_run',SCENES/'buildings/run.py')
 source=module('turbine_poc',SCENES/'turbine/scripts/poc.py')
+TRANSPORT_TOLERANCE=re.compile(
+    r'("\(U\|k\|epsilon\)"\s*\{\s*solver smoothSolver;\s*'
+    r'smoother symGaussSeidel;\s*tolerance )([0-9.eE+-]+)(;\s*relTol 0\.05;\s*\})'
+)
 
 def support_audit(case,p):
     result=source.support_audit(case,p)
@@ -37,10 +41,12 @@ def dump(path,value):
 
 def validate_solver(case,p):
     text=(case/'system/fvSolution').read_text()
-    variant=p.get('reference_variant')
-    if variant is not None:
-        if variant!='damped-momentum' or p['role']!='reference' or not p['common_reference_mesh_recipe']:
-            raise ValueError('Damped momentum requires the common-mesh reference')
+    if p.get('reference_variant') is not None:
+        raise ValueError('Historical reference variant is no longer supported')
+    tight_transport=p.get('tight_transport',False)
+    if tight_transport:
+        if p['role']!='reference' or not p['common_reference_mesh_recipe']:
+            raise ValueError('Tight transport requires the common-mesh reference')
         protocol_bytes=city.PROTOCOL.read_bytes()
         convergence=json.loads(protocol_bytes)['convergence']
         if (p['protocol_sha256']!=hashlib.sha256(protocol_bytes).hexdigest()
@@ -48,24 +54,25 @@ def validate_solver(case,p):
                 or p['flux_threshold']!=convergence['relative_flux_imbalance_max']
                 or p['probe_change_RMSE_over_Uref_threshold']!=
                     convergence['terminal_probe_vector_change_RMSE_over_Uref_max']):
-            raise ValueError('Damped momentum requires the frozen reference protocol')
+            raise ValueError('Tight transport requires the frozen reference protocol')
+    transport=TRANSPORT_TOLERANCE.findall(text)
+    expected_tolerance=1e-10 if tight_transport else 1e-7
+    if len(transport)!=1 or float(transport[0][1])!=expected_tolerance:
+        raise ValueError('Unexpected inner transport solver settings')
     block=re.search(r'residualControl \{([^}]+)\}',text)[1]
     actual={key:float(value) for key,value in re.findall(r'(p|U|k|epsilon) ([0-9.eE+-]+);',block)}
     if actual!=p['residual_thresholds']:raise ValueError('Frozen outer residual controls changed')
     relaxation=text.split('relaxationFactors',1)[1]
-    expected={'p':.3,'U':.45 if variant else .6,'k':.6,'epsilon':.6}
+    expected={'p':.3,'U':.6,'k':.6,'epsilon':.6}
     actual={key:float(value) for key,value in re.findall(r'(p|U|k|epsilon) ([0-9.eE+-]+);',relaxation)}
     if actual!=expected:raise ValueError('Retained relaxation factors changed')
-    if variant and (p['momentum_equation_relaxation']!=actual['U']
-                    or not re.search(r'equations\s*\{[^}]*\bU\s+0\.45;',relaxation)):
-        raise ValueError('Damped momentum equation relaxation changed')
     if ('consistent yes;' in text)!=(p['role']!='baseline'):raise ValueError('Unmatched SIMPLE convention')
 
-def build(name,role,common_mesh=False,reference_variant=None):
+def build(name,role,common_mesh=False,tight_transport=False):
     started=time.monotonic();cpu=time.process_time()
     if Path(name).name!=name:raise ValueError('One fresh case name required')
-    if reference_variant is not None and (reference_variant!='damped-momentum' or role!='reference' or not common_mesh):
-        raise ValueError('Damped momentum requires --role reference --common-mesh')
+    if tight_transport and (role!='reference' or not common_mesh):
+        raise ValueError('Tight transport requires --role reference --common-mesh')
     case=ROOT/'runs'/name
     args=SimpleNamespace(case=name,closure='realizableKE',direction='N',resolution='reference',empty=False,background_m=20.,mesh_repair=False,solver_repair=role!='baseline',consistent_simple=role!='baseline')
     city.build_poc(args, case_root=ROOT/'runs')
@@ -77,10 +84,12 @@ def build(name,role,common_mesh=False,reference_variant=None):
     fv=case/'system/fvSolution';text=fv.read_text()
     residual='residualControl {'+' '.join(f'{field} {val};' for field,val in thresholds.items())+'}'
     text=re.sub(r'residualControl \{[^}]*\}',residual,text)
-    if reference_variant:
-        text,replacements=re.subn(r'(equations \{U )0\.6;',r'\g<1>0.45;',text)
-        if replacements!=1:raise ValueError('Expected one original momentum equation relaxation')
-        p.update(reference_variant=reference_variant,momentum_equation_relaxation=.45)
+    if tight_transport:
+        transport=TRANSPORT_TOLERANCE.findall(text)
+        if len(transport)!=1 or float(transport[0][1])!=1e-7:
+            raise ValueError('Expected one original inner transport tolerance')
+        text=TRANSPORT_TOLERANCE.sub(r'\g<1>1e-10\g<3>',text)
+        p['tight_transport']=True
     fv.write_text(text)
     wake_level=3 if common_mesh else {'reference':3,'baseline':2,'candidate':1}[role]
     support_box=((-20.25,-286.75,6.75),(20.25,-273.25,60.75))
@@ -120,8 +129,8 @@ def build(name,role,common_mesh=False,reference_variant=None):
     validate_solver(case,p)
     dump(case/'parameters.json',p)
     preparation_cost={'stage':'prepare','elapsed_s':time.monotonic()-started,'cpu_s':time.process_time()-cpu,'peak_cgroup_memory_bytes_including_cache':None,'scope':'Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded'}
-    if reference_variant:
-        preparation_cost.update(reference_variant=reference_variant,momentum_equation_relaxation=p['momentum_equation_relaxation'])
+    if tight_transport:
+        preparation_cost['tight_transport']=True
     dump(case/'cost.prepare.json',preparation_cost)
     print(json.dumps({'case':str(case),'role':role,'queries':len(queries),'max_cells':p['max_cells']}))
 
@@ -338,13 +347,13 @@ def main():
     parser.add_argument('--case',required=True)
     parser.add_argument('--role',choices=['reference','baseline','candidate'])
     parser.add_argument('--reference')
-    parser.add_argument('--reference-variant',choices=['damped-momentum'],
-                        help='Build a common-mesh reference with momentum equation relaxation 0.45')
+    parser.add_argument('--tight-transport',action='store_true',
+                        help='Build a common-mesh reference with inner transport absolute tolerance 1e-10')
     args=parser.parse_args()
-    if args.reference_variant and (args.stage!='build' or args.role!='reference' or not args.common_mesh):
-        parser.error('--reference-variant requires build --role reference --common-mesh')
+    if args.tight_transport and (args.stage!='build' or args.role!='reference' or not args.common_mesh):
+        parser.error('--tight-transport requires build --role reference --common-mesh')
     case=ROOT/'runs'/args.case
-    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.reference_variant)
+    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport)
     elif args.stage=='mesh':mesh(case)
     elif args.stage=='solve':
         validate_solver(case,json.loads((case/'parameters.json').read_text()))
