@@ -128,6 +128,17 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,di
     snappy=case/'system/snappyHexMeshDict';text=snappy.read_text()
     text=text.replace('geometry {\n','geometry {\n sourceSupport {type searchableBox; '+city.box_string(*support_box)+'}\n rotorWake {type searchableBox; '+city.box_string(*wake_box)+'}\n',1)
     text=text.replace('refinementRegions {','refinementRegions { sourceSupport {mode inside; levels ((1E15 4));} rotorWake {mode inside; levels ((1E15 '+str(wake_level)+'));}',1)
+    if direction=='NNE':
+        # Extended checkMesh identified two near-ground clusters in the first
+        # oblique mesh. Refine the affected buildings in physical coordinates.
+        repairs=(((80,142.5,0),(92.5,155,7.5)), ((-125,-147.5,0),(-110,-135,7.5)))
+        p['directional_mesh_repairs_world_m']=repairs
+        for i,(low,high) in enumerate(repairs):
+            name=f'buildingCorner{i}'
+            geometry=city.world_refinement_box(low,high,degrees,oriented=True)
+            text=text.replace('geometry {\n',f'geometry {{\n {name} {{{geometry}}}\n',1)
+            text=text.replace('refinementRegions {',
+                              f'refinementRegions {{ {name} {{mode inside; levels ((1E15 4));}}',1)
     if agglomerate:
         protected=tuple(rotor_point(p,degrees) for p in ((-26,-292,1.5),(26,-268,66)))
         city.write(case/'system/agglomerationBox',city.box_string(*protected))

@@ -1,0 +1,52 @@
+{
+  "case": "table-NNE-oriented",
+  "direction": "NNE",
+  "recipe": "strict",
+  "accepted": false,
+  "cells": 426355,
+  "standard_check": true,
+  "custom_check": true,
+  "extended_check": "Three failed checks: 15,182 concave cells, two cells with small determinant and one low-weight face. Only concavity alone is allowed. No solve ran.",
+  "minimum_determinant": 0.0001863341577,
+  "minimum_face_interpolation_weight": 0.04503431856,
+  "flagged_cells": [
+    117297,
+    111867
+  ],
+  "low_weight_face": 401725,
+  "approximate_world_xy_m_of_clusters": [
+    [
+      85,
+      149
+    ],
+    [
+      -117,
+      -141
+    ]
+  ],
+  "additional_refinement_level": 4,
+  "mesh_dictionary_sha256": "7f1c0901ab31b5689399a867683c69f8c3ff2068acbabc7bfb806081cd4e9748",
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.1827774590055924,
+      "cpu_s": 1.175919,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+      "tight_transport": true
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 117.07585320898215,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 116.745018,
+      "peak_cgroup_memory_bytes_including_cache": 748761088,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  }
+}
