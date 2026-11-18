@@ -140,7 +140,7 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False):
     dump(case/'cost.prepare.json',preparation_cost)
     print(json.dumps({'case':str(case),'role':role,'queries':len(queries),'max_cells':p['max_cells']}))
 
-def mesh(case):
+def mesh(case,reference=None):
     outer_start=time.monotonic();outer_cpu=time.process_time()
     p=json.loads((case/'parameters.json').read_text())
     validate_solver(case,p)
@@ -158,7 +158,7 @@ def mesh(case):
     audit=support_audit(case,p)
     dump(case/'support-audit.json',audit)
     if p.get('post_snap_agglomeration'):
-        reference=ROOT/'runs/poc-N-reference-tight-transport'
+        reference=reference or ROOT/'runs/poc-N-reference-tight-transport'
         expected=json.loads((reference/'support-audit.json').read_text())
         keys=('configuration_sha256','selected_cells','spatial_cell_vertices_sha256')
         if not all(audit[key]==expected[key] for key in keys):
@@ -230,7 +230,8 @@ def generation_timing(case, diagnostics):
             and all(elapsed_recorded(cost,allow_zero=True) for cost in audits.values())),
         generation_timing_note=(
             'Recorded stage wall time plus measured automated host verification. '
-            'Incomplete totals omit unrecorded intervals. Comparative scientific evaluation '
+            'Incomplete totals omit unrecorded intervals. The CPU totals cover the four runner '
+            'stages; host audit CPU is reported separately. Comparative scientific evaluation '
             'and manual implementation work excluded.'))
 
 def cost_environment_matches(a,b):
@@ -367,11 +368,11 @@ def evaluate(case,reference=None):
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--common-mesh',action='store_true',help='Use identical reference wake mesh to enforce exact support; solver/stopping comparison only')
+    parser.add_argument('--common-mesh',action='store_true',help='Start from the reference wake refinement and rotor-support lattice')
     parser.add_argument('stage',choices=['build','mesh','solve','sample','evaluate'])
     parser.add_argument('--case',required=True)
     parser.add_argument('--role',choices=['reference','baseline','candidate'])
-    parser.add_argument('--reference')
+    parser.add_argument('--reference',help='Reference case for the mesh/solve support audit or field evaluation')
     parser.add_argument('--tight-transport',action='store_true',
                         help='Build a common-mesh reference with inner transport absolute tolerance 1e-10')
     parser.add_argument('--agglomerate',action='store_true',
@@ -382,19 +383,22 @@ def main():
     if args.agglomerate and (args.stage!='build' or args.role!='baseline' or not args.common_mesh):
         parser.error('--agglomerate requires build --role baseline --common-mesh')
     case=ROOT/'runs'/args.case
+    reference=ROOT/'runs'/args.reference if args.reference else None
     if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.agglomerate)
-    elif args.stage=='mesh':mesh(case)
+    elif args.stage=='mesh':mesh(case,reference)
     elif args.stage=='solve':
         validate_solver(case,json.loads((case/'parameters.json').read_text()))
         gate_start=time.monotonic();gate_cpu=time.process_time()
         p=json.loads((case/'parameters.json').read_text())
         if p['role']!='reference':
-            reference=ROOT/'runs/poc-N-reference-fixed'
+            if reference is None:
+                default='poc-N-reference-tight-transport' if p.get('post_snap_agglomeration') else 'poc-N-reference-fixed'
+                reference=ROOT/'runs'/default
             rp=json.loads((reference/'parameters.json').read_text())
             a=support_audit(case,p);b=support_audit(reference,rp)
             if not all(a[key]==b[key] for key in ('configuration_sha256','selected_cells','spatial_cell_vertices_sha256')):raise ValueError('Exact force support gate failed; solve prohibited')
         dump(case/'cost.host-solve-audit.json',{'elapsed_s':time.monotonic()-gate_start,'cpu_s':time.process_time()-gate_cpu,'scope':'Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate'})
         runner.accept_mesh(case);runner.check_budget(case,json.loads((case/'parameters.json').read_text()));runner.run_stage(case,'solve','decomposePar -force > log.decomposePar 2>&1 && mpirun --allow-run-as-root -np 3 simpleFoam -parallel > log.simpleFoam 2>&1 && reconstructPar -latestTime > log.reconstructPar 2>&1',600)
     elif args.stage=='sample':sample(case)
-    else:evaluate(case,ROOT/'runs'/args.reference if args.reference else None)
+    else:evaluate(case,reference)
 if __name__=='__main__':main()

@@ -178,6 +178,141 @@
       },
       "reference_vertex_hash": "ae965b6d2d21da7d816404ea8a62181d8cbf3a02ba57a609a518a5d8454e67d9",
       "verdict": "Rejected before solve. The counted rotor cells and refinement level match; their vertex coordinates differ."
+    },
+    {
+      "case": "poc-N-agglomerated",
+      "replay_revision": "bc9eaa99f52ff8ba31edfd23e1a6755f0a2b21c8",
+      "commands": [
+        "python3 scenes/joint/study.py build --role baseline --common-mesh --agglomerate --case poc-N-agglomerated",
+        "python3 scenes/joint/study.py mesh --case poc-N-agglomerated"
+      ],
+      "hypothesis": "Coarsen undeformed interior Cartesian octets after snapping while preserving building walls and force support.",
+      "cost": {
+        "prepare": {
+          "stage": "prepare",
+          "elapsed_s": 1.0683236249897163,
+          "cpu_s": 1.0389680000000001,
+          "peak_cgroup_memory_bytes_including_cache": null,
+          "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+        },
+        "mesh": {
+          "stage": "mesh",
+          "elapsed_s": 113.25860283401562,
+          "exit_code": 1,
+          "timed_out": false,
+          "cpu_s": 113.011435,
+          "peak_cgroup_memory_bytes_including_cache": 742191104,
+          "cpu_limit": 3,
+          "memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "Host-018.homenet.telecomitalia.it",
+          "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+        }
+      },
+      "eligible_octets_by_original_level": [
+        1646,
+        0,
+        0,
+        0
+      ],
+      "projected_cells_removed": 11522,
+      "verdict": "Rejected before solve. Boundary-face identity verification stopped the merge before the mesh was written. The stock face-removal implementation can simplify pre-existing degree-two boundary points outside the merge region. Only 2.7% of the cells had qualified for removal."
+    },
+    {
+      "case": "poc-N-agglomerated-siblings",
+      "initial_replay_revision": "93bae389c56f17a19d9171a83587155d366c467d",
+      "replay_revision": "aa8a5d03d5c0b9eb4df1413f7f35d6ddb49eea79",
+      "commands": [
+        "python3 scenes/joint/study.py build --role baseline --common-mesh --agglomerate --case poc-N-agglomerated-siblings",
+        "python3 scenes/joint/study.py mesh --case poc-N-agglomerated-siblings",
+        "python3 scenes/joint/study.py solve --case poc-N-agglomerated-siblings",
+        "python3 scenes/joint/study.py sample --case poc-N-agglomerated-siblings",
+        "python3 scenes/joint/study.py evaluate --case poc-N-agglomerated-siblings --reference poc-N-reference-tight-transport"
+      ],
+      "hypothesis": "Merge slightly deformed full octets after snapping. Keep every surviving polygon unchanged and preserve the rotor and boundary patches.",
+      "octets_by_original_level": [
+        7772,
+        2395,
+        1304,
+        15957
+      ],
+      "cells": 230898,
+      "original_cells": 422894,
+      "source_vertex_hash": "ae965b6d2d21da7d816404ea8a62181d8cbf3a02ba57a609a518a5d8454e67d9",
+      "mesh_integrity": {
+        "max_relative_volume_discrepancy": 3.069544625e-15,
+        "max_centroid_discrepancy_over_parent_side": 2.632325062e-16,
+        "standard_and_custom_quality_pass": true,
+        "extended_concave_cells": 41904,
+        "cells_with_multiple_inbetween_faces_diagnostic": 28784
+      },
+      "diagnostic_recovery": {
+        "first_outcome": "Initial verification compared non-additive OpenFOAM centroid estimates from different pyramid decompositions. It stopped before writing at 0.5514 mm displacement from the weighted child estimate.",
+        "correction": "Used the same oriented face triangulation and local origin to integrate both sides. Connectivity, selection, surviving polygons, physics and the frozen evaluator stayed fixed. The original OpenFOAM centroid statistic remains descriptive.",
+        "estimator_max_difference_m": 0.001278361638,
+        "estimator_count_above_1e-4_parent_side": 56,
+        "charged_stages": [
+          "original cold mesh through first verification failure",
+          "pristine geometry verification, recompilation, corrected integral and normal mesh checks"
+        ],
+        "container_mesh_cost": {
+          "stage": "mesh",
+          "elapsed_s": 125.95816629100591,
+          "exit_code": 0,
+          "timed_out": false,
+          "cpu_s": 125.42442100000001,
+          "peak_cgroup_memory_bytes_including_cache": 721469440,
+          "cpu_limit": 3,
+          "memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "Host-018.homenet.telecomitalia.it",
+          "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+          "scope": "Cold snapped generation with initial rejected audit plus correction, topology and quality checks",
+          "components": {
+            "initial": {
+              "stage": "mesh",
+              "elapsed_s": 113.2320138750074,
+              "exit_code": 1,
+              "timed_out": false,
+              "cpu_s": 112.919627,
+              "peak_cgroup_memory_bytes_including_cache": 721469440,
+              "cpu_limit": 3,
+              "memory_limit_bytes": 5368709120,
+              "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+              "host": "Host-018.homenet.telecomitalia.it",
+              "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+            },
+            "recovery": {
+              "stage": "mesh-recovery",
+              "elapsed_s": 12.726152415998513,
+              "exit_code": 0,
+              "timed_out": false,
+              "cpu_s": 12.504794,
+              "peak_cgroup_memory_bytes_including_cache": 654778368,
+              "cpu_limit": 3,
+              "memory_limit_bytes": 5368709120,
+              "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+              "host": "Host-018.homenet.telecomitalia.it",
+              "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+            }
+          }
+        }
+      },
+      "metrics": "poc-N-agglomerated-siblings/metrics.json",
+      "complete_map_wall_s": 249.41651145802462,
+      "verified_speedup": 2.1060114334948286,
+      "verdict": "Accepted as the coupled north-wind production recipe. Exact rotor support, solver, field/coverage and complete cold-cost gates passed against the checked strict reference."
     }
-  ]
+  ],
+  "outcome": {
+    "attempted_hypotheses": 6,
+    "accepted_hypotheses": 2,
+    "baseline_repeats": 1,
+    "retained_reference": "poc-N-reference-tight-transport",
+    "retained_production_recipe": "poc-N-agglomerated-siblings",
+    "speedup_over_checked_reference": 2.1060114334948286,
+    "speedup_over_retimed_baseline": 1.2731629655058152,
+    "stop": "The north-wind numerical accuracy, coverage and twofold cold map-generation targets were met. The six authorized hypotheses are accounted for.",
+    "remaining_scope": "One coupled inflow and two checked mesh resolutions. The adjusted 500,000-cell cap passed; the initial 150,000-cell aspiration remains unmet. Multi-direction lookup/regression and physical validation require further cases or data."
+  }
 }
