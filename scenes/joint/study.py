@@ -102,7 +102,7 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False):
     text=text.replace('refinementRegions {','refinementRegions { sourceSupport {mode inside; levels ((1E15 4));} rotorWake {mode inside; levels ((1E15 '+str(wake_level)+'));}',1)
     if agglomerate:
         shutil.copytree(ROOT/'agglomeration',case/'system/agglomeration')
-        p['post_snap_agglomeration']='aligned interior Cartesian sibling octets'
+        p['post_snap_agglomeration']='complete interior snapped sibling octets'
     snappy.write_text(text)
     lock=json.loads((SCENES/'turbine/reference/data-sources.json').read_text())
     for item in lock['files']:
@@ -375,7 +375,7 @@ def main():
     parser.add_argument('--tight-transport',action='store_true',
                         help='Build a common-mesh reference with inner transport absolute tolerance 1e-10')
     parser.add_argument('--agglomerate',action='store_true',
-                        help='Build a baseline with interior octet agglomeration after common-mesh snapping')
+                        help='Build a baseline with interior sibling agglomeration after common-mesh snapping')
     args=parser.parse_args()
     if args.tight_transport and (args.stage!='build' or args.role!='reference' or not args.common_mesh):
         parser.error('--tight-transport requires build --role reference --common-mesh')
