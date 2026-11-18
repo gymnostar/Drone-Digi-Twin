@@ -6,6 +6,7 @@ import importlib.util
 import json
 import math
 import re
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -68,13 +69,13 @@ def validate_solver(case,p):
     if actual!=expected:raise ValueError('Retained relaxation factors changed')
     if ('consistent yes;' in text)!=(p['role']!='baseline'):raise ValueError('Unmatched SIMPLE convention')
 
-def build(name,role,common_mesh=False,tight_transport=False,coarsen_city_floor=False):
+def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False):
     started=time.monotonic();cpu=time.process_time()
     if Path(name).name!=name:raise ValueError('One fresh case name required')
     if tight_transport and (role!='reference' or not common_mesh):
         raise ValueError('Tight transport requires --role reference --common-mesh')
-    if coarsen_city_floor and (role!='baseline' or not common_mesh):
-        raise ValueError('Coarsening the city floor requires --role baseline --common-mesh')
+    if agglomerate and (role!='baseline' or not common_mesh):
+        raise ValueError('Agglomeration requires --role baseline --common-mesh')
     case=ROOT/'runs'/name
     args=SimpleNamespace(case=name,closure='realizableKE',direction='N',resolution='reference',empty=False,background_m=20.,mesh_repair=False,solver_repair=role!='baseline',consistent_simple=role!='baseline')
     city.build_poc(args, case_root=ROOT/'runs')
@@ -99,11 +100,9 @@ def build(name,role,common_mesh=False,tight_transport=False,coarsen_city_floor=F
     snappy=case/'system/snappyHexMeshDict';text=snappy.read_text()
     text=text.replace('geometry {\n','geometry {\n sourceSupport {type searchableBox; '+city.box_string(*support_box)+'}\n rotorWake {type searchableBox; '+city.box_string(*wake_box)+'}\n',1)
     text=text.replace('refinementRegions {','refinementRegions { sourceSupport {mode inside; levels ((1E15 4));} rotorWake {mode inside; levels ((1E15 '+str(wake_level)+'));}',1)
-    if coarsen_city_floor:
-        original='floorRegion {mode inside; levels ((1E15 3));}'
-        if text.count(original)!=1:raise ValueError('Expected one original city floor refinement')
-        text=text.replace(original,'floorRegion {mode inside; levels ((1E15 2));}')
-        p['city_floor_refinement_level']=2
+    if agglomerate:
+        shutil.copytree(ROOT/'agglomeration',case/'system/agglomeration')
+        p['post_snap_agglomeration']='aligned interior Cartesian sibling octets'
     snappy.write_text(text)
     lock=json.loads((SCENES/'turbine/reference/data-sources.json').read_text())
     for item in lock['files']:
@@ -118,7 +117,7 @@ def build(name,role,common_mesh=False,tight_transport=False,coarsen_city_floor=F
     control=case/'system/controlDict';control.write_text(control.read_text().replace('points (','points ('+monitor_text+' ',1))
     p['additional_terminal_settling_points_m']=settling_points
     support_config={'base_m':20,'origin_m':[-600,-1200,0],'level':4,'cell_m':1.25,'box':support_box,'cylinder':{'p1':[0,-283.375,32.1],'p2':[0,-276.625,32.1],'radius':13.5}}
-    p['common_reference_mesh_recipe']=(common_mesh or role=='reference') and not coarsen_city_floor
+    p['common_reference_mesh_recipe']=(common_mesh or role=='reference') and not agglomerate
     p.update(rotor_D_m=27.,rotor_center_m=[0,-280,32.1],monitor_m=[0,-215,32.1],diskDir=[0,-1,0],Cp=cp,Ct=ct,area_m2=area,density_kg_m3=1.02,source_cell_m=1.25,source_refinement_level=4,wake_level=wake_level,force_support={'configuration_sha256':hashlib.sha256(json.dumps(support_config,sort_keys=True).encode()).hexdigest(),'configuration':support_config},rotor_coefficient_convention='Locked v3 Cp/Ct interpolated at prescribed8.7m/s; native variableScaling uses solved local monitor vector; no joint fitting.',transfer_limitation='Separate30m cheap recipe cannot share the20m source lattice. This adapted20m candidate is not an exact replay or established optimized method.',cell_limit_adjustment={'original_cheap_target':150000,'joint_cap':500000,'reason':'One allowed adjustment: full city geometry accepted20m background plus common1.25m force support. Cheap150k target remains reported unmet if exceeded.'},physical_validation='No joint observations; numerical agreement is not physical or flight validation.')
     queries=json.loads((case/'queries.json').read_text())
     for region,points in (
@@ -143,14 +142,33 @@ def build(name,role,common_mesh=False,tight_transport=False,coarsen_city_floor=F
 
 def mesh(case):
     outer_start=time.monotonic();outer_cpu=time.process_time()
-    validate_solver(case,json.loads((case/'parameters.json').read_text()))
-    runner.run_stage(case,'mesh','blockMesh > log.blockMesh 2>&1 && snappyHexMesh -overwrite > log.snappyHexMesh 2>&1 && checkMesh -allTopology -allGeometry > log.checkMesh 2>&1 && checkMesh > log.checkMesh.standard 2>&1 && checkMesh -meshQuality > log.checkMesh.quality 2>&1 && topoSet > log.topoSet 2>&1',600)
-    runner.accept_mesh(case);p=json.loads((case/'parameters.json').read_text());runner.check_budget(case,p)
+    p=json.loads((case/'parameters.json').read_text())
+    validate_solver(case,p)
+    commands='blockMesh > log.blockMesh 2>&1 && snappyHexMesh -overwrite > log.snappyHexMesh 2>&1 && '
+    if p.get('post_snap_agglomeration'):
+        commands+=(
+            '(cd system/agglomeration && time wmake -j3) > log.agglomeration-build 2>&1 && '
+            '/tmp/agglomerate > log.agglomeration 2>&1 && '
+            'rm -f constant/polyMesh/{surfaceIndex,refinementHistory} && '
+            'rm -rf constant/polyMesh/sets && '
+        )
+    commands+='checkMesh -allTopology -allGeometry > log.checkMesh 2>&1 && checkMesh > log.checkMesh.standard 2>&1 && checkMesh -meshQuality > log.checkMesh.quality 2>&1 && topoSet > log.topoSet 2>&1'
+    runner.run_stage(case,'mesh',commands,600)
+    runner.accept_mesh(case);runner.check_budget(case,p)
     audit=support_audit(case,p)
-    if not audit['all_selected_cells_at_fixed_level']:raise ValueError('Source support not uniformly fixed level')
     dump(case/'support-audit.json',audit)
+    if p.get('post_snap_agglomeration'):
+        reference=ROOT/'runs/poc-N-reference-tight-transport'
+        expected=json.loads((reference/'support-audit.json').read_text())
+        keys=('configuration_sha256','selected_cells','spatial_cell_vertices_sha256')
+        if not all(audit[key]==expected[key] for key in keys):
+            raise ValueError('Agglomeration changed exact rotor support')
+    if not audit['all_selected_cells_at_fixed_level']:raise ValueError('Source support not uniformly fixed level')
     mesh_cost=json.loads((case/'cost.mesh.json').read_text())
-    dump(case/'cost.host-mesh-audit.json',{'elapsed_s':time.monotonic()-outer_start-mesh_cost['elapsed_s'],'cpu_s':time.process_time()-outer_cpu,'scope':'Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted'})
+    total_mesh_elapsed=time.monotonic()-outer_start
+    dump(case/'cost.host-mesh-audit.json',{'elapsed_s':total_mesh_elapsed-mesh_cost['elapsed_s'],'cpu_s':time.process_time()-outer_cpu,'scope':'Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted'})
+    if p.get('post_snap_agglomeration') and total_mesh_elapsed>600:
+        raise ValueError('Agglomeration exceeded the mesh budget including support audit')
 
 def sample(case):
     commands=''
@@ -356,15 +374,15 @@ def main():
     parser.add_argument('--reference')
     parser.add_argument('--tight-transport',action='store_true',
                         help='Build a common-mesh reference with inner transport absolute tolerance 1e-10')
-    parser.add_argument('--coarsen-city-floor',action='store_true',
-                        help='Build a baseline with city floor volume refinement level 2 and the reference wake recipe')
+    parser.add_argument('--agglomerate',action='store_true',
+                        help='Build a baseline with interior octet agglomeration after common-mesh snapping')
     args=parser.parse_args()
     if args.tight_transport and (args.stage!='build' or args.role!='reference' or not args.common_mesh):
         parser.error('--tight-transport requires build --role reference --common-mesh')
-    if args.coarsen_city_floor and (args.stage!='build' or args.role!='baseline' or not args.common_mesh):
-        parser.error('--coarsen-city-floor requires build --role baseline --common-mesh')
+    if args.agglomerate and (args.stage!='build' or args.role!='baseline' or not args.common_mesh):
+        parser.error('--agglomerate requires build --role baseline --common-mesh')
     case=ROOT/'runs'/args.case
-    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.coarsen_city_floor)
+    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.agglomerate)
     elif args.stage=='mesh':mesh(case)
     elif args.stage=='solve':
         validate_solver(case,json.loads((case/'parameters.json').read_text()))
