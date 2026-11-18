@@ -71,7 +71,8 @@ def validate_solver(case,p):
     if ('consistent yes;' in text)!=(p['role']!='baseline'):raise ValueError('Unmatched SIMPLE convention')
 
 HUB_WORLD=(0,-280,32.1)
-JOINT_DIRECTIONS=('N','NNE','NE')
+DEFAULT_RECIPES={'N':'production','NNE':'strict','NE':'production'}
+JOINT_DIRECTIONS=tuple(DEFAULT_RECIPES)
 RECIPES={
     'strict': ('reference', True, True, False),
     'production': ('baseline', True, False, True),
@@ -512,7 +513,7 @@ def main():
     parser.add_argument('stage',choices=['build','mesh','solve','sample','evaluate'])
     parser.add_argument('--case',required=True)
     parser.add_argument('--direction',choices=JOINT_DIRECTIONS,help='Meteorological wind-from direction for build (default N)')
-    parser.add_argument('--recipe',choices=RECIPES,help='Build the accepted production or strict reference configuration')
+    parser.add_argument('--recipe',choices=RECIPES,help='Mesh and solver preset. Defaults to production for N and NE, strict for the NNE validation case.')
     parser.add_argument('--role',choices=['reference','baseline','candidate'])
     parser.add_argument('--reference',help='Reference case for the mesh/solve support audit or field evaluation')
     parser.add_argument('--tight-transport',action='store_true',
@@ -522,12 +523,12 @@ def main():
     args=parser.parse_args()
     if args.stage!='build' and (args.direction or args.recipe):
         parser.error('--direction and --recipe apply to build')
+    if args.stage=='build' and not (args.recipe or args.role):
+        args.recipe=DEFAULT_RECIPES[args.direction or 'N']
     if args.recipe:
         if args.role or args.common_mesh or args.tight_transport or args.agglomerate:
             parser.error('--recipe already selects role, mesh and solver flags')
         args.role,args.common_mesh,args.tight_transport,args.agglomerate=RECIPES[args.recipe]
-    if args.stage=='build' and not args.role:
-        parser.error('build requires --recipe or --role')
     if args.tight_transport and (args.stage!='build' or args.role!='reference' or not args.common_mesh):
         parser.error('--tight-transport requires build --role reference --common-mesh')
     if args.agglomerate and (args.stage!='build' or args.role!='baseline' or not args.common_mesh):

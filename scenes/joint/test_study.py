@@ -76,10 +76,12 @@ class DirectionalStudyTest(unittest.TestCase):
             }]}))
             study.dump(scenes / 'turbine/reference/data-sources.json', {'files': []})
 
-            for direction, recipe in [('N', 'strict'), ('NE', 'production'), ('NNE', 'strict')]:
+            for direction, recipe in [('N', 'strict'), ('NE', None), ('NNE', None)]:
                 with self.subTest(direction=direction):
                     args = ['study.py', 'build', '--case', direction,
-                            '--direction', direction, '--recipe', recipe]
+                            '--direction', direction]
+                    if recipe:
+                        args.extend(['--recipe', recipe])
                     with (patch.object(study, 'ROOT', root),
                           patch.object(study, 'SCENES', scenes),
                           patch.object(study.city, 'ROOT', city),
@@ -123,7 +125,9 @@ class DirectionalStudyTest(unittest.TestCase):
                         approx_point(read_point(floor, 'origin'), study.city.transform((-205,-205,0),theta))
                         approx_point(read_point(floor, 'span'), (410,410,10))
                         approx_point(read_point(floor, 'e1'), study.city.transform((1,0,0),theta))
-                    if recipe == 'strict':
+                    if direction == 'NNE':
+                        self.assertEqual(len(p['directional_mesh_repairs_world_m']), 2)
+                    if direction in ('N', 'NNE'):
                         self.assertEqual(p['role'], 'reference')
                         self.assertTrue(p['tight_transport'])
                     else:
