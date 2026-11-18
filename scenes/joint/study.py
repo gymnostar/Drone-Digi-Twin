@@ -68,11 +68,13 @@ def validate_solver(case,p):
     if actual!=expected:raise ValueError('Retained relaxation factors changed')
     if ('consistent yes;' in text)!=(p['role']!='baseline'):raise ValueError('Unmatched SIMPLE convention')
 
-def build(name,role,common_mesh=False,tight_transport=False):
+def build(name,role,common_mesh=False,tight_transport=False,coarsen_city_floor=False):
     started=time.monotonic();cpu=time.process_time()
     if Path(name).name!=name:raise ValueError('One fresh case name required')
     if tight_transport and (role!='reference' or not common_mesh):
         raise ValueError('Tight transport requires --role reference --common-mesh')
+    if coarsen_city_floor and (role!='baseline' or not common_mesh):
+        raise ValueError('Coarsening the city floor requires --role baseline --common-mesh')
     case=ROOT/'runs'/name
     args=SimpleNamespace(case=name,closure='realizableKE',direction='N',resolution='reference',empty=False,background_m=20.,mesh_repair=False,solver_repair=role!='baseline',consistent_simple=role!='baseline')
     city.build_poc(args, case_root=ROOT/'runs')
@@ -97,6 +99,11 @@ def build(name,role,common_mesh=False,tight_transport=False):
     snappy=case/'system/snappyHexMeshDict';text=snappy.read_text()
     text=text.replace('geometry {\n','geometry {\n sourceSupport {type searchableBox; '+city.box_string(*support_box)+'}\n rotorWake {type searchableBox; '+city.box_string(*wake_box)+'}\n',1)
     text=text.replace('refinementRegions {','refinementRegions { sourceSupport {mode inside; levels ((1E15 4));} rotorWake {mode inside; levels ((1E15 '+str(wake_level)+'));}',1)
+    if coarsen_city_floor:
+        original='floorRegion {mode inside; levels ((1E15 3));}'
+        if text.count(original)!=1:raise ValueError('Expected one original city floor refinement')
+        text=text.replace(original,'floorRegion {mode inside; levels ((1E15 2));}')
+        p['city_floor_refinement_level']=2
     snappy.write_text(text)
     lock=json.loads((SCENES/'turbine/reference/data-sources.json').read_text())
     for item in lock['files']:
@@ -111,7 +118,7 @@ def build(name,role,common_mesh=False,tight_transport=False):
     control=case/'system/controlDict';control.write_text(control.read_text().replace('points (','points ('+monitor_text+' ',1))
     p['additional_terminal_settling_points_m']=settling_points
     support_config={'base_m':20,'origin_m':[-600,-1200,0],'level':4,'cell_m':1.25,'box':support_box,'cylinder':{'p1':[0,-283.375,32.1],'p2':[0,-276.625,32.1],'radius':13.5}}
-    p['common_reference_mesh_recipe']=common_mesh or role=='reference'
+    p['common_reference_mesh_recipe']=(common_mesh or role=='reference') and not coarsen_city_floor
     p.update(rotor_D_m=27.,rotor_center_m=[0,-280,32.1],monitor_m=[0,-215,32.1],diskDir=[0,-1,0],Cp=cp,Ct=ct,area_m2=area,density_kg_m3=1.02,source_cell_m=1.25,source_refinement_level=4,wake_level=wake_level,force_support={'configuration_sha256':hashlib.sha256(json.dumps(support_config,sort_keys=True).encode()).hexdigest(),'configuration':support_config},rotor_coefficient_convention='Locked v3 Cp/Ct interpolated at prescribed8.7m/s; native variableScaling uses solved local monitor vector; no joint fitting.',transfer_limitation='Separate30m cheap recipe cannot share the20m source lattice. This adapted20m candidate is not an exact replay or established optimized method.',cell_limit_adjustment={'original_cheap_target':150000,'joint_cap':500000,'reason':'One allowed adjustment: full city geometry accepted20m background plus common1.25m force support. Cheap150k target remains reported unmet if exceeded.'},physical_validation='No joint observations; numerical agreement is not physical or flight validation.')
     queries=json.loads((case/'queries.json').read_text())
     for region,points in (
@@ -209,19 +216,14 @@ def generation_timing(case, diagnostics):
             'and manual implementation work excluded.'))
 
 def cost_environment_matches(a,b):
+    resources=json.loads(city.PROTOCOL.read_text())['resources']
     stages=[result['cost'].get(stage,{}) for result in (a,b) for stage in ('mesh','solve','sample')]
-    first=stages[0]
-    for field in ('host','image','cpu_limit','memory_limit_bytes'):
-        value=first.get(field)
-        if field in ('host','image'):
-            if not isinstance(value,str) or not value.strip():
-                return False
-        elif type(value) not in (int,float) or not math.isfinite(value) or value<=0:
-            return False
-        if any(stage.get(field)!=value for stage in stages):
-            return False
-    return (all(result.get('host')==first['host'] for result in (a,b))
-            and all(stage.get('host_platform')==first.get('host_platform') for stage in stages))
+    host=a.get('host')
+    platform=stages[0].get('host_platform')
+    expected={'host':host,'host_platform':platform,'image':runner.IMAGE,
+              'cpu_limit':resources['cpu_quota'],'memory_limit_bytes':resources['memory_limit_GiB']*1024**3}
+    return bool(host and platform and host==b.get('host')
+                and all(stage.get(key)==value for stage in stages for key,value in expected.items()))
 
 def strict_reference_configuration(case, parameters):
     protocol_bytes=city.PROTOCOL.read_bytes()
@@ -239,7 +241,7 @@ def strict_reference_configuration(case, parameters):
             return False
     return matches
 
-def region_errors(data, ref, keys):
+def region_errors(data, ref, keys, uref):
     common=sorted(keys&data.keys())
     errors=sorted(math.dist(data[k]['U'],ref[k]['U']) for k in common)
     rmse=math.sqrt(sum(e*e for e in errors)/len(errors)) if errors else None
@@ -248,10 +250,11 @@ def region_errors(data, ref, keys):
     p95=errors[lo]+(errors[min(lo+1,len(errors)-1)]-errors[lo])*(position-lo) if errors else None
     return {'reference_valid':len(keys),'common_valid':len(common),
             'coverage':len(common)/len(keys) if keys else 0,
-            'vector_RMSE_over_Uref':rmse/8.7 if rmse is not None else None,
-            'P95_over_Uref':p95/8.7 if p95 is not None else None}
+            'vector_RMSE_m_s':rmse,'P95_m_s':p95,
+            'vector_RMSE_over_Uref':rmse/uref if rmse is not None else None,
+            'P95_over_Uref':p95/uref if p95 is not None else None}
 
-def descriptive_city_errors(data, ref, queries):
+def descriptive_city_errors(data, ref, queries, uref):
     requested_by_height={}
     for query in queries:
         if query['region']=='city':
@@ -263,7 +266,7 @@ def descriptive_city_errors(data, ref, queries):
     for height, requested in sorted(requested_by_height.items()):
         valid={key for key in requested.values() if key in ref}
         invalid={xy for xy,key in requested.items() if key not in ref}
-        heights[f'{height:g}']={'requested':len(requested),**region_errors(data,ref,valid)}
+        heights[f'{height:g}']={'requested':len(requested),**region_errors(data,ref,valid,uref)}
         for (x,y),key in requested.items():
             if key in valid and (
                 (any((x-d,y) in invalid for d in (5,10))
@@ -279,7 +282,7 @@ def descriptive_city_errors(data, ref, queries):
             'Reference-valid city points bracketed along x or y at the same requested height '
             'by reference-invalid requested city points within 10 m on each side. '
             'Reference sampling validity is a geometric proxy.'),
-        'narrow_gap_proxy':region_errors(data,ref,narrow_gap),
+        'narrow_gap_proxy':region_errors(data,ref,narrow_gap,uref),
     }
 
 def evaluate(case,reference=None):
@@ -295,6 +298,10 @@ def evaluate(case,reference=None):
         rp=json.loads((reference/'parameters.json').read_text());rd=city.diagnostics(reference);ref,ref_queries,ref_iteration=samples(reference);rs=support_audit(reference,rp);rf=force_audit(reference,rp,ref)
         for key in ('protocol_sha256','query_sha256','scaled_stl_sha256','Cp','Ct','closure','Uref_m_s','z0_m'):
             if p[key]!=rp[key]:raise ValueError('Unmatched joint '+key)
+        for path in ('0/U','0/p','0/k','0/epsilon','0/nut','constant/fvOptions',
+                     'constant/transportProperties','constant/turbulenceProperties','system/fvSchemes'):
+            if (case/path).read_bytes()!=(reference/path).read_bytes():
+                raise ValueError('Unmatched coupled case input '+path)
         if queries!=ref_queries:
             raise ValueError('Unmatched joint query records')
         support_match=all(support[k]==rs[k] for k in ('configuration_sha256','selected_cells','spatial_cell_vertices_sha256'))
@@ -321,17 +328,17 @@ def evaluate(case,reference=None):
             'cost_environment_matches':environment_matches,
             'support_exact_match':support_match,'regions':{},
             'elapsed_ratio_descriptive':elapsed_ratio,
-            'speedup':elapsed_ratio if (checked and d['checked_coupled_result'] and support_match
+            'speedup':elapsed_ratio if (p['role'] in ('baseline','candidate') and checked and d['checked_coupled_result'] and support_match
                                         and timing_complete and environment_matches) else None,
         }
         for region in ('city','building_wake','rotor_wake','flight','domain'):
             base='city' if region=='building_wake' else region
             keys={k for k in ref if k[0]==base and (region!='building_wake' or ref[k]['xyz'][1]<=-100 and ref[k]['xyz'][2]<=40)}
-            metrics=region_errors(data,ref,keys)
+            metrics=region_errors(data,ref,keys,rp['Uref_m_s'])
             rmse=metrics['vector_RMSE_over_Uref']
             metrics['targets_pass']=rmse is not None and rmse<=.05 and metrics['P95_over_Uref']<=.15 and metrics['coverage']>=.95
             comparison['regions'][region]=metrics
-        comparison['descriptive_diagnostics']=descriptive_city_errors(data,ref,ref_queries)
+        comparison['descriptive_diagnostics']=descriptive_city_errors(data,ref,ref_queries,rp['Uref_m_s'])
         comparison['all_declared_ROI_targets_pass']=all(comparison['regions'][k]['targets_pass'] for k in ('city','building_wake','rotor_wake','flight'))
         comparison['overall_target_pass']=bool(checked and d['checked_coupled_result'] and support_match and comparison['all_declared_ROI_targets_pass'] and comparison['speedup'] is not None and comparison['speedup']>=2)
         d['comparison']=comparison
@@ -349,11 +356,15 @@ def main():
     parser.add_argument('--reference')
     parser.add_argument('--tight-transport',action='store_true',
                         help='Build a common-mesh reference with inner transport absolute tolerance 1e-10')
+    parser.add_argument('--coarsen-city-floor',action='store_true',
+                        help='Build a baseline with city floor volume refinement level 2 and the reference wake recipe')
     args=parser.parse_args()
     if args.tight_transport and (args.stage!='build' or args.role!='reference' or not args.common_mesh):
         parser.error('--tight-transport requires build --role reference --common-mesh')
+    if args.coarsen_city_floor and (args.stage!='build' or args.role!='baseline' or not args.common_mesh):
+        parser.error('--coarsen-city-floor requires build --role baseline --common-mesh')
     case=ROOT/'runs'/args.case
-    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport)
+    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.coarsen_city_floor)
     elif args.stage=='mesh':mesh(case)
     elif args.stage=='solve':
         validate_solver(case,json.loads((case/'parameters.json').read_text()))
