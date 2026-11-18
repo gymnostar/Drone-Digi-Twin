@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PROTOCOL = ROOT.parent/'poc-protocol.json'
 IMAGE = 'sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289'
-DIRECTIONS = {'N':0., 'NE':45., 'NW':315., 'E':90., 'S':180., 'W':270.}
+DIRECTIONS = {'N':0., 'NNE':22.5, 'NE':45., 'NW':315., 'E':90., 'S':180., 'W':270.}
 
 def write(path, body, cls='dictionary'):
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -29,6 +29,19 @@ def box_string(a,b):
 def bbox_world_to_solver(a,b,degrees):
     ps=[transform((x,y,z),degrees) for x in (a[0],b[0]) for y in (a[1],b[1]) for z in (a[2],b[2])]
     return tuple(min(p[i] for p in ps) for i in range(3)),tuple(max(p[i] for p in ps) for i in range(3))
+
+def world_refinement_box(low,high,degrees,oriented=False):
+    if not (oriented and degrees):
+        return 'type searchableBox; '+box_string(*bbox_world_to_solver(low,high,degrees))
+    # OpenFOAM v2306 maps [0, span] from its local box frame using this corner and axes.
+    origin=transform(low,degrees)
+    span=tuple(b-a for a,b in zip(low,high))
+    axis=transform((1,0,0),degrees)
+    def vector(values):
+        return '('+' '.join(map(str,values))+')'
+    return (f'type searchableRotatedBox; origin {vector(origin)}; span {vector(span)}; '
+            f'e1 {vector(axis)}; e3 (0 0 1);')
+
 
 def build_poc(args, case_root=None):
     prepare_start=time.monotonic();prepare_cpu=time.process_time()
@@ -128,19 +141,20 @@ outlet {{type patch; faces ((0 1 5 4));}} inlet {{type patch; faces ((3 7 6 2));
 sides {{type patch; faces ((0 4 7 3) (1 2 6 5));}}
 ground {{type wall; faces ((0 3 2 1));}} top {{type patch; faces ((4 5 6 7));}}
 ); mergePatchPairs ();''')
-    floor=bbox_world_to_solver((-205,-205,0),(205,205,10),theta)
-    district=bbox_world_to_solver((-230,-400,0),(230,230,100),theta)
-    repair=bbox_world_to_solver((126.25,-145,0),(136.25,-135,7.5),theta)
+    oriented=getattr(args,'oriented_world_boxes',False)
+    floor=world_refinement_box((-205,-205,0),(205,205,10),theta,oriented)
+    district=world_refinement_box((-230,-400,0),(230,230,100),theta,oriented)
+    repair=world_refinement_box((126.25,-145,0),(136.25,-135,7.5),theta,oriented)
     geometry='' if args.empty else ' buildings.stl {type triSurfaceMesh; name buildings;}\n'
     surfaces='' if args.empty else f'buildings {{level ({surface_levels[0]} {surface_levels[1]}); patchInfo {{type wall;}}}}'
     regions=' floorRegion {mode inside; levels ((1E15 3));} inletStrip {mode inside; levels ((1E15 3));}'
     if not args.empty:regions+=' district {mode inside; levels ((1E15 1));} repair {mode inside; levels ((1E15 4));}'
     write(case/'system/snappyHexMeshDict',f'''castellatedMesh true; snap {'false' if args.empty else 'true'}; addLayers false;
 geometry {{
-{geometry} floorRegion {{type searchableBox; {box_string(*floor)}}}
+{geometry} floorRegion {{{floor}}}
  inletStrip {{type searchableBox; min (-10 200 0); max (10 600 80);}}
- district {{type searchableBox; {box_string(*district)}}}
- repair {{type searchableBox; {box_string(*repair)}}}
+ district {{{district}}}
+ repair {{{repair}}}
 }}
 castellatedMeshControls {{
  maxLocalCells {maxcells}; maxGlobalCells {maxcells}; minRefinementCells 5;

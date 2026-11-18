@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import importlib.util
+import itertools
 import json
 import math
 import re
@@ -69,7 +70,28 @@ def validate_solver(case,p):
     if actual!=expected:raise ValueError('Retained relaxation factors changed')
     if ('consistent yes;' in text)!=(p['role']!='baseline'):raise ValueError('Unmatched SIMPLE convention')
 
-def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False):
+HUB_WORLD=(0,-280,32.1)
+JOINT_DIRECTIONS=('N','NNE','NE')
+RECIPES={
+    'strict': ('reference', True, True, False),
+    'production': ('baseline', True, False, True),
+}
+
+
+def rotor_point(north_point, degrees):
+    """Keep the world hub fixed and yaw north-case offsets with the inflow."""
+    if degrees==0:
+        return north_point
+    hub=city.transform(HUB_WORLD,degrees)
+    x,y,z=north_point
+    return (hub[0]+x-HUB_WORLD[0],hub[1]+y-HUB_WORLD[1],z)
+
+
+def foam_point(point):
+    return '('+' '.join(map(str,point))+')'
+
+
+def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,direction='N'):
     started=time.monotonic();cpu=time.process_time()
     if Path(name).name!=name:raise ValueError('One fresh case name required')
     if tight_transport and (role!='reference' or not common_mesh):
@@ -77,10 +99,14 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False):
     if agglomerate and (role!='baseline' or not common_mesh):
         raise ValueError('Agglomeration requires --role baseline --common-mesh')
     case=ROOT/'runs'/name
-    args=SimpleNamespace(case=name,closure='realizableKE',direction='N',resolution='reference',empty=False,background_m=20.,mesh_repair=False,solver_repair=role!='baseline',consistent_simple=role!='baseline')
+    if direction not in JOINT_DIRECTIONS:
+        raise ValueError('Unsupported coupled direction '+direction)
+    degrees=city.DIRECTIONS[direction]
+    args=SimpleNamespace(case=name,closure='realizableKE',direction=direction,oriented_world_boxes=True,resolution='reference',empty=False,background_m=20.,mesh_repair=False,solver_repair=role!='baseline',consistent_simple=role!='baseline')
     city.build_poc(args, case_root=ROOT/'runs')
     p=json.loads((case/'parameters.json').read_text())
     p.update(joint=True,role=role,scope='Coupled full Niigata geometry and hypothetical full-size SWiFT rotor placement; numerical transfer only, no interaction observations.',max_cells=500000)
+    p['city_refinement_frame']='Fixed world-space floor, district and repair boxes.'
     protocol=json.loads(city.PROTOCOL.read_text())
     thresholds=protocol['convergence']['reference_residual_control' if role=='reference' else 'cheap_residual_control']
     p['residual_thresholds']=thresholds
@@ -97,10 +123,14 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False):
     wake_level=3 if common_mesh else {'reference':3,'baseline':2,'candidate':1}[role]
     support_box=((-20.25,-286.75,6.75),(20.25,-273.25,60.75))
     wake_box=((-40.5,-455.5,0),(40.5,-253,81))
+    support_box=tuple(rotor_point(p,degrees) for p in support_box)
+    wake_box=tuple(rotor_point(p,degrees) for p in wake_box)
     snappy=case/'system/snappyHexMeshDict';text=snappy.read_text()
     text=text.replace('geometry {\n','geometry {\n sourceSupport {type searchableBox; '+city.box_string(*support_box)+'}\n rotorWake {type searchableBox; '+city.box_string(*wake_box)+'}\n',1)
     text=text.replace('refinementRegions {','refinementRegions { sourceSupport {mode inside; levels ((1E15 4));} rotorWake {mode inside; levels ((1E15 '+str(wake_level)+'));}',1)
     if agglomerate:
+        protected=tuple(rotor_point(p,degrees) for p in ((-26,-292,1.5),(26,-268,66)))
+        city.write(case/'system/agglomerationBox',city.box_string(*protected))
         shutil.copytree(ROOT/'agglomeration',case/'system/agglomeration')
         p['post_snap_agglomeration']='complete interior snapped sibling octets'
     snappy.write_text(text)
@@ -110,21 +140,50 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False):
         if path.stat().st_size!=item['bytes'] or hashlib.sha256(path.read_bytes()).hexdigest()!=item['sha256']:raise ValueError('Turbine input hash mismatch')
     cp,ct=turbine_prepare.rotor_coefficients(SCENES/'turbine/data/raw',8.7)
     area=math.pi*13.5**2
-    city.write(case/'system/topoSetDict','actions ({name rotor; type cellSet; action new; source cylinderToCell; p1 (0 -283.375 32.1); p2 (0 -276.625 32.1); radius 13.5;});')
-    city.write(case/'constant/fvOptions',f'rotor {{type actuationDiskSource; variant variableScaling; selectionMode cellSet; cellSet rotor; diskArea {area:.12g}; diskDir (0 -1 0); sink true; Cp {cp:.12g}; Ct {ct:.12g}; monitorMethod points; monitorCoeffs {{points ((0 -215 32.1));}} writeToFile true; writeFileStart 0; writeFileEnd 1000000;}}')
-    settling_points=[(0.,y,32.1) for y in (-215.,-334.,-361.,-388.,-415.)]
-    monitor_text=' '.join('('+' '.join(map(str,point))+')' for point in settling_points)
+    p1=rotor_point((0,-283.375,32.1),degrees)
+    p2=rotor_point((0,-276.625,32.1),degrees)
+    monitor=rotor_point((0,-215,32.1),degrees)
+    city.write(case/'system/topoSetDict',f'actions ({{name rotor; type cellSet; action new; source cylinderToCell; p1 {foam_point(p1)}; p2 {foam_point(p2)}; radius 13.5;}});')
+    city.write(case/'constant/fvOptions',f'rotor {{type actuationDiskSource; variant variableScaling; selectionMode cellSet; cellSet rotor; diskArea {area:.12g}; diskDir (0 -1 0); sink true; Cp {cp:.12g}; Ct {ct:.12g}; monitorMethod points; monitorCoeffs {{points ({foam_point(monitor)});}} writeToFile true; writeFileStart 0; writeFileEnd 1000000;}}')
+    settling_points=[rotor_point((0.,y,32.1),degrees) for y in (-215.,-334.,-361.,-388.,-415.)]
+    monitor_text=' '.join(foam_point(point) for point in settling_points)
     control=case/'system/controlDict';control.write_text(control.read_text().replace('points (','points ('+monitor_text+' ',1))
     p['additional_terminal_settling_points_m']=settling_points
-    support_config={'base_m':20,'origin_m':[-600,-1200,0],'level':4,'cell_m':1.25,'box':support_box,'cylinder':{'p1':[0,-283.375,32.1],'p2':[0,-276.625,32.1],'radius':13.5}}
+    support_config={'base_m':20,'origin_m':[-600,-1200,0],'level':4,'cell_m':1.25,'box':support_box,'cylinder':{'p1':p1,'p2':p2,'radius':13.5}}
     p['common_reference_mesh_recipe']=(common_mesh or role=='reference') and not agglomerate
-    p.update(rotor_D_m=27.,rotor_center_m=[0,-280,32.1],monitor_m=[0,-215,32.1],diskDir=[0,-1,0],Cp=cp,Ct=ct,area_m2=area,density_kg_m3=1.02,source_cell_m=1.25,source_refinement_level=4,wake_level=wake_level,force_support={'configuration_sha256':hashlib.sha256(json.dumps(support_config,sort_keys=True).encode()).hexdigest(),'configuration':support_config},rotor_coefficient_convention='Locked v3 Cp/Ct interpolated at prescribed8.7m/s; native variableScaling uses solved local monitor vector; no joint fitting.',transfer_limitation='Separate30m cheap recipe cannot share the20m source lattice. This adapted20m candidate is not an exact replay or established optimized method.',cell_limit_adjustment={'original_cheap_target':150000,'joint_cap':500000,'reason':'One allowed adjustment: full city geometry accepted20m background plus common1.25m force support. Cheap150k target remains reported unmet if exceeded.'},physical_validation='No joint observations; numerical agreement is not physical or flight validation.')
+    p.update(
+        rotor_D_m=27., rotor_center_m=HUB_WORLD, rotor_center_solver_m=city.transform(HUB_WORLD,degrees),
+        monitor_m=city.transform(monitor,degrees,inverse=True), monitor_solver_m=monitor,
+        diskDir=[0,-1,0], disk_direction_world=city.transform((0,-1,0),degrees,inverse=True),
+        Cp=cp, Ct=ct, area_m2=area, density_kg_m3=1.02,
+        source_cell_m=1.25, source_refinement_level=4, wake_level=wake_level,
+        force_support={
+            'configuration_sha256':hashlib.sha256(json.dumps(support_config,sort_keys=True).encode()).hexdigest(),
+            'configuration':support_config,
+        },
+        rotor_coefficient_convention='Locked v3 Cp/Ct interpolated at prescribed8.7m/s; native variableScaling uses solved local monitor vector; no joint fitting.',
+        transfer_limitation='Separate30m cheap recipe cannot share the20m source lattice. This adapted20m candidate is not an exact replay or established optimized method.',
+        cell_limit_adjustment={
+            'original_cheap_target':150000,'joint_cap':500000,
+            'reason':'One allowed adjustment: full city geometry accepted20m background plus common1.25m force support. Cheap150k target remains reported unmet if exceeded.',
+        },
+        physical_validation='No joint observations; numerical agreement is not physical or flight validation.',
+    )
     queries=json.loads((case/'queries.json').read_text())
     for region,points in (
         ('rotor_wake',[(x/2,y/2,z/2) for z in range(10,131,5) for y in range(-830,-613,5) for x in range(-54,55,5)]),
         ('flight',[(float(x),float(y),float(z)) for z in (20,40,60) for y in range(-450,-219,5) for x in range(-50,51,5)]),
         ('rotor_monitor',[(0.,-215.,32.1)])):
-        queries.extend({'region':region,'id':i,'world_xyz_m':q,'solver_xyz_m':q} for i,q in enumerate(points))
+        for i,point in enumerate(points):
+            if not degrees:
+                world=solver=point
+            elif region=='flight':
+                world=point
+                solver=city.transform(world,degrees)
+            else:
+                solver=rotor_point(point,degrees)
+                world=city.transform(solver,degrees,inverse=True)
+            queries.append({'region':region,'id':i,'world_xyz_m':world,'solver_xyz_m':solver})
     sets=[]
     for region in dict.fromkeys(q['region'] for q in queries):
         pts=' '.join('('+' '.join(map(str,q['solver_xyz_m']))+')' for q in queries if q['region']==region)
@@ -140,10 +199,23 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False):
     dump(case/'cost.prepare.json',preparation_cost)
     print(json.dumps({'case':str(case),'role':role,'queries':len(queries),'max_cells':p['max_cells']}))
 
+def matched_reference(parameters, reference):
+    if reference is None:
+        suffix='tight-transport' if parameters.get('post_snap_agglomeration') else 'fixed'
+        reference=ROOT/'runs'/f"poc-{parameters['direction']}-reference-{suffix}"
+    rp=json.loads((reference/'parameters.json').read_text())
+    if (rp['role']!='reference' or rp['direction']!=parameters['direction']
+            or rp['wind_from_deg']!=parameters['wind_from_deg']):
+        raise ValueError('Joint comparison requires a reference with the same wind direction')
+    return reference,rp
+
+
 def mesh(case,reference=None):
     outer_start=time.monotonic();outer_cpu=time.process_time()
     p=json.loads((case/'parameters.json').read_text())
     validate_solver(case,p)
+    if p.get('post_snap_agglomeration'):
+        reference,_=matched_reference(p,reference)
     commands='blockMesh > log.blockMesh 2>&1 && snappyHexMesh -overwrite > log.snappyHexMesh 2>&1 && '
     if p.get('post_snap_agglomeration'):
         commands+=(
@@ -158,7 +230,6 @@ def mesh(case,reference=None):
     audit=support_audit(case,p)
     dump(case/'support-audit.json',audit)
     if p.get('post_snap_agglomeration'):
-        reference=reference or ROOT/'runs/poc-N-reference-tight-transport'
         expected=json.loads((reference/'support-audit.json').read_text())
         keys=('configuration_sha256','selected_cells','spatial_cell_vertices_sha256')
         if not all(audit[key]==expected[key] for key in keys):
@@ -175,17 +246,56 @@ def sample(case):
     if not (case/'log.reconstructPar').exists():commands+='reconstructPar -latestTime > log.reconstructPar 2>&1 && '
     runner.run_stage(case,'sample',commands+'simpleFoam -postProcess -dict system/roiSampling -latestTime > log.roiSampling 2>&1',120)
 
+def raw_vectors(expected, rows, *, allow_other_points=False):
+    """Join cloud rows by coordinate, allowing only raw writer round-off.
+
+    OpenFOAM raw sets can print six significant digits, including rotated
+    positions. Index the rounding interval per axis in one-metre buckets.
+    Missing rows stay missing. Ambiguous or repeated rows cannot supply an ID.
+    """
+    buckets={}
+    for key,point in expected.items():
+        intervals=[]
+        for x in point:
+            half_unit=0.5*10**(math.floor(math.log10(abs(x)))-5) if x else 0.
+            eps=half_unit+1e-9
+            intervals.append((x-eps,x+eps))
+        bins=[range(math.floor(a),math.floor(b)+1) for a,b in intervals]
+        for index in itertools.product(*bins):
+            buckets.setdefault(index,[]).append((key,intervals))
+    vectors={}
+    seen=set()
+    for row in rows:
+        if len(row)!=6 or not all(math.isfinite(v) for v in row[:3]):
+            raise ValueError('Malformed raw cloud sample')
+        index=tuple(math.floor(v) for v in row[:3])
+        matches=[key for key,bounds in buckets.get(index,())
+                 if all(lo<=v<=hi for v,(lo,hi) in zip(row[:3],bounds))]
+        if not matches and allow_other_points:
+            continue
+        if len(matches)!=1 or matches[0] in seen:
+            raise ValueError(f'Raw cloud coordinate has no unique query ID: {row[:3]}')
+        key=matches[0]
+        seen.add(key)
+        if all(math.isfinite(v) and abs(v)<1e10 for v in row[3:]):
+            vectors[key]=row[3:]
+    return vectors
+
+
 def samples(case):
+    p=json.loads((case/'parameters.json').read_text())
     queries=json.loads((case/'queries.json').read_text())
     folder=city.numeric_times(case/'postProcessing/roi')[-1];data={}
     for region in dict.fromkeys(q['region'] for q in queries):
         combined=folder/f'{region}_k_U.xy'
         rows=[r[:3]+r[4:7] for r in city.raw_rows(combined)] if combined.exists() else city.raw_rows(folder/f'{region}_U.xy')
-        values={tuple(round(v,7) for v in r[:3]):r[3:6] for r in rows if len(r)>=6 and all(math.isfinite(v) and abs(v)<1e10 for v in r[3:6])}
-        for q in (q for q in queries if q['region']==region):
-            u=values.get(tuple(round(v,7) for v in q['solver_xyz_m']))
-            if u is not None:data[(region,q['id'])]={'xyz':q['world_xyz_m'],'U':u}
+        requested={q['id']:q for q in queries if q['region']==region}
+        expected={key:q['solver_xyz_m'] for key,q in requested.items()}
+        for key,u in raw_vectors(expected,rows).items():
+            data[(region,key)]={'xyz':requested[key]['world_xyz_m'],
+                                'U':city.transform(u,p['wind_from_deg'],inverse=True)}
     return data,queries,folder.name
+
 
 def force_audit(case,p,data):
     rows=[]
@@ -193,20 +303,34 @@ def force_audit(case,p,data):
         if line.strip() and not line.lstrip().startswith('#'):rows.append([float(v) for v in re.findall(r'[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?',line)])
     sample_time=float(city.numeric_times(case/'postProcessing/roi')[-1].name)
     row=max((r for r in rows if r[0]<=sample_time),key=lambda r:r[0]);monitor=row[1:4];disk=row[6:9];thrust=row[11]
-    expected=.5*p['area_m2']*p['Ct']*sum(v*v for v in monitor)*disk[1]**2/sum(v*v for v in disk)
-    relative=abs(thrust-expected)/expected
-    valid=('rotor_monitor',0) in data and monitor[1]<0 and disk[1]<0 and thrust>0 and relative<1e-8
-    return {'passed':valid,'force_iteration':row[0],'sample_iteration':sample_time,'monitor_is_valid_fluid_sample':('rotor_monitor',0) in data,'monitor_vector_m_s':monitor,'disk_mean_vector_m_s':disk,'kinematic_thrust':thrust,'physical_thrust_N':1.02*thrust,'formula_relative_error':relative,'sink_convention':'Native source sink=true, diskDir(0 -1 0), actual upstream/disk Uy negative; force opposes prescribed flow. Source formula uses Uy squared, not standalone turbine Ux.'}
+    normal=p['diskDir']
+    disk_axial=sum(v*n for v,n in zip(disk,normal))
+    monitor_axial=sum(v*n for v,n in zip(monitor,normal))
+    disk_squared=sum(v*v for v in disk)
+    expected=(.5*p['area_m2']*p['Ct']*sum(v*v for v in monitor)*disk_axial**2/disk_squared
+              if disk_squared>0 else 0.)
+    relative=abs(thrust-expected)/expected if expected>0 else None
+    valid=(row[0]==sample_time and ('rotor_monitor',0) in data and disk_axial>0 and monitor_axial>0
+           and thrust>0 and relative is not None and relative<1e-8)
+    return {'passed':valid,'force_iteration':row[0],'sample_iteration':sample_time,
+            'monitor_is_valid_fluid_sample':('rotor_monitor',0) in data,
+            'monitor_vector_m_s':city.transform(monitor,p['wind_from_deg'],inverse=True),
+            'disk_mean_vector_m_s':city.transform(disk,p['wind_from_deg'],inverse=True),
+            'vector_frame':'world east/north/up','kinematic_thrust':thrust,
+            'physical_thrust_N':p['density_kg_m3']*thrust,'formula_relative_error':relative,
+            'sink_convention':'Native sink opposes flow along the yawed disk normal. The thrust audit uses velocity projected onto that normal in solver coordinates.'}
 
-def wake_settling(case):
+
+def wake_settling(case,p):
     folders=city.numeric_times(case/'postProcessing/monitor')
     if len(folders)<2:return {'passed':False,'reason':'Less than two terminal samples'}
     a,b=folders[-2:]
+    expected=dict(enumerate(p['additional_terminal_settling_points_m'][1:]))
     def points(folder):
-        return {tuple(round(v,7) for v in r[:3]):r[3:6] for r in city.raw_rows(folder/'probes_U.xy') if r[1]<=-280 and all(math.isfinite(v) and abs(v)<1e10 for v in r[3:6])}
+        return raw_vectors(expected,city.raw_rows(folder/'probes_U.xy'),allow_other_points=True)
     aa,bb=points(a),points(b);keys=aa.keys()&bb.keys()
-    error=math.sqrt(sum(math.dist(aa[k],bb[k])**2 for k in keys)/len(keys))/8.7 if keys else None
-    return {'iterations':[a.name,b.name],'valid_wake_probes':len(keys),'vector_change_RMSE_over_Uref':error,'passed':len(keys)==4 and error is not None and error<=.002}
+    error=math.sqrt(sum(math.dist(aa[k],bb[k])**2 for k in keys)/len(keys))/p['Uref_m_s'] if keys else None
+    return {'iterations':[a.name,b.name],'valid_wake_probes':len(keys),'vector_change_RMSE_over_Uref':error,'passed':len(keys)==4 and error is not None and error<=p['probe_change_RMSE_over_Uref_threshold']}
 
 def elapsed_recorded(cost, *, allow_zero=False):
     elapsed=cost.get('elapsed_s')
@@ -260,6 +384,11 @@ def strict_reference_configuration(case, parameters):
             return False
     return matches
 
+def in_building_wake(world_xyz,degrees):
+    _,downwind_coordinate,z=city.transform(world_xyz,degrees)
+    return downwind_coordinate<=-100 and z<=40
+
+
 def region_errors(data, ref, keys, uref):
     common=sorted(keys&data.keys())
     errors=sorted(math.dist(data[k]['U'],ref[k]['U']) for k in common)
@@ -308,13 +437,13 @@ def evaluate(case,reference=None):
     p=json.loads((case/'parameters.json').read_text());d=city.diagnostics(case);data,queries,iteration=samples(case)
     support=support_audit(case,p);force=force_audit(case,p,data)
     generation_timing(case,d)
-    d.update(scope=p['scope'],joint=True,role=p['role'],sample_iteration=iteration,force_support=support,force_audit=force,cheap150k_target_met=d['cells']<=150000,cell_limit_adjustment=p['cell_limit_adjustment'],transfer_limitation=p['transfer_limitation'])
+    d.update(scope=p['scope'],joint=True,role=p['role'],direction=p['direction'],wind_from_deg=p['wind_from_deg'],sample_iteration=iteration,force_support=support,force_audit=force,cheap150k_target_met=d['cells']<=150000,cell_limit_adjustment=p['cell_limit_adjustment'],transfer_limitation=p['transfer_limitation'])
     d['sample_matches_final_iteration']=float(iteration)==float(d['solver_final_iteration'])
-    d['rotor_wake_settling']=wake_settling(case)
+    d['rotor_wake_settling']=wake_settling(case,p)
     d['checked_coupled_result']=d['frozen_numerical_checks_pass'] and d['sample_matches_final_iteration'] and d['rotor_wake_settling']['passed'] and force['passed'] and support['all_selected_cells_at_fixed_level']
     d['sampling_counts']={region:{'requested':sum(q['region']==region for q in queries),'valid':sum(k[0]==region for k in data)} for region in dict.fromkeys(q['region'] for q in queries)}
     if reference:
-        rp=json.loads((reference/'parameters.json').read_text());rd=city.diagnostics(reference);ref,ref_queries,ref_iteration=samples(reference);rs=support_audit(reference,rp);rf=force_audit(reference,rp,ref)
+        reference,rp=matched_reference(p,reference);rd=city.diagnostics(reference);ref,ref_queries,ref_iteration=samples(reference);rs=support_audit(reference,rp);rf=force_audit(reference,rp,ref)
         for key in ('protocol_sha256','query_sha256','scaled_stl_sha256','Cp','Ct','closure','Uref_m_s','z0_m'):
             if p[key]!=rp[key]:raise ValueError('Unmatched joint '+key)
         for path in ('0/U','0/p','0/k','0/epsilon','0/nut','constant/fvOptions',
@@ -327,7 +456,7 @@ def evaluate(case,reference=None):
         strict_reference=strict_reference_configuration(reference,rp)
         reference_aligned=float(ref_iteration)==float(rd['solver_final_iteration'])
         checked=(strict_reference and rd['frozen_numerical_checks_pass'] and reference_aligned
-                 and wake_settling(reference)['passed'] and rf['passed'] and rs['all_selected_cells_at_fixed_level'])
+                 and wake_settling(reference,rp)['passed'] and rf['passed'] and rs['all_selected_cells_at_fixed_level'])
         generation_timing(reference,rd)
         timing_complete=d['generation_timing_complete'] and rd['generation_timing_complete']
         environment_matches=cost_environment_matches(d,rd)
@@ -352,7 +481,7 @@ def evaluate(case,reference=None):
         }
         for region in ('city','building_wake','rotor_wake','flight','domain'):
             base='city' if region=='building_wake' else region
-            keys={k for k in ref if k[0]==base and (region!='building_wake' or ref[k]['xyz'][1]<=-100 and ref[k]['xyz'][2]<=40)}
+            keys={k for k in ref if k[0]==base and (region!='building_wake' or in_building_wake(ref[k]['xyz'],p['wind_from_deg']))}
             metrics=region_errors(data,ref,keys,rp['Uref_m_s'])
             rmse=metrics['vector_RMSE_over_Uref']
             metrics['targets_pass']=rmse is not None and rmse<=.05 and metrics['P95_over_Uref']<=.15 and metrics['coverage']>=.95
@@ -371,6 +500,8 @@ def main():
     parser.add_argument('--common-mesh',action='store_true',help='Start from the reference wake refinement and rotor-support lattice')
     parser.add_argument('stage',choices=['build','mesh','solve','sample','evaluate'])
     parser.add_argument('--case',required=True)
+    parser.add_argument('--direction',choices=JOINT_DIRECTIONS,help='Meteorological wind-from direction for build (default N)')
+    parser.add_argument('--recipe',choices=RECIPES,help='Build the accepted production or strict reference configuration')
     parser.add_argument('--role',choices=['reference','baseline','candidate'])
     parser.add_argument('--reference',help='Reference case for the mesh/solve support audit or field evaluation')
     parser.add_argument('--tight-transport',action='store_true',
@@ -378,23 +509,28 @@ def main():
     parser.add_argument('--agglomerate',action='store_true',
                         help='Build a baseline with interior sibling agglomeration after common-mesh snapping')
     args=parser.parse_args()
+    if args.stage!='build' and (args.direction or args.recipe):
+        parser.error('--direction and --recipe apply to build')
+    if args.recipe:
+        if args.role or args.common_mesh or args.tight_transport or args.agglomerate:
+            parser.error('--recipe already selects role, mesh and solver flags')
+        args.role,args.common_mesh,args.tight_transport,args.agglomerate=RECIPES[args.recipe]
+    if args.stage=='build' and not args.role:
+        parser.error('build requires --recipe or --role')
     if args.tight_transport and (args.stage!='build' or args.role!='reference' or not args.common_mesh):
         parser.error('--tight-transport requires build --role reference --common-mesh')
     if args.agglomerate and (args.stage!='build' or args.role!='baseline' or not args.common_mesh):
         parser.error('--agglomerate requires build --role baseline --common-mesh')
     case=ROOT/'runs'/args.case
     reference=ROOT/'runs'/args.reference if args.reference else None
-    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.agglomerate)
+    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.agglomerate,args.direction or 'N')
     elif args.stage=='mesh':mesh(case,reference)
     elif args.stage=='solve':
         validate_solver(case,json.loads((case/'parameters.json').read_text()))
         gate_start=time.monotonic();gate_cpu=time.process_time()
         p=json.loads((case/'parameters.json').read_text())
         if p['role']!='reference':
-            if reference is None:
-                default='poc-N-reference-tight-transport' if p.get('post_snap_agglomeration') else 'poc-N-reference-fixed'
-                reference=ROOT/'runs'/default
-            rp=json.loads((reference/'parameters.json').read_text())
+            reference,rp=matched_reference(p,reference)
             a=support_audit(case,p);b=support_audit(reference,rp)
             if not all(a[key]==b[key] for key in ('configuration_sha256','selected_cells','spatial_cell_vertices_sha256')):raise ValueError('Exact force support gate failed; solve prohibited')
         dump(case/'cost.host-solve-audit.json',{'elapsed_s':time.monotonic()-gate_start,'cpu_s':time.process_time()-gate_cpu,'scope':'Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate'})

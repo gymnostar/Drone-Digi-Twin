@@ -170,6 +170,13 @@ int main(int argc, char* argv[])
     #include "createTime.H"
     #include "createMesh.H"
 
+    const IOdictionary protectedBox
+    (
+        IOobject("agglomerationBox", runTime.system(), mesh, IOobject::MUST_READ, IOobject::NO_WRITE)
+    );
+    const point protectedMin(protectedBox.get<point>("min"));
+    const point protectedMax(protectedBox.get<point>("max"));
+
     const word instance = mesh.pointsInstance();
     labelIOList levels
     (
@@ -224,7 +231,7 @@ int main(int argc, char* argv[])
         if (!logicalHex(vertices[celli], oldPoints, patchPoint, low, width)) continue;
         const point high = low + width * vector(1,1,1);
         // Protect the full support box plus at least two level-3 cells on each side.
-        if (overlaps(low, high, point(-26,-292,1.5), point(26,-268,66))) continue;
+        if (overlaps(low, high, protectedMin, protectedMax)) continue;
         const Key key{level, x/2, y/2, z/2};
         const label slot = x%2 + 2*(y%2) + 4*(z%2);
         Octet& octet = groups[key];
