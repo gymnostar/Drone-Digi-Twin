@@ -1,0 +1,379 @@
+{
+  "case": "poc-N-agglomerated-siblings",
+  "scenario": "numerical-abl",
+  "scope": "Coupled full Niigata geometry and hypothetical full-size SWiFT rotor placement; numerical transfer only, no interaction observations.",
+  "closure": "realizableKE",
+  "resolution": "reference",
+  "host": "Host-018.homenet.telecomitalia.it",
+  "cells": 230898,
+  "mesh_checks": {
+    "standard": true,
+    "quality": true,
+    "cell_cap": true,
+    "allGeometry_or_concavity_only": true
+  },
+  "preparation_cost_included": true,
+  "stage_checks": {
+    "prepare": true,
+    "mesh": true,
+    "solve": true,
+    "sample": true
+  },
+  "solver_final_iteration": "308",
+  "last_initial_residuals": {
+    "Ux": 9.792344547e-05,
+    "Uy": 2.141720386e-06,
+    "Uz": 5.456755309e-05,
+    "p": 0.0007243244904,
+    "epsilon": 1.80201727e-06,
+    "k": 1.493278973e-05
+  },
+  "frozen_residual_checks": {
+    "p": true,
+    "U": true,
+    "k": true,
+    "epsilon": true
+  },
+  "solver_reported_convergence": true,
+  "boundary_flux_m3_s": {
+    "flux": -4438653.2916,
+    "outflux": 4438653.8504
+  },
+  "normalized_flux_imbalance": 1.258940410650144e-07,
+  "probe_settling": [
+    {
+      "iterations": [
+        "275",
+        "300"
+      ],
+      "samples": 14,
+      "vector_change_RMSE_over_Uref": 0.0007633570101215156
+    }
+  ],
+  "frozen_numerical_checks_pass": true,
+  "status": "checked numerical result",
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.0469864580081776,
+      "cpu_s": 1.0286460000000002,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 125.95816629100591,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 125.42442100000001,
+      "peak_cgroup_memory_bytes_including_cache": 721469440,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+      "scope": "Cold snapped generation with initial rejected audit plus correction, topology and quality checks",
+      "components": {
+        "initial": {
+          "stage": "mesh",
+          "elapsed_s": 113.2320138750074,
+          "exit_code": 1,
+          "timed_out": false,
+          "cpu_s": 112.919627,
+          "peak_cgroup_memory_bytes_including_cache": 721469440,
+          "cpu_limit": 3,
+          "memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "Host-018.homenet.telecomitalia.it",
+          "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+        },
+        "recovery": {
+          "stage": "mesh-recovery",
+          "elapsed_s": 12.726152415998513,
+          "exit_code": 0,
+          "timed_out": false,
+          "cpu_s": 12.504794,
+          "peak_cgroup_memory_bytes_including_cache": 654778368,
+          "cpu_limit": 3,
+          "memory_limit_bytes": 5368709120,
+          "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+          "host": "Host-018.homenet.telecomitalia.it",
+          "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+        }
+      }
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 106.3735007919895,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 304.371575,
+      "peak_cgroup_memory_bytes_including_cache": 852135936,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "sample": {
+      "stage": "sample",
+      "elapsed_s": 7.658033208019333,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 7.469372,
+      "peak_cgroup_memory_bytes_including_cache": 408367104,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "complete_map_generation_elapsed_s": 249.41651145802462,
+  "complete_map_generation_cpu_s": 438.294014,
+  "accounted_cpu_s_partial": 438.294014,
+  "peak_memory_accounting_complete": true,
+  "peak_cgroup_memory_bytes_including_cache": 852135936,
+  "physical_validation": "not performed: numerical-only ABL toy; experimental conditions intentionally differ",
+  "recorded_pipeline_elapsed_s": 241.03668674902292,
+  "supplemental_host_verification_cost": {
+    "host-mesh-audit": {
+      "elapsed_s": 2.6119580839877017,
+      "cpu_s": 2.6072509999999998,
+      "scope": "Pristine recovery input verification, setup, cost aggregation, mesh acceptance and exact support hash"
+    },
+    "host-solve-audit": {
+      "elapsed_s": 5.767866625013994,
+      "cpu_s": 5.762474999999999,
+      "scope": "Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate"
+    }
+  },
+  "generation_timing_complete": true,
+  "generation_timing_note": "Recorded stage wall time plus measured automated host verification. Incomplete totals omit unrecorded intervals. Comparative scientific evaluation and manual implementation work excluded.",
+  "joint": true,
+  "role": "baseline",
+  "sample_iteration": "308",
+  "force_support": {
+    "configuration_sha256": "07990ce42b35b1477bd090fa22208878243614faf12867189febd7bcd61d1b5f",
+    "selected_cells": 2184,
+    "spatial_cell_vertices_sha256": "ae965b6d2d21da7d816404ea8a62181d8cbf3a02ba57a609a518a5d8454e67d9",
+    "selected_refinement_levels": [
+      4
+    ],
+    "all_selected_cells_at_fixed_level": true,
+    "interpretation": "Same axis-aligned base lattice/refinement box and uniform selected level establish the intended common support; compare selected counts as well as total force.",
+    "nominal_selected_volume_m3": 4265.625,
+    "nominal_volume_over_geometric_cylinder": 1.1037265524586555,
+    "volume_note": "Count times nominal1.25m cubed; snapped cells have small deformations. Exact selected-cell spatial geometry hash, not nominal volume, proves equal support across recipes. Cylinder center selection remains a finite support discretization."
+  },
+  "force_audit": {
+    "passed": true,
+    "force_iteration": 308.0,
+    "sample_iteration": 308.0,
+    "monitor_is_valid_fluid_sample": true,
+    "monitor_vector_m_s": [
+      -0.088230130961,
+      -8.5603336125,
+      -0.26627904473
+    ],
+    "disk_mean_vector_m_s": [
+      -0.057016773941,
+      -5.8304540289,
+      -0.27446709011
+    ],
+    "kinematic_thrust": 16117.991144,
+    "physical_thrust_N": 16440.35096688,
+    "formula_relative_error": 1.3154557597101695e-11,
+    "sink_convention": "Native source sink=true, diskDir(0 -1 0), actual upstream/disk Uy negative; force opposes prescribed flow. Source formula uses Uy squared, not standalone turbine Ux."
+  },
+  "cheap150k_target_met": false,
+  "cell_limit_adjustment": {
+    "original_cheap_target": 150000,
+    "joint_cap": 500000,
+    "reason": "One allowed adjustment: full city geometry accepted20m background plus common1.25m force support. Cheap150k target remains reported unmet if exceeded."
+  },
+  "transfer_limitation": "Separate30m cheap recipe cannot share the20m source lattice. This adapted20m candidate is not an exact replay or established optimized method.",
+  "sample_matches_final_iteration": true,
+  "rotor_wake_settling": {
+    "iterations": [
+      "275",
+      "300"
+    ],
+    "valid_wake_probes": 4,
+    "vector_change_RMSE_over_Uref": 0.0005619243674824594,
+    "passed": true
+  },
+  "checked_coupled_result": true,
+  "sampling_counts": {
+    "city": {
+      "requested": 32805,
+      "valid": 30504
+    },
+    "domain": {
+      "requested": 4940,
+      "valid": 4906
+    },
+    "inflow": {
+      "requested": 7,
+      "valid": 7
+    },
+    "rotor_wake": {
+      "requested": 24200,
+      "valid": 24200
+    },
+    "flight": {
+      "requested": 2961,
+      "valid": 2961
+    },
+    "rotor_monitor": {
+      "requested": 1,
+      "valid": 1
+    }
+  },
+  "comparison": {
+    "reference": "poc-N-reference-tight-transport",
+    "reference_checked": true,
+    "reference_strict_configuration": true,
+    "reference_sample_iteration": "639",
+    "reference_solver_final_iteration": "639",
+    "reference_sample_matches_final_iteration": true,
+    "reference_complete_map_generation_elapsed_s": 525.2740248329937,
+    "reference_generation_timing_complete": true,
+    "reference_supplemental_host_verification_cost": {
+      "host-mesh-audit": {
+        "elapsed_s": 3.1903691240004264,
+        "cpu_s": 3.186418,
+        "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+      },
+      "host-solve-audit": {
+        "elapsed_s": 6.0583988670259714e-05,
+        "cpu_s": 5.9999999999997555e-05,
+        "scope": "Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate"
+      }
+    },
+    "both_generation_timings_complete": true,
+    "cost_environment_matches": true,
+    "support_exact_match": true,
+    "regions": {
+      "city": {
+        "reference_valid": 30504,
+        "common_valid": 30504,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.19356903205488293,
+        "P95_m_s": 0.3619089632614717,
+        "vector_RMSE_over_Uref": 0.02224931402929689,
+        "P95_over_Uref": 0.04159873140936457,
+        "targets_pass": true
+      },
+      "building_wake": {
+        "reference_valid": 6354,
+        "common_valid": 6354,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.19348399911168904,
+        "P95_m_s": 0.39091351371433963,
+        "vector_RMSE_over_Uref": 0.02223954012778035,
+        "P95_over_Uref": 0.044932587783257434,
+        "targets_pass": true
+      },
+      "rotor_wake": {
+        "reference_valid": 24200,
+        "common_valid": 24200,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.11693322701534706,
+        "P95_m_s": 0.23313260790744428,
+        "vector_RMSE_over_Uref": 0.013440600806361731,
+        "P95_over_Uref": 0.026796851483614288,
+        "targets_pass": true
+      },
+      "flight": {
+        "reference_valid": 2961,
+        "common_valid": 2961,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.1402269388460106,
+        "P95_m_s": 0.2933966387694427,
+        "vector_RMSE_over_Uref": 0.016118038947817312,
+        "P95_over_Uref": 0.03372375158269457,
+        "targets_pass": true
+      },
+      "domain": {
+        "reference_valid": 4906,
+        "common_valid": 4906,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.08810412470794253,
+        "P95_m_s": 0.16329888288406375,
+        "vector_RMSE_over_Uref": 0.010126910885970406,
+        "P95_over_Uref": 0.018769986538398134,
+        "targets_pass": true
+      }
+    },
+    "elapsed_ratio_descriptive": 2.1060114334948286,
+    "speedup": 2.1060114334948286,
+    "descriptive_diagnostics": {
+      "scope": "Descriptive diagnostics outside the four selection gates.",
+      "city_by_height_agl_m": {
+        "5": {
+          "requested": 6561,
+          "reference_valid": 4469,
+          "common_valid": 4469,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.1748385641922914,
+          "P95_m_s": 0.32368944717930104,
+          "vector_RMSE_over_Uref": 0.02009638668876913,
+          "P95_over_Uref": 0.03720568358382771
+        },
+        "10": {
+          "requested": 6561,
+          "reference_valid": 6423,
+          "common_valid": 6423,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.23448730458599176,
+          "P95_m_s": 0.42236467836059655,
+          "vector_RMSE_over_Uref": 0.026952563745516297,
+          "P95_over_Uref": 0.04854766417937892
+        },
+        "20": {
+          "requested": 6561,
+          "reference_valid": 6514,
+          "common_valid": 6514,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.2557127237342433,
+          "P95_m_s": 0.46366216358123674,
+          "vector_RMSE_over_Uref": 0.02939226709589004,
+          "P95_over_Uref": 0.0532945015610617
+        },
+        "40": {
+          "requested": 6561,
+          "reference_valid": 6537,
+          "common_valid": 6537,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.17554064083380222,
+          "P95_m_s": 0.2714899330495383,
+          "vector_RMSE_over_Uref": 0.0201770851533106,
+          "P95_over_Uref": 0.031205739430981413
+        },
+        "80": {
+          "requested": 6561,
+          "reference_valid": 6561,
+          "common_valid": 6561,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.06270848994768495,
+          "P95_m_s": 0.14423061906934986,
+          "vector_RMSE_over_Uref": 0.00720787240777988,
+          "P95_over_Uref": 0.016578232076936768
+        }
+      },
+      "narrow_gap_proxy_definition": "Reference-valid city points bracketed along x or y at the same requested height by reference-invalid requested city points within 10 m on each side. Reference sampling validity is a geometric proxy.",
+      "narrow_gap_proxy": {
+        "reference_valid": 657,
+        "common_valid": 657,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.16212615584727258,
+        "P95_m_s": 0.2741018651386113,
+        "vector_RMSE_over_Uref": 0.018635190327272712,
+        "P95_over_Uref": 0.031505961510185206
+      }
+    },
+    "all_declared_ROI_targets_pass": true,
+    "overall_target_pass": true
+  }
+}
