@@ -69,6 +69,16 @@
       "configuration_sha256": "1df29f0e66649a64286362410a3996273f00d5f62197da5437252acd242961f5",
       "selected_cells": 2184,
       "spatial_cell_vertices_sha256": "e3b69c452cf8a4f94b2113cd0d372bbdd851752bbbd0aa9df23eeaffa5941f80"
+    },
+    "displacement_diagnostic": {
+      "method": "For each unique baseline rotor-cell vertex, find all trial rotor vertices within 0.25 m. Exactly one matched every baseline point and each trial point matched once. Compare sets of vertex IDs per selected cell through that bijection, then measure Euclidean displacement from the original coordinates.",
+      "matched_vertices": 2856,
+      "exactly_coincident_vertices": 0,
+      "same_selected_cell_vertex_sets_after_matching": true,
+      "median_m": 1.5620497096208113e-07,
+      "p95_nearest_rank_m": 4.118252286718103e-07,
+      "max_m": 6.469157626970203e-07,
+      "interpretation": "Submicrometre coordinate changes explain the failed exact hash. The comparison did not measure the effect of these shifts on a wind field."
     }
   },
   "trial_source_revision": "2a2749dc81cd6b7d255fa062638674f82ce35478",

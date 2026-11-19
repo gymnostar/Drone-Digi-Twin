@@ -237,6 +237,16 @@ python3 scenes/joint/residual_diagnostic.py scenes/joint/runs/table-NNE-corners 
 python3 scenes/joint/residual_diagnostic.py scenes/joint/runs/table-NNE-simple --checkpoint 1000
 ```
 
+Three NNE recovery trials tested whether the original settings could be improved within the ten-minute solve limit.
+
+| Trial | Measured outcome |
+|---|---|
+| Refine the dominant elevated edge before snapping the mesh to the buildings | Mesh quality passed. All 2,856 rotor vertices could be paired across meshes, with a maximum shift of 0.65 μm. The exact force-support check failed and the solve was skipped. [Mesh record](joint/results/nne-edge-refined/trial.json) |
+| Subdivide the same edge on the original snapped mesh | OpenFOAM's hex splitter encountered a selected cell with six eligible vertices where it requires eight. It stopped before a solve. [Subdivision record](joint/results/nne-edge-postsnap/trial.json) |
+| Use one fewer pressure correction per iteration on the original mesh | One cold solve completed 1,123 iterations, compared with 982 in the original run. Its last completed pressure and crosswind-velocity residuals were 3.69 × 10⁻⁴ and 4.83 × 10⁻⁵. The limits were 10⁻⁴ and 10⁻⁵. [Solve record](joint/results/nne-one-corrector/trial.json) |
+
+The released table still contains N and NE. A subsequent mesh study can use the measured building-edge locations to refine the city while holding the rotor mesh fixed, then repeat the strict NNE solve. The regional interpolation check at 16.875° depends on obtaining a qualified intermediate field.
+
 ### Directional simulation settings
 
 A new build defaults to the cheaper production recipe for N and NE, and to the strict reference for the reserved NNE and NbE directions. Use `--recipe strict` or `--recipe production` to select a comparison explicitly. Both use the same rotor support for a given direction. The building geometry and city refinement boxes rotate together into the solver frame. The world hub remains at (0, −280, 32.1) m and the rotor yaws with the inflow. Fixed world positions make direct field comparisons possible.
