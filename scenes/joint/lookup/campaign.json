@@ -18,5 +18,11 @@
   "comparison_methods": [
     "Linear blend of world-frame endpoint vectors at the same position",
     "Constant north endpoint vector"
-  ]
+  ],
+  "secondary_holdout": {
+    "wind_from_deg": 11.25,
+    "direction": "NbE",
+    "selection": "Reserved after both strict midpoint solves timed out, before generating any NbE field. This heading bisects the interval from the checked north field to the primary holdout. Test the already frozen N/NE model without refitting. Report alongside the unqualified primary holdout, irrespective of the outcome.",
+    "budget": "One strict solve with the existing resource limits. One localized mesh repair is allowed if required by the existing mesh gates."
+  }
 }
