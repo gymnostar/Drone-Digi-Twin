@@ -1,0 +1,195 @@
+{
+  "case": "nne-edge-refined",
+  "baseline": "table-NNE-corners",
+  "direction": "NNE",
+  "recipe": "strict",
+  "cold_start": true,
+  "change": {
+    "name": "elevatedBuildingEdge",
+    "type": "searchableRotatedBox",
+    "low_world_m": [
+      -87.5,
+      2.5,
+      30
+    ],
+    "high_world_m": [
+      -62.5,
+      27.5,
+      57.5
+    ],
+    "level": 4,
+    "mode": "inside",
+    "geometry": "type searchableRotatedBox; origin (-81.79616767565031 -31.17510150066714 30); span (25.0 25.0 27.5); e1 (0.9238795325112867 0.3826834323650898 0); e3 (0 0 1);",
+    "hypothesis": "A finer mesh around the elevated building edge at world (−75, 15, 36–51) m may reduce the local crosswind momentum imbalance and allow the strict solve to converge."
+  },
+  "snappy_sha256": {
+    "baseline": "03863190c6435cb7814578859c49e73ccba352693a6122c119e003840ac07a37",
+    "trial": "9264dec456705f9a2b5f030afe1c925b40e090592cf4b4c5e129c02759ec8440"
+  },
+  "identical_input_sha256": {
+    "system/fvSolution": "2f82a82a405b4f2869eeefa97e94c973693c415cf46f079a2dcdd07f2a550a97",
+    "system/fvSchemes": "ec3d9a209b9963ec6140f306580755add145825f3442848f181a05c974e88f4c",
+    "system/controlDict": "8f23754279cf3a12f3a152b055ae8c04dc69d8366b3eba8aba4945e3fd4e2499",
+    "queries.json": "bada9a5ffdd8d1c2aefa775934c4e0ee1fb5085e88db9c622c199f8d0d7b4b22",
+    "constant/fvOptions": "40c7c351514f328645b835bd55c2ddbd467b904adcb33d0321c441fb361f8903",
+    "system/topoSetDict": "94469286f1fd0e87ac3c40231e475294acab61fb92cb67c9263d6907a899d346",
+    "0/U": "e715ad966672fccfb84040721f3dedb5b727574efdc474fdf7c23864ac72f9d2",
+    "0/p": "e92066ad307ebebfb7821fb8d2895ea5c40c228844273ec2405ad81a25d4dfd9",
+    "0/k": "e7fc8f1b5bb819cfaed7c1b9fa0cdfa27621292af7082bdae4e533d73e985f45",
+    "0/epsilon": "b9cb8d77ae37524bdf260616ffcc613092dc64d5e96500bc6fc2d94d251311a6",
+    "0/nut": "bc3b42149def8704b40eb672d41cc09b7511bbfff94c16c1b1c8d05c8af0156d",
+    "constant/transportProperties": "9b0061b4ee4075d41819ab78d99daa626c0d936b8f77be8ac9bd5fb999464a34",
+    "constant/turbulenceProperties": "3ee76924e8fddd504d7149d09ca0b6e774fa4e967012d7d73e35f1e62fe0f228",
+    "system/blockMeshDict": "fc36e1d3b6b10c37a801df732ca9373bddebce9d8e56d6af58b84d9b4c6ffd01",
+    "system/roiSampling": "b68dac39c6cff3019ec17e3ff67a39a4bcfd65d2ea909e29d27132511263fc6b"
+  },
+  "budget": {
+    "mesh_s": 600,
+    "solve_s": 600,
+    "cpus": 3,
+    "memory_bytes": 5368709120
+  },
+  "identical_parameter_values": {
+    "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+    "scaled_stl_sha256": "cc43ff4aa1ba1ef8ead1484924417421f379b5c1e25f4ff322fb82f75d21c1ea",
+    "Cp": 0.48146,
+    "Ct": 0.76927,
+    "closure": "realizableKE",
+    "Uref_m_s": 8.7,
+    "z0_m": 0.01158
+  },
+  "rotor_support": {
+    "exact_match": false,
+    "table-NNE-corners": {
+      "configuration_sha256": "1df29f0e66649a64286362410a3996273f00d5f62197da5437252acd242961f5",
+      "selected_cells": 2184,
+      "spatial_cell_vertices_sha256": "3ac0f7db20ad46689051571d9c2ee65dcfd47f2c1236e51a1b4c817c53f30cea"
+    },
+    "nne-edge-refined": {
+      "configuration_sha256": "1df29f0e66649a64286362410a3996273f00d5f62197da5437252acd242961f5",
+      "selected_cells": 2184,
+      "spatial_cell_vertices_sha256": "e3b69c452cf8a4f94b2113cd0d372bbdd851752bbbd0aa9df23eeaffa5941f80"
+    }
+  },
+  "trial_source_revision": "2a2749dc81cd6b7d255fa062638674f82ce35478",
+  "meshes": {
+    "table-NNE-corners": {
+      "cells": 428930,
+      "polyMesh_file_sha256": {
+        "boundary": "4fe66f327667ec3d8e503075630d68c62f4dc18f9e7bb32c350400454bb5e1d5",
+        "faces": "7d088ea97515479c0fc9850a37769067e022e84aea14b12bd69818e0199393d4",
+        "neighbour": "aa610527c1c2f99abfbfdf433d7862671dc84c225981315d13e2474a2dfa9012",
+        "owner": "d200e8436a3af11ec2635897bfeee69654c4b7f0e3bada3e9fc903a7e7f5ecc3",
+        "points": "bcfdb73f52dbcd0453ca02d743475e24c90418c31de2c107f0f9c31c6c72fc48"
+      },
+      "mesh_manifest_sha256": "646d4cfd4854f3f1ef61f06bb5955bbf35284f67f24a8eac586971f421b8f72a",
+      "standard_passed": true,
+      "custom_quality_passed": true,
+      "extended_passed": false,
+      "extended_failures": [
+        "cell concavity"
+      ],
+      "concave_cells": 15535,
+      "max_nonorthogonality_deg": 61.88350331,
+      "mean_nonorthogonality_deg": 7.988644355,
+      "max_skewness": 3.982219342,
+      "max_aspect_ratio": 8.853236619,
+      "min_cell_volume_m3": 0.1781890844,
+      "min_face_interpolation_weight": 0.05283212609,
+      "min_face_volume_ratio": 0.0210792786
+    },
+    "nne-edge-refined": {
+      "cells": 437257,
+      "polyMesh_file_sha256": {
+        "boundary": "75d050badde4665947915f668ecc2138e424fb2298183ba88968d7610f1dfd23",
+        "faces": "9d2af05d2de328fa3cca23f45f09e53a9e459d9e9a948d1944a29d562f22756c",
+        "neighbour": "a7ee907281c0968f17576c589e4355055aabcb5889d0925ebb789658ae4ea112",
+        "owner": "6cfa3c675137448ce998945882723c4ad222bd3c0375694f0a4391ec45e45f60",
+        "points": "5608fa0ce1744d91c090569f636c36e60cbf5ebf8ebd23da0930ed0c04025e34"
+      },
+      "mesh_manifest_sha256": "ed97a30787116be4cead79b4a732534645c9a4481cd97b29fa8e221a31402820",
+      "standard_passed": true,
+      "custom_quality_passed": true,
+      "extended_passed": false,
+      "extended_failures": [
+        "cell concavity"
+      ],
+      "concave_cells": 16011,
+      "max_nonorthogonality_deg": 63.41027755,
+      "mean_nonorthogonality_deg": 8.016489906,
+      "max_skewness": 3.982233389,
+      "max_aspect_ratio": 8.853238055,
+      "min_cell_volume_m3": 0.1781890661,
+      "min_face_interpolation_weight": 0.05283106266,
+      "min_face_volume_ratio": 0.02107927947
+    }
+  },
+  "cost": {
+    "table-NNE-corners": {
+      "prepare": {
+        "stage": "prepare",
+        "elapsed_s": 1.2480317910085432,
+        "cpu_s": 1.222756,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+        "tight_transport": true
+      },
+      "mesh": {
+        "stage": "mesh",
+        "elapsed_s": 123.03486662500654,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 122.694795,
+        "peak_cgroup_memory_bytes_including_cache": 768770048,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      },
+      "host-mesh-audit": {
+        "elapsed_s": 3.23667766599101,
+        "cpu_s": 3.232682,
+        "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+      }
+    },
+    "nne-edge-refined": {
+      "prepare": {
+        "stage": "prepare",
+        "elapsed_s": 1.2029359999578446,
+        "cpu_s": 1.175537,
+        "peak_cgroup_memory_bytes_including_cache": null,
+        "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+        "tight_transport": true
+      },
+      "mesh": {
+        "stage": "mesh",
+        "elapsed_s": 128.77800641703652,
+        "exit_code": 0,
+        "timed_out": false,
+        "cpu_s": 128.389585,
+        "peak_cgroup_memory_bytes_including_cache": 735297536,
+        "cpu_limit": 3,
+        "memory_limit_bytes": 5368709120,
+        "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+        "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+      },
+      "host-mesh-audit": {
+        "elapsed_s": 3.390351749956608,
+        "cpu_s": 3.3800269999999997,
+        "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+      }
+    }
+  },
+  "accepted": false,
+  "stopped_at": "exact rotor support verification",
+  "reason": "The configuration and count of selected cells match. Their spatial vertex SHA-256 differs.",
+  "solve_started": false,
+  "sampled": false,
+  "evaluated": false,
+  "reproduction": [
+    "python3 scenes/joint/study.py build --case nne-edge-refined --direction NNE --recipe strict",
+    "In system/snappyHexMeshDict add elevatedBuildingEdge with the recorded geometry under geometry, and elevatedBuildingEdge {mode inside; levels ((1E15 4));} under refinementRegions.",
+    "python3 scenes/joint/study.py mesh --case nne-edge-refined",
+    "Compare configuration_sha256, selected_cells and spatial_cell_vertices_sha256 in support-audit.json against table-NNE-corners before starting the solve."
+  ]
+}
