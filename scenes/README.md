@@ -45,6 +45,15 @@ u_east, u_north, u_up = wind.at(0, -350, 20)
 
 The [field index](joint/lookup/index.json) lists released directions, their sampling roles, file checksums and measured export times. The Python interface returns `None` for a masked point and raises `KeyError` for an unsampled point. The masks describe sampled fluid cells at this resolution. A grid lookup does not test whether a path between two points crosses a wall.
 
+For a short integration check, query the four waypoints below in order for each heading. All are at east −195 m and height 5 m. At the two endpoints the entries are (east, north, up) velocities in m/s, rounded to three decimals.
+
+| North coordinate (m) | North wind | Northeast wind |
+|---:|---|---|
+| 5 | (−0.085, −1.374, −0.172) | (−0.392, −0.126, −0.103) |
+| 10 | masked | masked |
+| 11 | unsampled | unsampled |
+| 25 | (−1.030, −3.677, −0.295) | (−2.933, −0.870, −0.316) |
+
 ### Main implementation choices
 
 - **OpenFOAM v2306, steady RANS:** the solver predicts average turbulent flow. We chose this affordable starting point to study mean wind maps before attempting expensive time-resolved turbulence. RANS models unresolved fluctuations rather than resolving individual gusts. SIMPLE/SIMPLEC are iteration methods coupling pressure and velocity.

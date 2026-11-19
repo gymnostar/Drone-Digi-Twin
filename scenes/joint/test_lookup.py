@@ -1,5 +1,8 @@
 import hashlib
+import json
 import math
+import subprocess
+import sys
 import unittest
 from types import SimpleNamespace
 
@@ -26,6 +29,28 @@ class LookupTest(unittest.TestCase):
         self.assertIsNone(self.north.at(-195, 10, 5))
         with self.assertRaises(KeyError):
             self.north.at(0, -349, 20)
+
+    def test_same_short_transect_in_both_released_fields(self):
+        # Sample in order across a building mask, including a between-grid point.
+        waypoints = [(-195, 5, 5), (-195, 10, 5), (-195, 11, 5), (-195, 25, 5)]
+        endpoint_velocities = {
+            "N": [(-0.08491, -1.37402, -0.17237), (-1.02957, -3.67691, -0.29512)],
+            "NE": [(-0.39180, -0.12628, -0.10338), (-2.93303, -0.86956, -0.31573)],
+        }
+        for label, (first, last) in endpoint_velocities.items():
+            expected = [("valid_air", first), ("masked", None),
+                        ("unsampled", None), ("valid_air", last)]
+            for xyz, (status, velocity) in zip(waypoints, expected):
+                with self.subTest(direction=label, xyz=xyz):
+                    command = [sys.executable, str(ROOT / "lookup.py"), "query", label, *map(str, xyz)]
+                    result = json.loads(subprocess.check_output(command))
+                    self.assertEqual(result["wind_from_deg"], {"N": 0, "NE": 45}[label])
+                    self.assertEqual(result["xyz_m"], list(xyz))
+                    self.assertEqual(result["status"], status)
+                    if velocity is None:
+                        self.assertIsNone(result["U_enu_m_s"])
+                    else:
+                        self.assertLess(math.dist(result["U_enu_m_s"], velocity), 1e-5)
 
     def test_sector_reproduces_endpoint_and_requires_both_masks_inside(self):
         points = {(0, 0, 5): (4., -4., 0.), (5, 0, 5): (1., 0., 0.)}
