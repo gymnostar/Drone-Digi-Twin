@@ -101,6 +101,7 @@ Therefore, simplify geometry for CFD while retaining relevant details for RF pro
 
 The wind-map cost and accuracy study is in `scenes/`:
 
+- [Query the Niigata and SWiFT wind table](scenes/README.md#query-a-coupled-wind-field) at a fixed position and inflow direction.
 - [Study explanation and results](scenes/README.md): what was done, implementation choices, limitations and next steps.
 - [Open the simulations in 3D](scenes/review-export/Open3D.command): interactive ParaView views of the coupled building/turbine flow and isolated turbine cases.
 - [Cases and evidence](scenes/): preparation scripts, numerical checks and recorded metrics.

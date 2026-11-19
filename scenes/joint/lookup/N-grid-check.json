@@ -1,0 +1,171 @@
+{
+  "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+  "python": "3.15.2",
+  "load_s": {
+    "N.csv.gz": 0.10651329200481996,
+    "north-reference.csv.gz": 0.1054173749871552
+  },
+  "cases": [
+    "poc-N-agglomerated-siblings",
+    "poc-N-reference-tight-transport"
+  ],
+  "regions": {
+    "city": {
+      "requested": 32805,
+      "reference_valid": 30504,
+      "common_valid": 30504,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.19356903205488293,
+      "P95_m_s": 0.3619089632614717,
+      "vector_RMSE_over_Uref": 0.02224931402929689,
+      "P95_over_Uref": 0.04159873140936457,
+      "targets_pass": true
+    },
+    "building_wake": {
+      "requested": 6804,
+      "reference_valid": 6354,
+      "common_valid": 6354,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.19348399911168904,
+      "P95_m_s": 0.39091351371433963,
+      "vector_RMSE_over_Uref": 0.02223954012778035,
+      "P95_over_Uref": 0.044932587783257434,
+      "targets_pass": true
+    },
+    "rotor_wake": {
+      "requested": 1452,
+      "reference_valid": 1452,
+      "common_valid": 1452,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.12589393267815585,
+      "P95_m_s": 0.24213529459468025,
+      "vector_RMSE_over_Uref": 0.014470566974500674,
+      "P95_over_Uref": 0.0278316430568598,
+      "targets_pass": true
+    },
+    "flight": {
+      "requested": 2961,
+      "reference_valid": 2961,
+      "common_valid": 2961,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.1402269388460106,
+      "P95_m_s": 0.2933966387694427,
+      "vector_RMSE_over_Uref": 0.016118038947817312,
+      "P95_over_Uref": 0.03372375158269457,
+      "targets_pass": true
+    },
+    "narrow_gap_proxy": {
+      "requested": 657,
+      "reference_valid": 657,
+      "common_valid": 657,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.16212615584727258,
+      "P95_m_s": 0.2741018651386113,
+      "vector_RMSE_over_Uref": 0.018635190327272712,
+      "P95_over_Uref": 0.031505961510185206,
+      "targets_pass": true
+    },
+    "full_table": {
+      "requested": 74277,
+      "reference_valid": 71952,
+      "common_valid": 71952,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.16531805377154002,
+      "P95_m_s": 0.30731259252291887,
+      "vector_RMSE_over_Uref": 0.019002075146154027,
+      "P95_over_Uref": 0.03532328649688723,
+      "targets_pass": true
+    },
+    "city_5m": {
+      "requested": 6561,
+      "reference_valid": 4469,
+      "common_valid": 4469,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.1748385641922914,
+      "P95_m_s": 0.32368944717930104,
+      "vector_RMSE_over_Uref": 0.02009638668876913,
+      "P95_over_Uref": 0.03720568358382771,
+      "targets_pass": true
+    },
+    "city_10m": {
+      "requested": 6561,
+      "reference_valid": 6423,
+      "common_valid": 6423,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.23448730458599176,
+      "P95_m_s": 0.42236467836059655,
+      "vector_RMSE_over_Uref": 0.026952563745516297,
+      "P95_over_Uref": 0.04854766417937892,
+      "targets_pass": true
+    },
+    "city_20m": {
+      "requested": 6561,
+      "reference_valid": 6514,
+      "common_valid": 6514,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.2557127237342433,
+      "P95_m_s": 0.46366216358123674,
+      "vector_RMSE_over_Uref": 0.02939226709589004,
+      "P95_over_Uref": 0.0532945015610617,
+      "targets_pass": true
+    },
+    "city_32.1m": {
+      "requested": 6561,
+      "reference_valid": 6537,
+      "common_valid": 6537,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.19221888740088508,
+      "P95_m_s": 0.35189106975251,
+      "vector_RMSE_over_Uref": 0.022094124988607484,
+      "P95_over_Uref": 0.04044724939684023,
+      "targets_pass": true
+    },
+    "city_40m": {
+      "requested": 6561,
+      "reference_valid": 6537,
+      "common_valid": 6537,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.17554064083380222,
+      "P95_m_s": 0.2714899330495383,
+      "vector_RMSE_over_Uref": 0.0201770851533106,
+      "P95_over_Uref": 0.031205739430981413,
+      "targets_pass": true
+    },
+    "city_60m": {
+      "requested": 6561,
+      "reference_valid": 6561,
+      "common_valid": 6561,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.1615716428962733,
+      "P95_m_s": 0.26674854694774114,
+      "vector_RMSE_over_Uref": 0.018571453206468195,
+      "P95_over_Uref": 0.03066075252272887,
+      "targets_pass": true
+    },
+    "city_80m": {
+      "requested": 6561,
+      "reference_valid": 6561,
+      "common_valid": 6561,
+      "predicted_air_at_reference_masked": 0,
+      "coverage": 1.0,
+      "vector_RMSE_m_s": 0.06270848994768495,
+      "P95_m_s": 0.14423061906934986,
+      "vector_RMSE_over_Uref": 0.00720787240777988,
+      "P95_over_Uref": 0.016578232076936768,
+      "targets_pass": true
+    }
+  },
+  "all_four_regions_pass": true
+}

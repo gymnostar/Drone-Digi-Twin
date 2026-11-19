@@ -1,0 +1,36 @@
+{
+  "case": "table-NE-strict",
+  "direction": "NE",
+  "recipe": "strict",
+  "city_refinement": "Solver-axis bounding boxes around rotated world extents",
+  "stage": "mesh",
+  "accepted": false,
+  "reason": "Final mesh exceeded the 500,000-cell limit. No solve ran.",
+  "cells": 531607,
+  "max_cells": 500000,
+  "mesh_dictionary_sha256": "f6a493db6ae0f982bfdfd0efee53e2528a3a1166383d736060ffe7f1ccabdd6e",
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.1834705410001334,
+      "cpu_s": 1.1693010000000001,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+      "tight_transport": true
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 144.2104334589967,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 143.889622,
+      "peak_cgroup_memory_bytes_including_cache": 964980736,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "timing_note": "The preliminary run overlapped a lookup export. Excluded from recipe comparisons; included as campaign work."
+}

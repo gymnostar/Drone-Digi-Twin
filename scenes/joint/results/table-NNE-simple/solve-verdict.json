@@ -1,0 +1,100 @@
+{
+  "case": "table-NNE-simple",
+  "direction": "NNE",
+  "recipe": "strict",
+  "consistent_simple": false,
+  "accepted": false,
+  "reason": "The solve reached its 600 s limit before satisfying the frozen residual criteria. Sampling and field evaluation require a converged terminal iterate.",
+  "mesh_accepted": true,
+  "cells": 428930,
+  "last_started_iteration": 1029,
+  "last_complete_iteration": 1028,
+  "strict_residual_thresholds": {
+    "p": 0.0001,
+    "U": 1e-05,
+    "k": 1e-05,
+    "epsilon": 1e-05
+  },
+  "last_complete_max_initial_residuals": {
+    "Ux": 5.408614489e-05,
+    "Uy": 5.619896018e-07,
+    "Uz": 2.507800729e-05,
+    "p": 0.0006436460512,
+    "epsilon": 1.750874331e-06,
+    "k": 4.2613392e-06
+  },
+  "diagnostic_window": {
+    "first_iteration": 529,
+    "last_iteration": 1028,
+    "completed_iterations": 500,
+    "median_of_iteration_max_initial_residuals": {
+      "Ux": 5.6122149195e-05,
+      "Uy": 6.0981412205e-07,
+      "Uz": 2.580287111e-05,
+      "p": 0.0006665616937499999,
+      "epsilon": 1.738151084e-06,
+      "k": 4.380605813999999e-06
+    }
+  },
+  "solver_dictionary_sha256": "c914cac1b25dee6f362eb56f4506cad2ad875a2df14c421f89871ff6b1e73989",
+  "cost": {
+    "host-mesh-audit": {
+      "elapsed_s": 3.2467666240409017,
+      "cpu_s": 3.243013,
+      "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+    },
+    "host-solve-audit": {
+      "elapsed_s": 8.279102621600032e-05,
+      "cpu_s": 8.199999999999874e-05,
+      "scope": "Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate"
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 122.62696720898384,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 122.198848,
+      "peak_cgroup_memory_bytes_including_cache": 840241152,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-020.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.2103756660071667,
+      "cpu_s": 1.182528,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+      "tight_transport": true
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 600.1717138749955,
+      "exit_code": 137,
+      "timed_out": true,
+      "cpu_s": null,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-020.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "recorded_attempt_elapsed_s": 727.2559061650536,
+  "mesh_rebuild": {
+    "compared_to": "table-NNE-corners",
+    "byte_identical_polyMesh_files": [
+      "points",
+      "faces",
+      "owner",
+      "neighbour",
+      "boundary",
+      "cellLevel",
+      "sets/rotor"
+    ],
+    "exact_support_audit_identical": true
+  }
+}

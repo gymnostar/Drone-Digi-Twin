@@ -1,0 +1,63 @@
+{
+  "case": "table-NbE-strict",
+  "direction": "NbE",
+  "recipe": "strict",
+  "accepted": false,
+  "cells": 421849,
+  "standard_check": true,
+  "custom_check": true,
+  "extended_check": "Extended check found one small-determinant ground cell adjacent to the single low-weight face, plus 14,549 concave cells. The shared cell and face localize the repair.",
+  "minimum_determinant": 3.552470994e-05,
+  "minimum_face_interpolation_weight": 0.03878219354,
+  "flagged_cell": 142832,
+  "low_weight_face": 395967,
+  "flagged_cell_world_vertex_bounds_m": [
+    [
+      15.787603188728067,
+      22.586153812321452,
+      0.0
+    ],
+    [
+      18.094465374656707,
+      24.087904657006643,
+      2.460096099
+    ]
+  ],
+  "followup_repair_world_bounds_m": [
+    [
+      10,
+      17.5,
+      0
+    ],
+    [
+      25,
+      30,
+      7.5
+    ]
+  ],
+  "additional_refinement_level": 4,
+  "mesh_dictionary_sha256": "125725830d25147721e796c98381213d52ca2c41f3e1ca82a6f171a300f81508",
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.218175042013172,
+      "cpu_s": 1.18924,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+      "tight_transport": true
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 116.84557445900282,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 116.508288,
+      "peak_cgroup_memory_bytes_including_cache": 767827968,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-020.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  }
+}

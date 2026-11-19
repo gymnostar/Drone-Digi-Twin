@@ -1,0 +1,28 @@
+{
+  "inflow": {
+    "Uref_m_s": 8.7,
+    "Uref_height_m": 32.1,
+    "z0_m": 0.01158
+  },
+  "training_directions_deg": [
+    0,
+    45
+  ],
+  "holdout_direction_deg": 22.5,
+  "objective": "Minimize repeated wind-query cost subject to numerical velocity and coverage targets. Charge offline CFD and table loading separately.",
+  "method": "At each fixed common-air world position, rotate both training vectors into their wind-aligned frames, linearly interpolate the components in wind-from angle, then rotate back to the requested world frame. Never extrapolate.",
+  "cfd_selection": "Try the existing production mesh against the strict reference for each training direction. Prefer the cheaper field if it passes the regional fidelity, convergence and source-support checks. A checked strict field can supply the table if the cheaper field cannot qualify. Use an independent strict solve for the holdout.",
+  "evaluation": "Score the held-out direction at fixed world points. Include every reference-valid point of a scored region in the coverage denominator. Report masked and unsampled positions separately. Retain provisional or failed runs outside the released fields.",
+  "targets_source": "../../poc-protocol.json",
+  "interpretation": "This directional pilot extends the single-condition coupled study. The study's provisional error and coverage cutoffs are used as engineering targets. No operational flight tolerance has been established.",
+  "comparison_methods": [
+    "Linear blend of world-frame endpoint vectors at the same position",
+    "Constant north endpoint vector"
+  ],
+  "secondary_holdout": {
+    "wind_from_deg": 11.25,
+    "direction": "NbE",
+    "selection": "Reserved after both strict midpoint solves timed out, before generating any NbE field. This heading bisects the interval from the checked north field to the primary holdout. Test the already frozen N/NE model without refitting. Report alongside the unqualified primary holdout, irrespective of the outcome.",
+    "budget": "One strict solve with the existing resource limits. One localized mesh repair is allowed if required by the existing mesh gates."
+  }
+}
