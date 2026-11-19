@@ -1,0 +1,87 @@
+{
+  "case": "table-NNE-corners",
+  "direction": "NNE",
+  "recipe": "strict",
+  "consistent_simple": true,
+  "accepted": false,
+  "reason": "The solve reached its 600 s limit before satisfying the frozen residual criteria. Sampling and field evaluation require a converged terminal iterate.",
+  "mesh_accepted": true,
+  "cells": 428930,
+  "last_started_iteration": 983,
+  "last_complete_iteration": 982,
+  "strict_residual_thresholds": {
+    "p": 0.0001,
+    "U": 1e-05,
+    "k": 1e-05,
+    "epsilon": 1e-05
+  },
+  "last_complete_max_initial_residuals": {
+    "Ux": 3.185260642e-05,
+    "Uy": 3.470187417e-07,
+    "Uz": 1.406990478e-05,
+    "p": 0.0002722286768,
+    "epsilon": 1.025654101e-06,
+    "k": 2.529119589e-06
+  },
+  "diagnostic_window": {
+    "first_iteration": 483,
+    "last_iteration": 982,
+    "completed_iterations": 500,
+    "median_of_iteration_max_initial_residuals": {
+      "Ux": 3.9797625665e-05,
+      "Uy": 4.3611453885e-07,
+      "Uz": 1.7681514615e-05,
+      "p": 0.0003080364902,
+      "epsilon": 1.1678150415e-06,
+      "k": 3.0166110745e-06
+    }
+  },
+  "solver_dictionary_sha256": "2f82a82a405b4f2869eeefa97e94c973693c415cf46f079a2dcdd07f2a550a97",
+  "cost": {
+    "host-mesh-audit": {
+      "elapsed_s": 3.23667766599101,
+      "cpu_s": 3.232682,
+      "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+    },
+    "host-solve-audit": {
+      "elapsed_s": 7.720798021182418e-05,
+      "cpu_s": 7.700000000000068e-05,
+      "scope": "Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate"
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 123.03486662500654,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 122.694795,
+      "peak_cgroup_memory_bytes_including_cache": 768770048,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.2480317910085432,
+      "cpu_s": 1.222756,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+      "tight_transport": true
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 600.2054847500112,
+      "exit_code": 137,
+      "timed_out": true,
+      "cpu_s": null,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "Host-018.homenet.telecomitalia.it",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "recorded_attempt_elapsed_s": 727.7251380399975
+}

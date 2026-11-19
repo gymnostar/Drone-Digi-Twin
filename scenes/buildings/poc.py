@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PROTOCOL = ROOT.parent/'poc-protocol.json'
 IMAGE = 'sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289'
-DIRECTIONS = {'N':0., 'NNE':22.5, 'NE':45., 'NW':315., 'E':90., 'S':180., 'W':270.}
+DIRECTIONS = {'N':0., 'NbE':11.25, 'NNE':22.5, 'NE':45., 'NW':315., 'E':90., 'S':180., 'W':270.}
 
 def write(path, body, cls='dictionary'):
     path.parent.mkdir(parents=True, exist_ok=True)

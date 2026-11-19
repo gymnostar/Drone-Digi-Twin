@@ -1,0 +1,20 @@
+{
+  "fields": {
+    "N": {
+      "wind_from_deg": 0,
+      "file": "N.csv.gz",
+      "split": "fit",
+      "case": "poc-N-agglomerated-siblings",
+      "sha256": "3a26f51c3a0a88e573487c8a447a7b894347df4c974851662d2fec4eae45c06d",
+      "export_elapsed_s": 9.592665250005666
+    },
+    "NE": {
+      "wind_from_deg": 45,
+      "file": "NE.csv.gz",
+      "split": "fit",
+      "case": "table-NE-production",
+      "sha256": "57ecd53f3c40146c03c9aa6c1d7254d97da4903cfcd893444db5d8238ff10a15",
+      "export_elapsed_s": 9.058757083985256
+    }
+  }
+}

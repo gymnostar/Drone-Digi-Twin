@@ -76,10 +76,14 @@ class DirectionalStudyTest(unittest.TestCase):
             }]}))
             study.dump(scenes / 'turbine/reference/data-sources.json', {'files': []})
 
-            for direction, recipe in [('N', 'strict'), ('NE', None), ('NNE', None)]:
-                with self.subTest(direction=direction):
-                    args = ['study.py', 'build', '--case', direction,
+            for direction, recipe, recovery in [('N', 'strict', False), ('NE', None, False),
+                                                ('NbE', None, False), ('NNE', None, False), ('NNE', 'strict', True)]:
+                with self.subTest(direction=direction, recovery=recovery):
+                    name = direction + ('-simple' if recovery else '')
+                    args = ['study.py', 'build', '--case', name,
                             '--direction', direction]
+                    if recovery:
+                        args.append('--standard-simple')
                     if recipe:
                         args.extend(['--recipe', recipe])
                     with (patch.object(study, 'ROOT', root),
@@ -90,7 +94,7 @@ class DirectionalStudyTest(unittest.TestCase):
                           patch.object(sys, 'argv', args), redirect_stdout(StringIO())):
                         study.main()
 
-                    case = root / 'runs' / direction
+                    case = root / 'runs' / name
                     p = json.loads((case / 'parameters.json').read_text())
                     queries = json.loads((case / 'queries.json').read_text())
                     first = {q['region']: q for q in queries if q['id'] == 0}
@@ -125,9 +129,30 @@ class DirectionalStudyTest(unittest.TestCase):
                         approx_point(read_point(floor, 'origin'), study.city.transform((-205,-205,0),theta))
                         approx_point(read_point(floor, 'span'), (410,410,10))
                         approx_point(read_point(floor, 'e1'), study.city.transform((1,0,0),theta))
+                    self.assertEqual(p.get('standard_simple_recovery', False), recovery)
+                    if recovery:
+                        self.assertFalse(p['repair_recipe']['consistent_simple'])
+                        original = root / 'runs/NNE/system/fvSolution'
+                        self.assertEqual((case / 'system/fvSolution').read_text(),
+                                         original.read_text().replace('consistent yes;', 'consistent no;'))
+                        with self.assertRaisesRegex(ValueError, 'strict NNE'):
+                            study.validate_solver(case, dict(p, direction='N'))
+                        legacy = dict(p)
+                        del legacy['standard_simple_recovery']
+                        with self.assertRaisesRegex(ValueError, 'Unmatched SIMPLE'):
+                            study.validate_solver(case, legacy)
                     if direction == 'NNE':
                         self.assertEqual(len(p['directional_mesh_repairs_world_m']), 2)
-                    if direction in ('N', 'NNE'):
+                    if direction == 'NbE':
+                        self.assertEqual(theta, 11.25)
+                        self.assertEqual(p['directional_mesh_repairs_world_m'], [[[10,17.5,0],[25,30,7.5]]])
+                        corner = geom.split('buildingCorner0 {', 1)[1].split('}', 1)[0]
+                        self.assertIn('type searchableRotatedBox;', corner)
+                        approx_point(read_point(corner, 'origin'), study.city.transform((10,17.5,0),theta))
+                        approx_point(read_point(corner, 'span'), (15,12.5,7.5))
+                        approx_point(read_point(corner, 'e1'), study.city.transform((1,0,0),theta))
+                        self.assertIn('buildingCorner0 {mode inside; levels ((1E15 4));}', geom)
+                    if direction in ('N', 'NbE', 'NNE'):
                         self.assertEqual(p['role'], 'reference')
                         self.assertTrue(p['tight_transport'])
                     else:

@@ -22,13 +22,28 @@ Before testing, we fixed provisional targets: at least **2× faster**, vector RM
 
 Runs use three CPUs, 5 GiB, ten-minute mesh/solve limits and bounded repairs. The [frozen protocol](poc-protocol.json) records conditions, thresholds and budgets; it has not been edited retrospectively. Failed trials remain in the structured evidence.
 
-### What the future lookup table needs
+### Query a coupled wind field
 
-The planner will ask for a wind vector at a position and inflow condition. For the coupled scene, choosing a production mesh therefore requires two comparisons. First, check that each solve converges and that the cheaper recipe meets the four regional gates for the city, building wake, rotor wake and flight region. Then compare across mesh resolutions at the same physical positions. Changing solver settings on one mesh measures sensitivity to the solve and leaves spatial discretisation error open.
+The lookup table supplies steady mean wind at fixed positions. Each compressed CSV includes the inflow speed and direction, rotor orientation, source case, evaluation checksum and an explicit valid-air column. Positions are local east and north coordinates in metres, with height above flat ground. Velocity components point east, north and up, in m/s. Wind direction is the meteorological **from** angle. [Campaign settings](joint/lookup/campaign.json)
 
-The coupled comparison also reports error and coverage at 5, 10, 20, 40 and 80 m above ground and in a narrow-gap proxy. The proxy selects valid city samples with a missing reference sample within 10 m on each side along either horizontal grid axis at the same height. It indicates where the sampling grid sees a constriction. The masks come from the reference, and these additional breakdowns leave the four original acceptance gates intact.
+The common grid covers east −200 to 200 m and north −450 to 200 m at 5 m spacing. It samples heights of 5, 10, 20, 32.1, 40, 60 and 80 m. Every position has a row, including locations inside a building or missing from CFD sampling. The prescribed speed is 8.7 m/s at 32.1 m and the ground roughness length is 0.01158 m.
 
-Once a mesh is supported, each wind direction needs its own field with world-frame velocity components in m/s, inflow metadata, rotor orientation and a valid-air mask. Reserve a whole direction to check interpolation or regression. Measure offline field-generation cost separately from repeated query latency. The current joint protocol covers one north-wind condition and sets no planner latency or vehicle-level error tolerance.
+Run from the repository root with Python. This reads an existing field and requires no OpenFOAM installation.
+
+```sh
+python3 scenes/joint/lookup.py query N 0 -350 20
+```
+
+Here the north-wind wake has velocity **(0.015, −4.839, 0.056) m/s**. An exact grid point without a CFD sample returns `masked`. A between-grid or outside position returns `unsampled`. For repeated queries, load the field once.
+
+```python
+from scenes.joint.lookup import WindField
+
+wind = WindField.for_direction("N")
+u_east, u_north, u_up = wind.at(0, -350, 20)
+```
+
+The [field index](joint/lookup/index.json) lists released directions, their sampling roles, file checksums and measured export times. The Python interface returns `None` for a masked point and raises `KeyError` for an unsampled point. The masks describe sampled fluid cells at this resolution. A grid lookup does not test whether a path between two points crosses a wall.
 
 ### Main implementation choices
 
@@ -168,14 +183,62 @@ The turbine result demonstrates that a carefully chosen mesh can reduce repeated
 
 It does not give an instant model for arbitrary buildings, turbine placements or weather. New geometry can change the required mesh and convergence behaviour. The city and coupled results are therefore useful boundary cases: they show where a successful isolated-object recipe stops transferring automatically.
 
-Nor have we trained a surrogate (a compact model fitted to previously computed flow fields). Such a model could make predictions very quickly later, but generating its training database would still cost CFD time. That offline cost and genuinely new test conditions would have to be included in a separate experiment.
+The coupled directional experiment below uses two independently generated fields to fit a per-position wind estimate. A simulation at a third heading tests how much of the change between directions that estimate captures.
 
-### From the north-wind case to a direction table
+### What transferred to northeast wind
 
-1. Retain the north-wind pair as the baseline for directional development. The two accepted resolutions quantify sensitivity at the sampled locations. A three-level refinement trend and directional transfer remain untested.
-2. After choosing a working mesh, define the multi-direction campaign and reserve a whole direction before fitting. Save a valid-air mask and east, north and vertical velocity components for every field. The frozen coupled experiment covers a single north wind.
-3. Compare lookup or regression predictions with the held-out CFD field, including the cost of generating the table and the latency of repeated queries. Physical validation still needs measurements under matched conditions. The standalone building study also needs its own checked reference.
+The cheaper mesh passed the original numerical gates and the four regional checks on the exported table for both training directions. The northeast building wake was closest to the 5% RMSE limit, at **4.49% of inflow** (0.391 m/s). All 5,069 reference-valid points there had a candidate value. On the common 74,277-point grid, the masks agreed with the corresponding strict reference at every position for each direction. [North grid comparison](joint/lookup/N-grid-check.json) · [Northeast grid comparison](joint/lookup/NE-grid-check.json)
 
+| Wind from | Strict / production cells | Strict / production cold CFD time | Speedup |
+|---|---:|---:|---:|
+| N | 422,894 / 230,898 | 525.27 / 249.42 s | 2.11× |
+| NE | 425,006 / 228,432 | 401.14 / 237.59 s | 1.69× |
+
+Each entry is one complete generation timing on Studio using three CPUs and 5 GiB. The northeast case missed the original twofold cost target. Preparing the additional common-grid CSV from the finished production field took 9.59 s for north and 9.06 s for northeast in one export each. For northeast, 34,253 valid overlapping rows agreed exactly with the original regional samples. [North CFD comparison](joint/results/poc-N-agglomerated-siblings/metrics.json) · [Northeast CFD comparison](joint/results/table-NE-production/metrics.json)
+
+The first NE mesh exceeded the 500,000-cell limit because the solver-axis bounds enlarged the refined footprint. Rotating the refinement boxes with the city brought the strict mesh to 425,006 cells. The first NNE mesh failed the extended checks at two building corners. Local refinement removed the low-determinant cells and low-weight face. Exact rotor-source geometry matches across the coarse and strict meshes **within** each training direction. Between headings, the disk selects 2,184 cells for N and 1,810 for NE as its position shifts relative to the solver lattice. This contributes numerical uncertainty to directional wake predictions. [Rejected NE mesh](joint/results/table-NE-strict/mesh-verdict.json) · [Rejected NNE mesh](joint/results/table-NNE-oriented/mesh-verdict.json)
+
+### Estimating wind between two headings
+
+The experimental model fits a straight line through the N and NE vectors at each fixed world position. It expresses each vector along and across its incoming wind, blends those components and the vertical velocity, then rotates the result into the requested world heading. This preserves a uniform inflow's speed through a turn. A direct average of equal-speed world vectors 45° apart would lose 7.6% of their speed at the midpoint. The estimate requires valid samples at both endpoints and accepts angles from 0° through 45°. For an intermediate heading the command returns `estimated` or `masked_endpoint`. Building edges can fall in different sampled cells as the mesh turns.
+
+```sh
+python3 scenes/joint/lookup.py estimate scenes/joint/lookup/N.csv.gz scenes/joint/lookup/NE.csv.gz 22.5 0 -350 20
+```
+
+We reserved the entire **22.5° NNE direction** before fitting. Its strict SIMPLEC solve reached the ten-minute limit with pressure and velocity residuals above the frozen thresholds. A second cold run changed only the pressure–velocity coupling to standard SIMPLE on a byte-identical mesh and also timed out. Both attempts and their costs remain recorded. NNE has no released CFD field or qualifying accuracy score. [SIMPLEC run](joint/results/table-NNE-corners/solve-verdict.json) · [Standard SIMPLE run](joint/results/table-NNE-simple/solve-verdict.json)
+
+The saved checkpoints still help locate the discrepancies. At iteration 900, the two solvers differed by 0.014 m/s vector RMSE in the building wake. The estimate differed from each checkpoint by 1.76 m/s there. Corresponding differences in the flight region were 0.003 m/s between solvers and 0.66 m/s between the estimate and either checkpoint. In the narrow-gap proxy only 564 of 626 checkpoint-valid locations had valid samples in both training fields. These figures describe unfinished iterates. The formal RMSE target is 0.435 m/s against a checked reference. [Checkpoint diagnostics by region and height](joint/lookup/NNE-diagnostic.json)
+
+After the midpoint timeouts, we reserved 11.25° (north by east) as a secondary test and kept the fit fixed. One local refinement repaired its mesh. The strict solve completed 1,021 iterations within the time limit, with final pressure and x-velocity residuals of 2.29 × 10⁻⁴ and 1.48 × 10⁻⁵, above their limits of 10⁻⁴ and 10⁻⁵. Neither reserved heading produced a qualifying field. [Initial mesh](joint/results/table-NbE-strict/mesh-verdict.json) · [Secondary solve](joint/results/table-NbE-corner/solve-verdict.json)
+
+For repeated queries in the first planner experiment, use the two released CFD headings directly. A warm direct query took 0.15 µs and a wind-aligned estimate took 0.72 µs on Studio (median batch mean over five batches of 10,000 calls). Loading each field took about 0.10–0.12 s. The next accuracy experiment should locate the persistent residuals at one intermediate heading and establish a checked reference there. That field can then split the 45° training interval, with a fresh heading reserved to test wake and gap errors. [Query workload and timings](joint/lookup/query-timing.json)
+
+Studio can reproduce the diagnostic from the two saved parallel cases.
+
+```sh
+python3 scenes/joint/checkpoint_diagnostic.py scenes/joint/runs/table-NNE-corners \
+  scenes/joint/runs/table-NNE-simple --common-iteration 900
+```
+
+### Directional simulation settings
+
+A new build defaults to the cheaper production recipe for N and NE, and to the strict reference for the reserved NNE and NbE directions. Use `--recipe strict` or `--recipe production` to select a comparison explicitly. Both use the same rotor support for a given direction. The building geometry and city refinement boxes rotate together into the solver frame. The world hub remains at (0, −280, 32.1) m and the rotor yaws with the inflow. Fixed world positions make direct field comparisons possible.
+
+```sh
+set -e
+study=scenes/joint/study.py
+python3 "$study" build --case ne-reference --direction NE --recipe strict
+for stage in mesh solve sample evaluate; do python3 "$study" "$stage" --case ne-reference; done
+python3 "$study" build --case ne-candidate --direction NE --recipe production
+for stage in mesh solve sample evaluate; do
+  python3 "$study" "$stage" --case ne-candidate --reference ne-reference
+done
+python3 scenes/joint/lookup.py export --case scenes/joint/runs/ne-candidate \
+  --results scenes/joint/results/ne-candidate --output /tmp/NE.csv.gz
+```
+
+The exporter samples the final reconstructed field on the common grid. It requires a checked strict reference or a candidate that passes the matched-reference velocity, coverage and support checks. Re-extraction verifies overlapping points against the original regional samples. The two original north-wind resolutions and the directional pilot leave a three-level refinement trend and validation against joint observations open.
 
 ### Open the results
 
@@ -187,7 +250,7 @@ There are **three separate saved simulation scenes**, not one run with three alt
 
 | Scene | What it contains | Role in the study |
 |---|---|---|
-| `joint-baseline` | Buildings and turbine in one solved flow | Coupled baseline; stricter reference remains provisional |
+| `joint-baseline` | Buildings and turbine in one solved flow | Historical coupled baseline used for the saved 3D view |
 | `turbine-cheap` | Isolated turbine with the verified cheaper wake mesh | Accepted cheap development run |
 | `turbine-reference` | Isolated turbine with the finer wake mesh | Checked numerical comparison for that development condition |
 

@@ -5,6 +5,7 @@ import csv
 import gzip
 import hashlib
 import io
+from importlib import import_module
 import json
 import math
 import os
@@ -29,14 +30,15 @@ def planner_grid():
             for y in range(-450, 201, 5) for x in range(-200, 201, 5)]
 
 
-def sample_grid(case, parameters, iteration):
-    import study
+def sample_grid(case, parameters, iteration, *, reconstruct=False):
+    study = import_module(".study", __package__) if __package__ else import_module("study")
 
     xyz = planner_grid()
     degrees = parameters["wind_from_deg"]
     expected = {p: study.city.transform(p, degrees) for p in xyz}
-    if not iteration.isdigit() or not (case / iteration / "U").is_file():
-        raise ValueError("Final reconstructed velocity is unavailable")
+    input_dir = case / "processor0" if reconstruct else case
+    if not iteration.isdigit() or not (input_dir / iteration / "U").is_file():
+        raise ValueError(f"No saved velocity field for iteration {iteration}")
     # Keep archived meshes and fields read-only. The solver writes only into
     # the temporary sampling case, including its postProcessing directory.
     with tempfile.TemporaryDirectory() as directory:
@@ -50,14 +52,24 @@ def sample_grid(case, parameters, iteration):
                          "functions {grid {type sets; libs (sampling); writeControl timeStep; "
                          "writeInterval 1; interpolationScheme cellPoint; setFormat raw; fields (U); "
                          "sets {world {type cloud; axis xyz; points (" + points + ");}}}}")
-        command = [study.runner.DOCKER, "run", "--rm", "--cpus", "3", "--memory", "5g",
+        if reconstruct:
+            shutil.copyfile(case / "system/decomposeParDict", system / "decomposeParDict")
+            prepare = 'ln -s /source/processor[0-9]* . && reconstructPar -time "$1"'
+        else:
+            prepare = 'ln -s "/source/$1" "$1"'
+        container = f"niigata-grid-{scratch.name}"
+        command = [study.runner.DOCKER, "run", "--rm", "--name", container, "--cpus", "3", "--memory", "5g",
                    "--network", "none", "-v", f"{case.resolve()}:/source:ro",
                    "-v", f"{scratch}:/case", "--workdir", "/case", "--entrypoint", "/bin/bash",
                    parameters["image"], "-lc",
                    "source /usr/lib/openfoam/openfoam2306/etc/bashrc && "
-                   'ln -s /source/constant constant && ln -s "/source/$1" "$1" && '
+                   "ln -s /source/constant constant && " + prepare + " && "
                    'timeout 110 simpleFoam -postProcess -dict system/gridSampling -time "$1"', "grid", iteration]
-        run = subprocess.run(command, capture_output=True, text=True, timeout=120)
+        try:
+            run = subprocess.run(command, capture_output=True, text=True, timeout=120)
+        except subprocess.TimeoutExpired:
+            subprocess.run([study.runner.DOCKER, "rm", "-f", container], capture_output=True, timeout=20)
+            raise
         if run.returncode:
             raise RuntimeError((run.stdout + run.stderr)[-3000:])
         raw = study.city.raw_rows(scratch / "postProcessing" / "grid" / iteration / "world_U.xy")
@@ -70,7 +82,7 @@ def sample_grid(case, parameters, iteration):
 
 def export(case, results, destination):
     # The standalone reader needs only Python. Import the CFD tools only for export.
-    import study
+    study = import_module(".study", __package__) if __package__ else import_module("study")
 
     parameters = read_json(case / "parameters.json")
     metrics_file = results / "metrics.json"
@@ -171,6 +183,23 @@ class WindField:
                 or self.metadata["valid_positions"] != sum(v is not None for v in self.points.values())):
             raise ValueError("Wind field counts disagree with metadata")
 
+    @classmethod
+    def for_direction(cls, direction):
+        """Load a released CFD condition by compass label, e.g. N or NE."""
+        folder = ROOT / "lookup"
+        fields = read_json(folder / "index.json")["fields"]
+        label = next((name for name in fields if name.casefold() == direction.casefold()), None)
+        if label is None:
+            raise ValueError(f"No released CFD field for {direction}")
+        record = fields[label]
+        path = folder / record["file"]
+        if hashlib.sha256(path.read_bytes()).hexdigest() != record["sha256"]:
+            raise ValueError(f"Published {direction} field checksum mismatch")
+        field = cls(path)
+        if field.metadata["direction"] != label or field.metadata["wind_from_deg"] != record["wind_from_deg"]:
+            raise ValueError("Lookup index and field direction disagree")
+        return field
+
     def check_grid_and_physics(self, other):
         for key in ("Uref_m_s", "Uref_height_m", "z0_m", "closure", "rotor_center_world_m",
                     "protocol_sha256", "source_hashes", "coordinate_frame", "rotor_D_m", "Cp", "Ct"):
@@ -232,7 +261,7 @@ def main():
     build.add_argument("--results", type=Path, required=True)
     build.add_argument("--output", type=Path, required=True)
     query = commands.add_parser("query")
-    query.add_argument("field", type=Path)
+    query.add_argument("field", help="Released compass label or a compressed CSV path")
     query.add_argument("xyz", type=float, nargs=3, metavar="METRES")
     estimate = commands.add_parser("estimate", help="Experimental linear directional estimate")
     estimate.add_argument("lower", type=Path)
@@ -247,22 +276,29 @@ def main():
     else:
         if not all(map(math.isfinite, args.xyz)):
             parser.error("Coordinates must be finite")
-        if args.command == "estimate":
-            field = WindSector(WindField(args.lower), WindField(args.upper))
-            degrees = args.degrees
-            coordinates = (degrees, *args.xyz)
-        else:
-            field = WindField(args.field)
-            degrees = field.metadata["wind_from_deg"]
-            coordinates = args.xyz
+        interpolated = False
         try:
-            velocity = field.at(*coordinates)
-        except ValueError as error:
+            if args.command == "estimate":
+                field = WindSector(WindField(args.lower), WindField(args.upper))
+                degrees = args.degrees
+                query_at = field.at_angle(degrees)
+                interpolated = field.start < degrees < field.end
+            else:
+                field = (WindField.for_direction(args.field) if args.field.isalpha() and not Path(args.field).is_file()
+                         else WindField(args.field))
+                degrees = field.metadata["wind_from_deg"]
+                query_at = field.at
+        except (ValueError, OSError) as error:
             parser.error(str(error))
+        try:
+            velocity = query_at(*args.xyz)
         except KeyError:
             velocity, status = None, "unsampled"
         else:
-            status = "valid_air" if velocity is not None else "masked"
+            if interpolated:
+                status = "estimated" if velocity is not None else "masked_endpoint"
+            else:
+                status = "valid_air" if velocity is not None else "masked"
         print(json.dumps({"wind_from_deg": degrees, "xyz_m": args.xyz,
                           "status": status, "U_enu_m_s": velocity}))
 

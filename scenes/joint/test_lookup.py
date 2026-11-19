@@ -1,3 +1,4 @@
+import hashlib
 import math
 import unittest
 from types import SimpleNamespace
@@ -9,7 +10,16 @@ from lookup import ROOT, WindField, WindSector, read_json
 class LookupTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.north = WindField(ROOT / "lookup/N.csv.gz")
+        cls.north = WindField.for_direction("N")
+
+    def test_published_fields_match_their_checked_solver_results(self):
+        for label, record in read_json(ROOT / "lookup/index.json")["fields"].items():
+            with self.subTest(direction=label):
+                field = WindField.for_direction(label.lower())
+                metrics = ROOT / "results" / record["case"] / "metrics.json"
+                self.assertEqual(field.metadata["case"], record["case"])
+                self.assertEqual(field.metadata["metrics_sha256"], hashlib.sha256(metrics.read_bytes()).hexdigest())
+                self.assertTrue(read_json(metrics)["checked_coupled_result"])
 
     def test_archived_north_wake_and_mask(self):
         self.assertEqual(self.north.at(0, -350, 20), (0.01480031823, -4.839241765, 0.05637215366))

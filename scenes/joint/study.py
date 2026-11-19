@@ -68,10 +68,17 @@ def validate_solver(case,p):
     expected={'p':.3,'U':.6,'k':.6,'epsilon':.6}
     actual={key:float(value) for key,value in re.findall(r'(p|U|k|epsilon) ([0-9.eE+-]+);',relaxation)}
     if actual!=expected:raise ValueError('Retained relaxation factors changed')
-    if ('consistent yes;' in text)!=(p['role']!='baseline'):raise ValueError('Unmatched SIMPLE convention')
+    standard_simple = p.get('standard_simple_recovery', False)
+    if not isinstance(standard_simple, bool):
+        raise ValueError('Invalid standard_simple_recovery setting')
+    if standard_simple and not (tight_transport and p['direction'] == 'NNE'):
+        raise ValueError('Standard SIMPLE recovery requires the strict NNE reference')
+    expected = 'yes' if p['role'] != 'baseline' and not standard_simple else 'no'
+    if re.findall(r'\bconsistent\s+(\w+)\s*;', text) != [expected]:
+        raise ValueError('Unmatched SIMPLE convention')
 
 HUB_WORLD=(0,-280,32.1)
-DEFAULT_RECIPES={'N':'production','NNE':'strict','NE':'production'}
+DEFAULT_RECIPES={'N':'production','NbE':'strict','NNE':'strict','NE':'production'}
 JOINT_DIRECTIONS=tuple(DEFAULT_RECIPES)
 RECIPES={
     'strict': ('reference', True, True, False),
@@ -92,21 +99,25 @@ def foam_point(point):
     return '('+' '.join(map(str,point))+')'
 
 
-def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,direction='N'):
+def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,direction='N',standard_simple=False):
     started=time.monotonic();cpu=time.process_time()
     if Path(name).name!=name:raise ValueError('One fresh case name required')
     if tight_transport and (role!='reference' or not common_mesh):
         raise ValueError('Tight transport requires --role reference --common-mesh')
     if agglomerate and (role!='baseline' or not common_mesh):
         raise ValueError('Agglomeration requires --role baseline --common-mesh')
+    if standard_simple and not (direction == 'NNE' and tight_transport):
+        raise ValueError('Standard SIMPLE recovery requires the strict NNE reference')
     case=ROOT/'runs'/name
     if direction not in JOINT_DIRECTIONS:
         raise ValueError('Unsupported coupled direction '+direction)
     degrees=city.DIRECTIONS[direction]
-    args=SimpleNamespace(case=name,closure='realizableKE',direction=direction,oriented_world_boxes=True,resolution='reference',empty=False,background_m=20.,mesh_repair=False,solver_repair=role!='baseline',consistent_simple=role!='baseline')
+    args=SimpleNamespace(case=name,closure='realizableKE',direction=direction,oriented_world_boxes=True,resolution='reference',empty=False,background_m=20.,mesh_repair=False,solver_repair=role!='baseline',consistent_simple=role!='baseline' and not standard_simple)
     city.build_poc(args, case_root=ROOT/'runs')
     p=json.loads((case/'parameters.json').read_text())
     p.update(joint=True,role=role,scope='Coupled full Niigata geometry and hypothetical full-size SWiFT rotor placement; numerical transfer only, no interaction observations.',max_cells=500000)
+    if standard_simple:
+        p['standard_simple_recovery'] = True
     p['city_refinement_frame']='Fixed world-space floor, district and repair boxes.'
     protocol=json.loads(city.PROTOCOL.read_text())
     thresholds=protocol['convergence']['reference_residual_control' if role=='reference' else 'cheap_residual_control']
@@ -129,10 +140,13 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,di
     snappy=case/'system/snappyHexMeshDict';text=snappy.read_text()
     text=text.replace('geometry {\n','geometry {\n sourceSupport {type searchableBox; '+city.box_string(*support_box)+'}\n rotorWake {type searchableBox; '+city.box_string(*wake_box)+'}\n',1)
     text=text.replace('refinementRegions {','refinementRegions { sourceSupport {mode inside; levels ((1E15 4));} rotorWake {mode inside; levels ((1E15 '+str(wake_level)+'));}',1)
-    if direction=='NNE':
-        # Extended checkMesh identified two near-ground clusters in the first
-        # oblique mesh. Refine the affected buildings in physical coordinates.
-        repairs=(((80,142.5,0),(92.5,155,7.5)), ((-125,-147.5,0),(-110,-135,7.5)))
+    # Extended mesh checks locate these near-ground building corners in world metres.
+    repairs_by_direction={
+        'NNE': (((80,142.5,0),(92.5,155,7.5)), ((-125,-147.5,0),(-110,-135,7.5))),
+        'NbE': (((10,17.5,0),(25,30,7.5)),),
+    }
+    if direction in repairs_by_direction:
+        repairs=repairs_by_direction[direction]
         p['directional_mesh_repairs_world_m']=repairs
         for i,(low,high) in enumerate(repairs):
             name=f'buildingCorner{i}'
@@ -401,18 +415,29 @@ def in_building_wake(world_xyz,degrees):
     return downwind_coordinate<=-100 and z<=40
 
 
+def summarize_vector_errors(errors, reference_valid, uref):
+    """Compare common valid vectors while keeping the reference-valid denominator."""
+    errors = sorted(errors)
+    count = len(errors)
+    rmse = p95 = None
+    if count:
+        rmse = math.sqrt(sum(e*e for e in errors) / count)
+        position = .95 * (count - 1)
+        lo = int(position)
+        p95 = errors[lo] + (errors[math.ceil(position)] - errors[lo]) * (position - lo)
+    return {
+        'reference_valid': reference_valid, 'common_valid': count,
+        'coverage': count / reference_valid if reference_valid else 0,
+        'vector_RMSE_m_s': rmse, 'P95_m_s': p95,
+        'vector_RMSE_over_Uref': rmse / uref if rmse is not None else None,
+        'P95_over_Uref': p95 / uref if p95 is not None else None,
+    }
+
+
 def region_errors(data, ref, keys, uref):
-    common=sorted(keys&data.keys())
-    errors=sorted(math.dist(data[k]['U'],ref[k]['U']) for k in common)
-    rmse=math.sqrt(sum(e*e for e in errors)/len(errors)) if errors else None
-    position=.95*(len(errors)-1)
-    lo=int(position) if errors else 0
-    p95=errors[lo]+(errors[min(lo+1,len(errors)-1)]-errors[lo])*(position-lo) if errors else None
-    return {'reference_valid':len(keys),'common_valid':len(common),
-            'coverage':len(common)/len(keys) if keys else 0,
-            'vector_RMSE_m_s':rmse,'P95_m_s':p95,
-            'vector_RMSE_over_Uref':rmse/uref if rmse is not None else None,
-            'P95_over_Uref':p95/uref if p95 is not None else None}
+    errors = (math.dist(data[k]['U'], ref[k]['U']) for k in keys if k in data)
+    return summarize_vector_errors(errors, len(keys), uref)
+
 
 def descriptive_city_errors(data, ref, queries, uref):
     requested_by_height={}
@@ -513,13 +538,15 @@ def main():
     parser.add_argument('stage',choices=['build','mesh','solve','sample','evaluate'])
     parser.add_argument('--case',required=True)
     parser.add_argument('--direction',choices=JOINT_DIRECTIONS,help='Meteorological wind-from direction for build (default N)')
-    parser.add_argument('--recipe',choices=RECIPES,help='Mesh and solver preset. Defaults to production for N and NE, strict for the NNE validation case.')
+    parser.add_argument('--recipe',choices=RECIPES,help='Mesh and solver preset. Defaults to production for N and NE, strict for NbE and NNE.')
     parser.add_argument('--role',choices=['reference','baseline','candidate'])
     parser.add_argument('--reference',help='Reference case for the mesh/solve support audit or field evaluation')
     parser.add_argument('--tight-transport',action='store_true',
                         help='Build a common-mesh reference with inner transport absolute tolerance 1e-10')
     parser.add_argument('--agglomerate',action='store_true',
                         help='Build a baseline with interior sibling agglomeration after common-mesh snapping')
+    parser.add_argument('--standard-simple',action='store_true',
+                        help='Reproduce the strict NNE standard-SIMPLE trial that exceeded the 600 s solve limit')
     args=parser.parse_args()
     if args.stage!='build' and (args.direction or args.recipe):
         parser.error('--direction and --recipe apply to build')
@@ -533,9 +560,11 @@ def main():
         parser.error('--tight-transport requires build --role reference --common-mesh')
     if args.agglomerate and (args.stage!='build' or args.role!='baseline' or not args.common_mesh):
         parser.error('--agglomerate requires build --role baseline --common-mesh')
+    if args.standard_simple and not (args.stage=='build' and args.tight_transport and args.direction=='NNE'):
+        parser.error('--standard-simple requires build --direction NNE with the strict recipe')
     case=ROOT/'runs'/args.case
     reference=ROOT/'runs'/args.reference if args.reference else None
-    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.agglomerate,args.direction or 'N')
+    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.agglomerate,args.direction or 'N',args.standard_simple)
     elif args.stage=='mesh':mesh(case,reference)
     elif args.stage=='solve':
         validate_solver(case,json.loads((case/'parameters.json').read_text()))
