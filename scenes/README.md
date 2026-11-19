@@ -221,13 +221,20 @@ The saved checkpoints still help locate the discrepancies. At iteration 900, the
 
 After the midpoint timeouts, we reserved 11.25° (north by east) as a secondary test and kept the fit fixed. One local refinement repaired its mesh. The strict solve completed 1,021 iterations within the time limit, with final pressure and x-velocity residuals of 2.29 × 10⁻⁴ and 1.48 × 10⁻⁵, above their limits of 10⁻⁴ and 10⁻⁵. Neither reserved heading produced a qualifying field. [Initial mesh](joint/results/table-NbE-strict/mesh-verdict.json) · [Secondary solve](joint/results/table-NbE-corner/solve-verdict.json)
 
-For repeated queries in the first planner experiment, use the two released CFD headings directly. A warm direct query took 0.15 µs and a wind-aligned estimate took 0.72 µs on Studio (median batch mean over five batches of 10,000 calls). Loading each field took about 0.10–0.12 s. The next accuracy experiment should locate the persistent residuals at one intermediate heading and establish a checked reference there. That field can then split the 45° training interval, with a fresh heading reserved to test wake and gap errors. [Query workload and timings](joint/lookup/query-timing.json)
+For repeated queries in the first planner experiment, use the two released CFD headings directly. A warm direct query took 0.15 µs and a wind-aligned estimate took 0.72 µs on Studio (median batch mean over five batches of 10,000 calls). Loading each field took about 0.10–0.12 s. The campaign reserves 16.875° to compare the original fit with a split interval if a 22.5° reference qualifies. Each method will be scored on the same reference-valid locations in each region. [Query workload and timings](joint/lookup/query-timing.json)
 
 Studio can reproduce the diagnostic from the two saved parallel cases.
 
 ```sh
 python3 scenes/joint/checkpoint_diagnostic.py scenes/joint/runs/table-NNE-corners \
   scenes/joint/runs/table-NNE-simple --common-iteration 900
+```
+
+To locate the remaining equation imbalance, we replayed three iterations of each archived NNE solve and recorded the per-cell pressure and crosswind-momentum residuals. In the SIMPLEC replay, two adjoining 25 m cubes at one elevated building edge contained about 10% of the domain's absolute crosswind-momentum residual. Both solvers placed their largest individual pressure residual at the same building–ground junction, near world (−168, 16, 1) m. Across the four sampled iterates, cells in the rotor force region contributed at most 0.021% of the crosswind-momentum residual. These fractions measure equation imbalance in unfinished solves. [Per-cell residual results](joint/results/nne-residual-diagnostic.json)
+
+```sh
+python3 scenes/joint/residual_diagnostic.py scenes/joint/runs/table-NNE-corners --checkpoint 900
+python3 scenes/joint/residual_diagnostic.py scenes/joint/runs/table-NNE-simple --checkpoint 1000
 ```
 
 ### Directional simulation settings
