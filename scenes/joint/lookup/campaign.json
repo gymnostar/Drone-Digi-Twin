@@ -24,5 +24,23 @@
     "direction": "NbE",
     "selection": "Reserved after both strict midpoint solves timed out, before generating any NbE field. This heading bisects the interval from the checked north field to the primary holdout. Test the already frozen N/NE model without refitting. Report alongside the unqualified primary holdout, irrespective of the outcome.",
     "budget": "One strict solve with the existing resource limits. One localized mesh repair is allowed if required by the existing mesh gates."
+  },
+  "midpoint_recovery": {
+    "baseline_revision": "2a2749dc81cd6b7d255fa062638674f82ce35478",
+    "baseline_verdict": "../results/table-NNE-corners/solve-verdict.json",
+    "workload": "Cold start, strict 22.5-degree SIMPLEC case. Keep the forcing, geometry, turbulence closure, reference inflow, queries and coupled acceptance checks fixed. Any mesh change must pass the existing geometry and force-support checks.",
+    "measurement": "python3 scenes/joint/study.py solve --case CASE; after convergence run the sample and evaluate stages on the terminal iterate.",
+    "acceptance": "A checked terminal reference within 600 s for the solve, 600 s for meshing, 3 CPUs and 5 GiB. Preserve p <= 1e-4 and U, k, epsilon <= 1e-5, flux, monitor, rotor-wake and force checks. Unconverged checkpoints are diagnostic only.",
+    "stop": "At most three sequential hypothesis attempts. Stop on a checked reference, a binding protocol limit, or insufficient evidence for another change.",
+    "future_split": {
+      "development_deg": [
+        0,
+        11.25,
+        22.5,
+        45
+      ],
+      "reserved_test_deg": 16.875,
+      "use": "If a new 22.5-degree anchor qualifies, compare the original 0/45 model with the split interval at the same previously unused heading. Keep the existing regional accuracy thresholds and reference-valid coverage denominator. No fitting or tuning on the reserved case."
+    }
   }
 }

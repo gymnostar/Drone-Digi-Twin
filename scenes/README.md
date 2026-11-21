@@ -45,6 +45,15 @@ u_east, u_north, u_up = wind.at(0, -350, 20)
 
 The [field index](joint/lookup/index.json) lists released directions, their sampling roles, file checksums and measured export times. The Python interface returns `None` for a masked point and raises `KeyError` for an unsampled point. The masks describe sampled fluid cells at this resolution. A grid lookup does not test whether a path between two points crosses a wall.
 
+For a short integration check, query the four waypoints below in order for each heading. All are at east −195 m and height 5 m. At the two endpoints the entries are (east, north, up) velocities in m/s, rounded to three decimals.
+
+| North coordinate (m) | North wind | Northeast wind |
+|---:|---|---|
+| 5 | (−0.085, −1.374, −0.172) | (−0.392, −0.126, −0.103) |
+| 10 | masked | masked |
+| 11 | unsampled | unsampled |
+| 25 | (−1.030, −3.677, −0.295) | (−2.933, −0.870, −0.316) |
+
 ### Main implementation choices
 
 - **OpenFOAM v2306, steady RANS:** the solver predicts average turbulent flow. We chose this affordable starting point to study mean wind maps before attempting expensive time-resolved turbulence. RANS models unresolved fluctuations rather than resolving individual gusts. SIMPLE/SIMPLEC are iteration methods coupling pressure and velocity.
@@ -212,7 +221,7 @@ The saved checkpoints still help locate the discrepancies. At iteration 900, the
 
 After the midpoint timeouts, we reserved 11.25° (north by east) as a secondary test and kept the fit fixed. One local refinement repaired its mesh. The strict solve completed 1,021 iterations within the time limit, with final pressure and x-velocity residuals of 2.29 × 10⁻⁴ and 1.48 × 10⁻⁵, above their limits of 10⁻⁴ and 10⁻⁵. Neither reserved heading produced a qualifying field. [Initial mesh](joint/results/table-NbE-strict/mesh-verdict.json) · [Secondary solve](joint/results/table-NbE-corner/solve-verdict.json)
 
-For repeated queries in the first planner experiment, use the two released CFD headings directly. A warm direct query took 0.15 µs and a wind-aligned estimate took 0.72 µs on Studio (median batch mean over five batches of 10,000 calls). Loading each field took about 0.10–0.12 s. The next accuracy experiment should locate the persistent residuals at one intermediate heading and establish a checked reference there. That field can then split the 45° training interval, with a fresh heading reserved to test wake and gap errors. [Query workload and timings](joint/lookup/query-timing.json)
+For repeated queries in the first planner experiment, use the two released CFD headings directly. A warm direct query took 0.15 µs and a wind-aligned estimate took 0.72 µs on Studio (median batch mean over five batches of 10,000 calls). Loading each field took about 0.10–0.12 s. The campaign reserves 16.875° to compare the original fit with a split interval if a 22.5° reference qualifies. Each method will be scored on the same reference-valid locations in each region. [Query workload and timings](joint/lookup/query-timing.json)
 
 Studio can reproduce the diagnostic from the two saved parallel cases.
 
@@ -220,6 +229,23 @@ Studio can reproduce the diagnostic from the two saved parallel cases.
 python3 scenes/joint/checkpoint_diagnostic.py scenes/joint/runs/table-NNE-corners \
   scenes/joint/runs/table-NNE-simple --common-iteration 900
 ```
+
+To locate the remaining equation imbalance, we replayed three iterations of each archived NNE solve and recorded the per-cell pressure and crosswind-momentum residuals. In the SIMPLEC replay, two adjoining 25 m cubes at one elevated building edge contained about 10% of the domain's absolute crosswind-momentum residual. Both solvers placed their largest individual pressure residual at the same building–ground junction, near world (−168, 16, 1) m. Across the four sampled iterates, cells in the rotor force region contributed at most 0.021% of the crosswind-momentum residual. These fractions measure equation imbalance in unfinished solves. [Per-cell residual results](joint/results/nne-residual-diagnostic.json)
+
+```sh
+python3 scenes/joint/residual_diagnostic.py scenes/joint/runs/table-NNE-corners --checkpoint 900
+python3 scenes/joint/residual_diagnostic.py scenes/joint/runs/table-NNE-simple --checkpoint 1000
+```
+
+Three NNE recovery trials tested whether the original settings could be improved within the ten-minute solve limit.
+
+| Trial | Measured outcome |
+|---|---|
+| Refine the dominant elevated edge before snapping the mesh to the buildings | Mesh quality passed. All 2,856 rotor vertices could be paired across meshes, with a maximum shift of 0.65 μm. The exact force-support check failed and the solve was skipped. [Mesh record](joint/results/nne-edge-refined/trial.json) |
+| Subdivide the same edge on the original snapped mesh | OpenFOAM's hex splitter encountered a selected cell with six eligible vertices where it requires eight. It stopped before a solve. [Subdivision record](joint/results/nne-edge-postsnap/trial.json) |
+| Use one fewer pressure correction per iteration on the original mesh | One cold solve completed 1,123 iterations, compared with 982 in the original run. Its last completed pressure and crosswind-velocity residuals were 3.69 × 10⁻⁴ and 4.83 × 10⁻⁵. The limits were 10⁻⁴ and 10⁻⁵. [Solve record](joint/results/nne-one-corrector/trial.json) |
+
+The released table still contains N and NE. A subsequent mesh study can use the measured building-edge locations to refine the city while holding the rotor mesh fixed, then repeat the strict NNE solve. The regional interpolation check at 16.875° depends on obtaining a qualified intermediate field.
 
 ### Directional simulation settings
 

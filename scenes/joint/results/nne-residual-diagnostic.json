@@ -1,0 +1,1311 @@
+{
+  "scope": "Numerical localization at two saved 22.5-degree checkpoints on the same mesh. The replays are short diagnostics of unconverged iterates.",
+  "openfoam": "v2306",
+  "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+  "wind_from_deg": 22.5,
+  "cells": 428930,
+  "residual_convention": "Signed unnormalized b-A*psi on the first linear solve of each outer iteration, ranked by absolute value. Pressure uses the first non-orthogonal solve. The logged initial norm is the global L1 divided by the solver's normalization factor.",
+  "coordinate_frames": "World x east, y north, z up in metres. Solver x crosswind, y upwind, z up. Building distance is to the nearest boundary face centre. Patch owners can overlap.",
+  "rotor_hub_world_m": [
+    0,
+    -280,
+    32.1
+  ],
+  "rotor_diameter_m": 27.0,
+  "quality_mesh_medians": {
+    "nonOrthoAngle": 0.042394200650000005,
+    "skewness": 6.3423463985e-05,
+    "cellDeterminant": 0.9999999896,
+    "aspectRatio": 1.0000968585
+  },
+  "max_absolute_difference_field_norm_vs_replay_log": 6.442448571147841e-14,
+  "max_relative_difference_replay_vs_archived_initial_norm": 4.058459352573415e-06,
+  "cases": [
+    {
+      "source_case": "table-NNE-corners",
+      "checkpoint": 900,
+      "coupling": "SIMPLEC",
+      "iterations": {
+        "902": {
+          "Ux": {
+            "raw_L1": 1233.1522121894288,
+            "normalization_factor": 35031989.49,
+            "logged_initial": 3.520074738e-05,
+            "field_reconstructed_initial": 3.5200747378090996e-05,
+            "logged_final": 8.233447589e-07,
+            "archived_initial": 3.520076933e-05,
+            "top_100_L1_fraction": 0.11430100042228046,
+            "regions": {
+              "buildings": {
+                "mesh_cells": 21515,
+                "L1_fraction": 0.09009814396285681,
+                "top_100_cells": 38
+              },
+              "ground": {
+                "mesh_cells": 28247,
+                "L1_fraction": 0.04754413833894933,
+                "top_100_cells": 3
+              },
+              "building_and_ground_faces": {
+                "mesh_cells": 3155,
+                "L1_fraction": 0.00666350040749539,
+                "top_100_cells": 3
+              },
+              "rotor_source_cells": {
+                "mesh_cells": 2184,
+                "L1_fraction": 0.00020921071941577517,
+                "top_100_cells": 0
+              }
+            },
+            "world_25m_bins_by_L1": [
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.05976610281600888
+              },
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  50
+                ],
+                "L1_fraction": 0.04256795427447401
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  25
+                ],
+                "L1_fraction": 0.03536582253294212
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  50
+                ],
+                "L1_fraction": 0.017791032181322126
+              },
+              {
+                "lower_corner_m": [
+                  -75,
+                  0,
+                  50
+                ],
+                "L1_fraction": 0.01775795520004007
+              }
+            ],
+            "top_100_quality_medians": {
+              "nonOrthoAngle": 9.0902010205,
+              "skewness": 0.19709500445,
+              "cellDeterminant": 0.95023928625,
+              "aspectRatio": 1.1620207329999999
+            },
+            "top_3_cells": [
+              {
+                "cell": 193609,
+                "signed_residual": -8.917844869,
+                "solver_m": [
+                  -75.14744726,
+                  -14.59882211,
+                  36.25004169
+                ],
+                "world_m": [
+                  -75.01391579752755,
+                  15.270130104729125,
+                  36.25004169
+                ],
+                "building_face_center_distance_m": 2.5466800083897434,
+                "rotor_hub_distance_m": 304.6781254723925,
+                "regions": [
+                  "no_boundary_face_and_outside_rotor"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 7.638986248,
+                  "skewness": 0.2095176787,
+                  "cellDeterminant": 0.9638329812,
+                  "aspectRatio": 1.097251478
+                }
+              },
+              {
+                "cell": 126932,
+                "signed_residual": 8.363949539,
+                "solver_m": [
+                  -44.44551988,
+                  -21.90849849,
+                  48.78700364
+                ],
+                "world_m": [
+                  -49.44632552907409,
+                  -3.232249242036197,
+                  48.78700364
+                ],
+                "building_face_center_distance_m": 0.7805054534977859,
+                "rotor_hub_distance_m": 281.6447816992726,
+                "regions": [
+                  "buildings"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 5.644598346,
+                  "skewness": 0.1962885864,
+                  "cellDeterminant": 0.3184130344,
+                  "aspectRatio": 1.805373754
+                }
+              },
+              {
+                "cell": 194236,
+                "signed_residual": 7.299705871,
+                "solver_m": [
+                  -75.16194693,
+                  -14.57658878,
+                  51.32768271
+                ],
+                "world_m": [
+                  -75.0188034188314,
+                  15.296219806739456,
+                  51.32768271
+                ],
+                "building_face_center_distance_m": 2.5640672349667684,
+                "rotor_hub_distance_m": 305.28246277986534,
+                "regions": [
+                  "no_boundary_face_and_outside_rotor"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 8.526137572,
+                  "skewness": 0.2086683217,
+                  "cellDeterminant": 0.9581967098,
+                  "aspectRatio": 1.114060234
+                }
+              }
+            ]
+          },
+          "p": {
+            "raw_L1": 244.22198186977312,
+            "normalization_factor": 871120.5519,
+            "logged_initial": 0.0002803538286,
+            "field_reconstructed_initial": 0.00028035382856838914,
+            "logged_final": 1.456382551e-06,
+            "archived_initial": 0.0002803526908,
+            "top_100_L1_fraction": 0.22143411831428295,
+            "regions": {
+              "buildings": {
+                "mesh_cells": 21515,
+                "L1_fraction": 0.25578864319606176,
+                "top_100_cells": 33
+              },
+              "ground": {
+                "mesh_cells": 28247,
+                "L1_fraction": 0.11633001658104707,
+                "top_100_cells": 3
+              },
+              "building_and_ground_faces": {
+                "mesh_cells": 3155,
+                "L1_fraction": 0.06594585834675079,
+                "top_100_cells": 3
+              },
+              "rotor_source_cells": {
+                "mesh_cells": 2184,
+                "L1_fraction": 1.7685429846945782e-05,
+                "top_100_cells": 0
+              }
+            },
+            "world_25m_bins_by_L1": [
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.09786100082786119
+              },
+              {
+                "lower_corner_m": [
+                  -175,
+                  0,
+                  0
+                ],
+                "L1_fraction": 0.055230117381424915
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  25
+                ],
+                "L1_fraction": 0.05235894378861289
+              },
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  50
+                ],
+                "L1_fraction": 0.04676308181846184
+              },
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  0
+                ],
+                "L1_fraction": 0.03354693490465724
+              }
+            ],
+            "top_100_quality_medians": {
+              "nonOrthoAngle": 10.825588100000001,
+              "skewness": 0.2003793627,
+              "cellDeterminant": 0.95617484955,
+              "aspectRatio": 1.1057746255
+            },
+            "top_3_cells": [
+              {
+                "cell": 102550,
+                "signed_residual": 4.718857538,
+                "solver_m": [
+                  -161.4987475,
+                  -49.34622856,
+                  1.243446194
+                ],
+                "world_m": [
+                  -168.08937146107135,
+                  16.21292444275506,
+                  1.243446194
+                ],
+                "building_face_center_distance_m": 0.5984552578337696,
+                "rotor_hub_distance_m": 341.97698799464547,
+                "regions": [
+                  "ground",
+                  "buildings",
+                  "building_and_ground_faces"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 15.54150856,
+                  "skewness": 0.3288467308,
+                  "cellDeterminant": 0.08485569322,
+                  "aspectRatio": 2.377330191
+                }
+              },
+              {
+                "cell": 120895,
+                "signed_residual": -3.971849304,
+                "solver_m": [
+                  -163.7990457,
+                  -48.90918058,
+                  1.146398983
+                ],
+                "world_m": [
+                  -170.04731886562928,
+                  17.496990136841696,
+                  1.146398983
+                ],
+                "building_face_center_distance_m": 1.943982995191195,
+                "rotor_hub_distance_m": 344.0620223299699,
+                "regions": [
+                  "ground",
+                  "buildings",
+                  "building_and_ground_faces"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 9.689074085,
+                  "skewness": 0.3288467308,
+                  "cellDeterminant": 0.1746464566,
+                  "aspectRatio": 1.569262632
+                }
+              },
+              {
+                "cell": 194265,
+                "signed_residual": 1.946602732,
+                "solver_m": [
+                  -44.7314109,
+                  -19.72728289,
+                  48.80279392
+                ],
+                "world_m": [
+                  -48.87573931844458,
+                  -1.1076630363859152,
+                  48.80279392
+                ],
+                "building_face_center_distance_m": 2.7282277446289096,
+                "rotor_hub_distance_m": 283.63490059526276,
+                "regions": [
+                  "no_boundary_face_and_outside_rotor"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 5.227015004,
+                  "skewness": 0.2003793627,
+                  "cellDeterminant": 0.9797614633,
+                  "aspectRatio": 1.055819268
+                }
+              }
+            ]
+          }
+        },
+        "903": {
+          "Ux": {
+            "raw_L1": 1214.8651017444117,
+            "normalization_factor": 35031927.13,
+            "logged_initial": 3.467879735e-05,
+            "field_reconstructed_initial": 3.4678797350661526e-05,
+            "logged_final": 8.077730066e-07,
+            "archived_initial": 3.467881644e-05,
+            "top_100_L1_fraction": 0.11399718355259524,
+            "regions": {
+              "buildings": {
+                "mesh_cells": 21515,
+                "L1_fraction": 0.08961683777172758,
+                "top_100_cells": 38
+              },
+              "ground": {
+                "mesh_cells": 28247,
+                "L1_fraction": 0.04601683292264216,
+                "top_100_cells": 3
+              },
+              "building_and_ground_faces": {
+                "mesh_cells": 3155,
+                "L1_fraction": 0.005114607573950479,
+                "top_100_cells": 3
+              },
+              "rotor_source_cells": {
+                "mesh_cells": 2184,
+                "L1_fraction": 0.0001942614990034475,
+                "top_100_cells": 0
+              }
+            },
+            "world_25m_bins_by_L1": [
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.05554759215023536
+              },
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  50
+                ],
+                "L1_fraction": 0.04382175148126395
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  25
+                ],
+                "L1_fraction": 0.03570182886452428
+              },
+              {
+                "lower_corner_m": [
+                  -75,
+                  0,
+                  50
+                ],
+                "L1_fraction": 0.01886169108143684
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  50
+                ],
+                "L1_fraction": 0.016158587008912883
+              }
+            ],
+            "top_100_quality_medians": {
+              "nonOrthoAngle": 8.996374985500001,
+              "skewness": 0.1972689265,
+              "cellDeterminant": 0.95129504785,
+              "aspectRatio": 1.139709432
+            },
+            "top_3_cells": [
+              {
+                "cell": 194236,
+                "signed_residual": 9.713028047,
+                "solver_m": [
+                  -75.16194693,
+                  -14.57658878,
+                  51.32768271
+                ],
+                "world_m": [
+                  -75.0188034188314,
+                  15.296219806739456,
+                  51.32768271
+                ],
+                "building_face_center_distance_m": 2.5640672349667684,
+                "rotor_hub_distance_m": 305.28246277986534,
+                "regions": [
+                  "no_boundary_face_and_outside_rotor"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 8.526137572,
+                  "skewness": 0.2086683217,
+                  "cellDeterminant": 0.9581967098,
+                  "aspectRatio": 1.114060234
+                }
+              },
+              {
+                "cell": 126932,
+                "signed_residual": 8.271453263,
+                "solver_m": [
+                  -44.44551988,
+                  -21.90849849,
+                  48.78700364
+                ],
+                "world_m": [
+                  -49.44632552907409,
+                  -3.232249242036197,
+                  48.78700364
+                ],
+                "building_face_center_distance_m": 0.7805054534977859,
+                "rotor_hub_distance_m": 281.6447816992726,
+                "regions": [
+                  "buildings"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 5.644598346,
+                  "skewness": 0.1962885864,
+                  "cellDeterminant": 0.3184130344,
+                  "aspectRatio": 1.805373754
+                }
+              },
+              {
+                "cell": 193609,
+                "signed_residual": -6.957085364,
+                "solver_m": [
+                  -75.14744726,
+                  -14.59882211,
+                  36.25004169
+                ],
+                "world_m": [
+                  -75.01391579752755,
+                  15.270130104729125,
+                  36.25004169
+                ],
+                "building_face_center_distance_m": 2.5466800083897434,
+                "rotor_hub_distance_m": 304.6781254723925,
+                "regions": [
+                  "no_boundary_face_and_outside_rotor"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 7.638986248,
+                  "skewness": 0.2095176787,
+                  "cellDeterminant": 0.9638329812,
+                  "aspectRatio": 1.097251478
+                }
+              }
+            ]
+          },
+          "p": {
+            "raw_L1": 255.13396407212065,
+            "normalization_factor": 871190.1944,
+            "logged_initial": 0.0002928567903,
+            "field_reconstructed_initial": 0.0002928567902992006,
+            "logged_final": 1.498781352e-06,
+            "archived_initial": 0.0002928566556,
+            "top_100_L1_fraction": 0.2583147296064046,
+            "regions": {
+              "buildings": {
+                "mesh_cells": 21515,
+                "L1_fraction": 0.29158643468753187,
+                "top_100_cells": 32
+              },
+              "ground": {
+                "mesh_cells": 28247,
+                "L1_fraction": 0.14327342465066192,
+                "top_100_cells": 3
+              },
+              "building_and_ground_faces": {
+                "mesh_cells": 3155,
+                "L1_fraction": 0.09553002364030655,
+                "top_100_cells": 3
+              },
+              "rotor_source_cells": {
+                "mesh_cells": 2184,
+                "L1_fraction": 1.622419615827295e-05,
+                "top_100_cells": 0
+              }
+            },
+            "world_25m_bins_by_L1": [
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.09185688343141875
+              },
+              {
+                "lower_corner_m": [
+                  -175,
+                  0,
+                  0
+                ],
+                "L1_fraction": 0.08620664269964158
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  25
+                ],
+                "L1_fraction": 0.05264479759450063
+              },
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  50
+                ],
+                "L1_fraction": 0.041380284534173445
+              },
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  0
+                ],
+                "L1_fraction": 0.03097631963687387
+              }
+            ],
+            "top_100_quality_medians": {
+              "nonOrthoAngle": 10.825588100000001,
+              "skewness": 0.1999340951,
+              "cellDeterminant": 0.9565460477000001,
+              "aspectRatio": 1.1057746255
+            },
+            "top_3_cells": [
+              {
+                "cell": 102550,
+                "signed_residual": -9.101338558,
+                "solver_m": [
+                  -161.4987475,
+                  -49.34622856,
+                  1.243446194
+                ],
+                "world_m": [
+                  -168.08937146107135,
+                  16.21292444275506,
+                  1.243446194
+                ],
+                "building_face_center_distance_m": 0.5984552578337696,
+                "rotor_hub_distance_m": 341.97698799464547,
+                "regions": [
+                  "ground",
+                  "buildings",
+                  "building_and_ground_faces"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 15.54150856,
+                  "skewness": 0.3288467308,
+                  "cellDeterminant": 0.08485569322,
+                  "aspectRatio": 2.377330191
+                }
+              },
+              {
+                "cell": 120895,
+                "signed_residual": 6.679343153,
+                "solver_m": [
+                  -163.7990457,
+                  -48.90918058,
+                  1.146398983
+                ],
+                "world_m": [
+                  -170.04731886562928,
+                  17.496990136841696,
+                  1.146398983
+                ],
+                "building_face_center_distance_m": 1.943982995191195,
+                "rotor_hub_distance_m": 344.0620223299699,
+                "regions": [
+                  "ground",
+                  "buildings",
+                  "building_and_ground_faces"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 9.689074085,
+                  "skewness": 0.3288467308,
+                  "cellDeterminant": 0.1746464566,
+                  "aspectRatio": 1.569262632
+                }
+              },
+              {
+                "cell": 101917,
+                "signed_residual": -2.975000074,
+                "solver_m": [
+                  -108.2226644,
+                  -91.29291174,
+                  8.496715642
+                ],
+                "world_m": [
+                  -134.92098940826426,
+                  -42.92863194765815,
+                  8.496715642
+                ],
+                "building_face_center_distance_m": 0.5052278928830897,
+                "rotor_hub_distance_m": 273.794853796777,
+                "regions": [
+                  "buildings"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 29.15343044,
+                  "skewness": 0.2599358221,
+                  "cellDeterminant": 0.06654166264,
+                  "aspectRatio": 2.974967489
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_case": "table-NNE-simple",
+      "checkpoint": 1000,
+      "coupling": "SIMPLE",
+      "iterations": {
+        "1002": {
+          "Ux": {
+            "raw_L1": 1681.7126929798585,
+            "normalization_factor": 34846977.19,
+            "logged_initial": 4.825993038e-05,
+            "field_reconstructed_initial": 4.825993037532271e-05,
+            "logged_final": 1.182008673e-06,
+            "archived_initial": 4.825989591e-05,
+            "top_100_L1_fraction": 0.09749525132439713,
+            "regions": {
+              "buildings": {
+                "mesh_cells": 21515,
+                "L1_fraction": 0.09080951188843484,
+                "top_100_cells": 39
+              },
+              "ground": {
+                "mesh_cells": 28247,
+                "L1_fraction": 0.043865118489440094,
+                "top_100_cells": 2
+              },
+              "building_and_ground_faces": {
+                "mesh_cells": 3155,
+                "L1_fraction": 0.0048823657712864605,
+                "top_100_cells": 2
+              },
+              "rotor_source_cells": {
+                "mesh_cells": 2184,
+                "L1_fraction": 7.405033247180436e-05,
+                "top_100_cells": 0
+              }
+            },
+            "world_25m_bins_by_L1": [
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.05900762598593594
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  25
+                ],
+                "L1_fraction": 0.03443709735162262
+              },
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  50
+                ],
+                "L1_fraction": 0.022874575464652002
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  50
+                ],
+                "L1_fraction": 0.018945593857091814
+              },
+              {
+                "lower_corner_m": [
+                  -75,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.013528908789092717
+              }
+            ],
+            "top_100_quality_medians": {
+              "nonOrthoAngle": 8.345657231,
+              "skewness": 0.1981327175,
+              "cellDeterminant": 0.95129504785,
+              "aspectRatio": 1.125294341
+            },
+            "top_3_cells": [
+              {
+                "cell": 126934,
+                "signed_residual": -7.519604985,
+                "solver_m": [
+                  -44.44595533,
+                  -21.91087364,
+                  46.2646086
+                ],
+                "world_m": [
+                  -49.4476367629709,
+                  -3.2342769550072212,
+                  46.2646086
+                ],
+                "building_face_center_distance_m": 0.7787583218241312,
+                "rotor_hub_distance_m": 281.50483187833834,
+                "regions": [
+                  "buildings"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 5.48666496,
+                  "skewness": 0.1975420365,
+                  "cellDeterminant": 0.3187383152,
+                  "aspectRatio": 1.79380071
+                }
+              },
+              {
+                "cell": 180703,
+                "signed_residual": -5.986656038,
+                "solver_m": [
+                  -75.14474613,
+                  -14.59352312,
+                  41.25276858
+                ],
+                "world_m": [
+                  -75.00939244312463,
+                  15.273992055433444,
+                  41.25276858
+                ],
+                "building_face_center_distance_m": 2.549530233591257,
+                "rotor_hub_distance_m": 304.7899481802474,
+                "regions": [
+                  "no_boundary_face_and_outside_rotor"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 7.754636515,
+                  "skewness": 0.2095271584,
+                  "cellDeterminant": 0.9631640455,
+                  "aspectRatio": 1.104403305
+                }
+              },
+              {
+                "cell": 108355,
+                "signed_residual": -5.046819375,
+                "solver_m": [
+                  -75.29633458,
+                  -16.59189115,
+                  41.25083243
+                ],
+                "world_m": [
+                  -75.91418424629379,
+                  13.48575112244445,
+                  41.25083243
+                ],
+                "building_face_center_distance_m": 0.7810168910949129,
+                "rotor_hub_distance_m": 303.2830150467506,
+                "regions": [
+                  "buildings"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 14.89469278,
+                  "skewness": 0.1554997642,
+                  "cellDeterminant": 0.2681176492,
+                  "aspectRatio": 2.121332551
+                }
+              }
+            ]
+          },
+          "p": {
+            "raw_L1": 207.37751148959111,
+            "normalization_factor": 350584.8108,
+            "logged_initial": 0.000591518814,
+            "field_reconstructed_initial": 0.0005915188139964651,
+            "logged_final": 3.206053692e-06,
+            "archived_initial": 0.0005915178122,
+            "top_100_L1_fraction": 0.25358946143559824,
+            "regions": {
+              "buildings": {
+                "mesh_cells": 21515,
+                "L1_fraction": 0.32803035292116345,
+                "top_100_cells": 39
+              },
+              "ground": {
+                "mesh_cells": 28247,
+                "L1_fraction": 0.12608452700091766,
+                "top_100_cells": 5
+              },
+              "building_and_ground_faces": {
+                "mesh_cells": 3155,
+                "L1_fraction": 0.07798741714625253,
+                "top_100_cells": 5
+              },
+              "rotor_source_cells": {
+                "mesh_cells": 2184,
+                "L1_fraction": 8.607066672596823e-06,
+                "top_100_cells": 0
+              }
+            },
+            "world_25m_bins_by_L1": [
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.07480370027640339
+              },
+              {
+                "lower_corner_m": [
+                  -175,
+                  0,
+                  0
+                ],
+                "L1_fraction": 0.06949892165314192
+              },
+              {
+                "lower_corner_m": [
+                  100,
+                  -100,
+                  0
+                ],
+                "L1_fraction": 0.05885553670203429
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  25
+                ],
+                "L1_fraction": 0.04799138779751684
+              },
+              {
+                "lower_corner_m": [
+                  50,
+                  -175,
+                  0
+                ],
+                "L1_fraction": 0.042687263232788666
+              }
+            ],
+            "top_100_quality_medians": {
+              "nonOrthoAngle": 16.293790045,
+              "skewness": 0.2095130666,
+              "cellDeterminant": 0.9096125846,
+              "aspectRatio": 1.2577705705
+            },
+            "top_3_cells": [
+              {
+                "cell": 102550,
+                "signed_residual": 5.016743605,
+                "solver_m": [
+                  -161.4987475,
+                  -49.34622856,
+                  1.243446194
+                ],
+                "world_m": [
+                  -168.08937146107135,
+                  16.21292444275506,
+                  1.243446194
+                ],
+                "building_face_center_distance_m": 0.5984552578337696,
+                "rotor_hub_distance_m": 341.97698799464547,
+                "regions": [
+                  "ground",
+                  "buildings",
+                  "building_and_ground_faces"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 15.54150856,
+                  "skewness": 0.3288467308,
+                  "cellDeterminant": 0.08485569322,
+                  "aspectRatio": 2.377330191
+                }
+              },
+              {
+                "cell": 120895,
+                "signed_residual": -4.266886418,
+                "solver_m": [
+                  -163.7990457,
+                  -48.90918058,
+                  1.146398983
+                ],
+                "world_m": [
+                  -170.04731886562928,
+                  17.496990136841696,
+                  1.146398983
+                ],
+                "building_face_center_distance_m": 1.943982995191195,
+                "rotor_hub_distance_m": 344.0620223299699,
+                "regions": [
+                  "ground",
+                  "buildings",
+                  "building_and_ground_faces"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 9.689074085,
+                  "skewness": 0.3288467308,
+                  "cellDeterminant": 0.1746464566,
+                  "aspectRatio": 1.569262632
+                }
+              },
+              {
+                "cell": 114257,
+                "signed_residual": -1.823967943,
+                "solver_m": [
+                  146.5348444,
+                  -33.18624027,
+                  5.716203028
+                ],
+                "world_m": [
+                  122.68071920706998,
+                  -86.73654536253119,
+                  5.716203028
+                ],
+                "building_face_center_distance_m": 0.9725452393598688,
+                "rotor_hub_distance_m": 230.4287883625495,
+                "regions": [
+                  "buildings"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 32.34079826,
+                  "skewness": 0.8185997612,
+                  "cellDeterminant": 0.08382786635,
+                  "aspectRatio": 2.25304828
+                }
+              }
+            ]
+          }
+        },
+        "1003": {
+          "Ux": {
+            "raw_L1": 1688.3889674589554,
+            "normalization_factor": 34848302.25,
+            "logged_initial": 4.844967641e-05,
+            "field_reconstructed_initial": 4.8449676410246224e-05,
+            "logged_final": 1.191909415e-06,
+            "archived_initial": 4.844964875e-05,
+            "top_100_L1_fraction": 0.10012531015949654,
+            "regions": {
+              "buildings": {
+                "mesh_cells": 21515,
+                "L1_fraction": 0.09328198323718265,
+                "top_100_cells": 40
+              },
+              "ground": {
+                "mesh_cells": 28247,
+                "L1_fraction": 0.04180163260317803,
+                "top_100_cells": 2
+              },
+              "building_and_ground_faces": {
+                "mesh_cells": 3155,
+                "L1_fraction": 0.0034937865403809744,
+                "top_100_cells": 2
+              },
+              "rotor_source_cells": {
+                "mesh_cells": 2184,
+                "L1_fraction": 7.664683176494401e-05,
+                "top_100_cells": 0
+              }
+            },
+            "world_25m_bins_by_L1": [
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.05777001863274012
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  25
+                ],
+                "L1_fraction": 0.035352401998975456
+              },
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  50
+                ],
+                "L1_fraction": 0.025523114040757525
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  50
+                ],
+                "L1_fraction": 0.018155197138916435
+              },
+              {
+                "lower_corner_m": [
+                  -75,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.014054603055005613
+              }
+            ],
+            "top_100_quality_medians": {
+              "nonOrthoAngle": 8.345657231,
+              "skewness": 0.19779815545,
+              "cellDeterminant": 0.94946978745,
+              "aspectRatio": 1.1358168334999998
+            },
+            "top_3_cells": [
+              {
+                "cell": 108355,
+                "signed_residual": -7.067483867,
+                "solver_m": [
+                  -75.29633458,
+                  -16.59189115,
+                  41.25083243
+                ],
+                "world_m": [
+                  -75.91418424629379,
+                  13.48575112244445,
+                  41.25083243
+                ],
+                "building_face_center_distance_m": 0.7810168910949129,
+                "rotor_hub_distance_m": 303.2830150467506,
+                "regions": [
+                  "buildings"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 14.89469278,
+                  "skewness": 0.1554997642,
+                  "cellDeterminant": 0.2681176492,
+                  "aspectRatio": 2.121332551
+                }
+              },
+              {
+                "cell": 180703,
+                "signed_residual": -6.909856765,
+                "solver_m": [
+                  -75.14474613,
+                  -14.59352312,
+                  41.25276858
+                ],
+                "world_m": [
+                  -75.00939244312463,
+                  15.273992055433444,
+                  41.25276858
+                ],
+                "building_face_center_distance_m": 2.549530233591257,
+                "rotor_hub_distance_m": 304.7899481802474,
+                "regions": [
+                  "no_boundary_face_and_outside_rotor"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 7.754636515,
+                  "skewness": 0.2095271584,
+                  "cellDeterminant": 0.9631640455,
+                  "aspectRatio": 1.104403305
+                }
+              },
+              {
+                "cell": 126934,
+                "signed_residual": -6.730153901,
+                "solver_m": [
+                  -44.44595533,
+                  -21.91087364,
+                  46.2646086
+                ],
+                "world_m": [
+                  -49.4476367629709,
+                  -3.2342769550072212,
+                  46.2646086
+                ],
+                "building_face_center_distance_m": 0.7787583218241312,
+                "rotor_hub_distance_m": 281.50483187833834,
+                "regions": [
+                  "buildings"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 5.48666496,
+                  "skewness": 0.1975420365,
+                  "cellDeterminant": 0.3187383152,
+                  "aspectRatio": 1.79380071
+                }
+              }
+            ]
+          },
+          "p": {
+            "raw_L1": 224.05013173211296,
+            "normalization_factor": 350609.586,
+            "logged_initial": 0.0006390302509,
+            "field_reconstructed_initial": 0.0006390302509644244,
+            "logged_final": 3.266355792e-06,
+            "archived_initial": 0.0006390290997,
+            "top_100_L1_fraction": 0.30498731328889445,
+            "regions": {
+              "buildings": {
+                "mesh_cells": 21515,
+                "L1_fraction": 0.37302968829707744,
+                "top_100_cells": 40
+              },
+              "ground": {
+                "mesh_cells": 28247,
+                "L1_fraction": 0.16521215167613015,
+                "top_100_cells": 4
+              },
+              "building_and_ground_faces": {
+                "mesh_cells": 3155,
+                "L1_fraction": 0.12082463432292043,
+                "top_100_cells": 4
+              },
+              "rotor_source_cells": {
+                "mesh_cells": 2184,
+                "L1_fraction": 8.603809411771374e-06,
+                "top_100_cells": 0
+              }
+            },
+            "world_25m_bins_by_L1": [
+              {
+                "lower_corner_m": [
+                  -175,
+                  0,
+                  0
+                ],
+                "L1_fraction": 0.11279464535703988
+              },
+              {
+                "lower_corner_m": [
+                  -100,
+                  0,
+                  25
+                ],
+                "L1_fraction": 0.07067191119332604
+              },
+              {
+                "lower_corner_m": [
+                  100,
+                  -100,
+                  0
+                ],
+                "L1_fraction": 0.05070287364209719
+              },
+              {
+                "lower_corner_m": [
+                  -50,
+                  -25,
+                  25
+                ],
+                "L1_fraction": 0.045966996308973204
+              },
+              {
+                "lower_corner_m": [
+                  -150,
+                  -50,
+                  0
+                ],
+                "L1_fraction": 0.040421779786359135
+              }
+            ],
+            "top_100_quality_medians": {
+              "nonOrthoAngle": 16.154781555,
+              "skewness": 0.2095084545,
+              "cellDeterminant": 0.90812809985,
+              "aspectRatio": 1.2577705705
+            },
+            "top_3_cells": [
+              {
+                "cell": 102550,
+                "signed_residual": -10.70906496,
+                "solver_m": [
+                  -161.4987475,
+                  -49.34622856,
+                  1.243446194
+                ],
+                "world_m": [
+                  -168.08937146107135,
+                  16.21292444275506,
+                  1.243446194
+                ],
+                "building_face_center_distance_m": 0.5984552578337696,
+                "rotor_hub_distance_m": 341.97698799464547,
+                "regions": [
+                  "ground",
+                  "buildings",
+                  "building_and_ground_faces"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 15.54150856,
+                  "skewness": 0.3288467308,
+                  "cellDeterminant": 0.08485569322,
+                  "aspectRatio": 2.377330191
+                }
+              },
+              {
+                "cell": 120895,
+                "signed_residual": 7.860225119,
+                "solver_m": [
+                  -163.7990457,
+                  -48.90918058,
+                  1.146398983
+                ],
+                "world_m": [
+                  -170.04731886562928,
+                  17.496990136841696,
+                  1.146398983
+                ],
+                "building_face_center_distance_m": 1.943982995191195,
+                "rotor_hub_distance_m": 344.0620223299699,
+                "regions": [
+                  "ground",
+                  "buildings",
+                  "building_and_ground_faces"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 9.689074085,
+                  "skewness": 0.3288467308,
+                  "cellDeterminant": 0.1746464566,
+                  "aspectRatio": 1.569262632
+                }
+              },
+              {
+                "cell": 101917,
+                "signed_residual": -3.93410854,
+                "solver_m": [
+                  -108.2226644,
+                  -91.29291174,
+                  8.496715642
+                ],
+                "world_m": [
+                  -134.92098940826426,
+                  -42.92863194765815,
+                  8.496715642
+                ],
+                "building_face_center_distance_m": 0.5052278928830897,
+                "rotor_hub_distance_m": 273.794853796777,
+                "regions": [
+                  "buildings"
+                ],
+                "mesh_quality": {
+                  "nonOrthoAngle": 29.15343044,
+                  "skewness": 0.2599358221,
+                  "cellDeterminant": 0.06654166264,
+                  "aspectRatio": 2.974967489
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

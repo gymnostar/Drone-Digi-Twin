@@ -1,0 +1,190 @@
+{
+  "case": "nne-one-corrector",
+  "baseline": "table-NNE-corners",
+  "direction": "NNE",
+  "recipe": "strict",
+  "change": {
+    "dictionary": "system/fvSolution",
+    "key": "nNonOrthogonalCorrectors",
+    "baseline": 2,
+    "trial": 1,
+    "hypothesis": "Reduce repeat pressure work to allow more complete outer iterations within the same wall-clock cap.",
+    "baseline_last_500_third_pressure_solve_max_initial_residual": 1.380191589e-05,
+    "baseline_last_500_third_pressure_solve_gamg_cycles": 1871
+  },
+  "cold_start": true,
+  "start_time": 0,
+  "fvSolution_sha256": {
+    "baseline": "2f82a82a405b4f2869eeefa97e94c973693c415cf46f079a2dcdd07f2a550a97",
+    "trial": "288a3c164ac77fbca757d0079dfc45348609c253a99b6fb963015ec0ea06e616"
+  },
+  "identical_input_sha256": {
+    "0/p": "e92066ad307ebebfb7821fb8d2895ea5c40c228844273ec2405ad81a25d4dfd9",
+    "0/U": "e715ad966672fccfb84040721f3dedb5b727574efdc474fdf7c23864ac72f9d2",
+    "system/controlDict": "8f23754279cf3a12f3a152b055ae8c04dc69d8366b3eba8aba4945e3fd4e2499",
+    "system/fvSchemes": "ec3d9a209b9963ec6140f306580755add145825f3442848f181a05c974e88f4c",
+    "system/snappyHexMeshDict": "03863190c6435cb7814578859c49e73ccba352693a6122c119e003840ac07a37",
+    "queries.json": "bada9a5ffdd8d1c2aefa775934c4e0ee1fb5085e88db9c622c199f8d0d7b4b22",
+    "constant/fvOptions": "40c7c351514f328645b835bd55c2ddbd467b904adcb33d0321c441fb361f8903"
+  },
+  "mesh": {
+    "source": "Read-only copy of archived baseline mesh and its three checkMesh logs. Archived mesh cost is provenance.",
+    "cells": 428930,
+    "baseline_file_manifest_sha256": "6b234b54a7124d46171b88e66dae978aee0ab8f60a7853026f1cbf981b0667b9",
+    "trial_byte_identical": true,
+    "verified_files": 17,
+    "archived_stage_cost": {
+      "stage": "mesh",
+      "elapsed_s": 123.03486662500654,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 122.694795,
+      "peak_cgroup_memory_bytes_including_cache": 768770048,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "rotor_support": {
+    "exact_match": true,
+    "configuration_sha256": "1df29f0e66649a64286362410a3996273f00d5f62197da5437252acd242961f5",
+    "selected_cells": 2184,
+    "spatial_cell_vertices_sha256": "3ac0f7db20ad46689051571d9c2ee65dcfd47f2c1236e51a1b4c817c53f30cea"
+  },
+  "budget": {
+    "mesh_s": 600,
+    "solve_s": 600,
+    "cpus": 3,
+    "memory_bytes": 5368709120
+  },
+  "strict_residual_thresholds": {
+    "p": 0.0001,
+    "U": 1e-05,
+    "k": 1e-05,
+    "epsilon": 1e-05
+  },
+  "accepted": false,
+  "stopped_at": "solve timeout",
+  "reason": "The cold solve reached the 600 s cap before satisfying the original residual limits. No checked terminal iterate was produced.",
+  "solve_started": true,
+  "solver_reported_convergence": false,
+  "sampled": false,
+  "evaluated": false,
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.200315416965168,
+      "cpu_s": 1.179547,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+      "tight_transport": true
+    },
+    "host-solve-audit": {
+      "elapsed_s": 6.683397805318236e-05,
+      "cpu_s": 6.700000000000456e-05,
+      "scope": "Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate"
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 600.2309117909754,
+      "exit_code": 137,
+      "timed_out": true,
+      "cpu_s": null,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "last_started_iteration": 1124,
+  "last_complete_iteration": 1123,
+  "last_complete_max_initial_residuals": {
+    "Ux": 4.827561991e-05,
+    "Uy": 5.127325898e-07,
+    "Uz": 1.909968982e-05,
+    "p": 0.0003691181777,
+    "epsilon": 1.418016656e-06,
+    "k": 3.812240826e-06
+  },
+  "last_complete_residual_over_limit": {
+    "Ux": 4.827561991,
+    "Uy": 0.05127325897999999,
+    "Uz": 1.9099689819999996,
+    "p": 3.6911817769999997,
+    "epsilon": 0.1418016656,
+    "k": 0.3812240826
+  },
+  "diagnostic_window": {
+    "first_iteration": 624,
+    "last_iteration": 1123,
+    "completed_iterations": 500,
+    "median_of_iteration_max_initial_residuals": {
+      "Ux": 3.5581582130000004e-05,
+      "Uy": 3.70578058e-07,
+      "Uz": 1.4919212940000001e-05,
+      "p": 0.00029123245930000004,
+      "epsilon": 1.0802324025e-06,
+      "k": 2.65136757e-06
+    }
+  },
+  "aligned_iteration_comparison": {
+    "scope": "Equal outer-iteration counts. Residuals are the maximum initial residual per field per completed iteration.",
+    "first_iteration": 1,
+    "last_iteration": 982,
+    "baseline_at_iteration_982": {
+      "Ux": 3.185260642e-05,
+      "Uy": 3.470187417e-07,
+      "Uz": 1.406990478e-05,
+      "p": 0.0002722286768,
+      "epsilon": 1.025654101e-06,
+      "k": 2.529119589e-06
+    },
+    "trial_at_iteration_982": {
+      "Ux": 3.548111453e-05,
+      "Uy": 3.479126629e-07,
+      "Uz": 1.382348168e-05,
+      "p": 0.0002809053236,
+      "epsilon": 9.891339507e-07,
+      "k": 2.343653316e-06
+    },
+    "baseline_last_500_in_aligned_window": {
+      "first_iteration": 483,
+      "last_iteration": 982,
+      "completed_iterations": 500,
+      "median_of_iteration_max_initial_residuals": {
+        "Ux": 3.9797625665e-05,
+        "Uy": 4.3611453885e-07,
+        "Uz": 1.7681514615e-05,
+        "p": 0.0003080364902,
+        "epsilon": 1.1678150415e-06,
+        "k": 3.0166110745e-06
+      }
+    },
+    "trial_last_500_in_aligned_window": {
+      "first_iteration": 483,
+      "last_iteration": 982,
+      "completed_iterations": 500,
+      "median_of_iteration_max_initial_residuals": {
+        "Ux": 3.5758155244999994e-05,
+        "Uy": 3.837114522e-07,
+        "Uz": 1.5281265784999998e-05,
+        "p": 0.0002953384648,
+        "epsilon": 1.0897794975e-06,
+        "k": 2.702918701e-06
+      }
+    },
+    "pressure_GAMG_cycles_in_aligned_window": {
+      "baseline": 10436,
+      "trial": 6945
+    }
+  },
+  "trial_source_revision": "2a2749dc81cd6b7d255fa062638674f82ce35478",
+  "reproduction": [
+    "python3 scenes/joint/study.py build --case nne-one-corrector --direction NNE --recipe strict",
+    "Set nNonOrthogonalCorrectors to 1 in system/fvSolution. Compare fvSolution_sha256 and the other input hashes.",
+    "Use the archived table-NNE-corners constant/polyMesh, mesh-stage logs and mesh audits, keeping only the fresh initial fields in 0. Verify the mesh and rotor hashes against the baseline.",
+    "python3 scenes/joint/study.py solve --case nne-one-corrector"
+  ]
+}

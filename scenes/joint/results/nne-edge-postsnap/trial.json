@@ -1,0 +1,144 @@
+{
+  "case": "nne-edge-postsnap",
+  "baseline": "table-NNE-corners",
+  "direction": "NNE",
+  "recipe": "strict",
+  "cold_start": true,
+  "change": {
+    "method": "one native refineHexMesh 2x2x2 split of selected cells on archived snapped mesh",
+    "box_world_m": {
+      "low": [
+        -87.5,
+        2.5,
+        30
+      ],
+      "high": [
+        -62.5,
+        27.5,
+        57.5
+      ]
+    },
+    "selection_dictionary": "actions ({name elevatedBuildingEdge; type cellSet; action new; source rotatedBoxToCell; origin (-81.79616767565031 -31.17510150066714 30); i (23.09698831278217 9.567085809127244 0); j (-9.567085809127244 23.09698831278217 0); k (0.0 0.0 27.5);});",
+    "selection_filter": "Retain cellLevel < 4 using archived mesh metadata. Default 2:1 consistency may extend set.",
+    "preflight_selected_levels": {
+      "3": 560,
+      "2": 30
+    },
+    "requested_child_levels_before_2_to_1_extension": {
+      "4": 4480,
+      "3": 240
+    },
+    "mesh_commands": "refineHexMesh -overwrite elevatedBuildingEdge > log.refineHexMesh 2>&1 && checkMesh -allTopology -allGeometry > log.checkMesh 2>&1 && checkMesh > log.checkMesh.standard 2>&1 && checkMesh -meshQuality > log.checkMesh.quality 2>&1 && topoSet > log.topoSet 2>&1"
+  },
+  "identical_input_sha256": {
+    "system/snappyHexMeshDict": "03863190c6435cb7814578859c49e73ccba352693a6122c119e003840ac07a37",
+    "system/fvSolution": "2f82a82a405b4f2869eeefa97e94c973693c415cf46f079a2dcdd07f2a550a97",
+    "system/fvSchemes": "ec3d9a209b9963ec6140f306580755add145825f3442848f181a05c974e88f4c",
+    "system/controlDict": "8f23754279cf3a12f3a152b055ae8c04dc69d8366b3eba8aba4945e3fd4e2499",
+    "queries.json": "bada9a5ffdd8d1c2aefa775934c4e0ee1fb5085e88db9c622c199f8d0d7b4b22",
+    "constant/fvOptions": "40c7c351514f328645b835bd55c2ddbd467b904adcb33d0321c441fb361f8903",
+    "system/topoSetDict": "94469286f1fd0e87ac3c40231e475294acab61fb92cb67c9263d6907a899d346",
+    "0/U": "e715ad966672fccfb84040721f3dedb5b727574efdc474fdf7c23864ac72f9d2",
+    "0/p": "e92066ad307ebebfb7821fb8d2895ea5c40c228844273ec2405ad81a25d4dfd9",
+    "0/k": "e7fc8f1b5bb819cfaed7c1b9fa0cdfa27621292af7082bdae4e533d73e985f45",
+    "0/epsilon": "b9cb8d77ae37524bdf260616ffcc613092dc64d5e96500bc6fc2d94d251311a6",
+    "0/nut": "bc3b42149def8704b40eb672d41cc09b7511bbfff94c16c1b1c8d05c8af0156d",
+    "constant/transportProperties": "9b0061b4ee4075d41819ab78d99daa626c0d936b8f77be8ac9bd5fb999464a34",
+    "constant/turbulenceProperties": "3ee76924e8fddd504d7149d09ca0b6e774fa4e967012d7d73e35f1e62fe0f228",
+    "system/blockMeshDict": "fc36e1d3b6b10c37a801df732ca9373bddebce9d8e56d6af58b84d9b4c6ffd01",
+    "system/roiSampling": "b68dac39c6cff3019ec17e3ff67a39a4bcfd65d2ea909e29d27132511263fc6b"
+  },
+  "cost": {
+    "archived_baseline_mesh": {
+      "stage": "mesh",
+      "elapsed_s": 123.03486662500654,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 122.694795,
+      "peak_cgroup_memory_bytes_including_cache": 768770048,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "edge-select": {
+      "stage": "edge-select",
+      "elapsed_s": 1.4519297080114484,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 1.245863,
+      "peak_cgroup_memory_bytes_including_cache": 259125248,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "post_snap_refine_attempt": {
+      "stage": "mesh",
+      "elapsed_s": 2.6595444999984466,
+      "exit_code": 134,
+      "timed_out": false,
+      "cpu_s": 2.436552,
+      "peak_cgroup_memory_bytes_including_cache": 527384576,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.2135541250463575,
+      "cpu_s": 1.184688,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+      "tight_transport": true
+    },
+    "scope": "The archived cold mesh wall time is charged to the budget with cell selection and the incremental refinement attempt. These stages produced no qualified refined mesh.",
+    "charged_meshing_elapsed_s": 127.14634083301644
+  },
+  "budget": {
+    "mesh_s": 600,
+    "solve_s": 600,
+    "cpus": 3,
+    "memory_bytes": 5368709120,
+    "remaining_incremental_mesh_stage_s": 475
+  },
+  "initial_mesh_sha256": {
+    "boundary": "4fe66f327667ec3d8e503075630d68c62f4dc18f9e7bb32c350400454bb5e1d5",
+    "faces": "7d088ea97515479c0fc9850a37769067e022e84aea14b12bd69818e0199393d4",
+    "neighbour": "aa610527c1c2f99abfbfdf433d7862671dc84c225981315d13e2474a2dfa9012",
+    "owner": "d200e8436a3af11ec2635897bfeee69654c4b7f0e3bada3e9fc903a7e7f5ecc3",
+    "points": "bcfdb73f52dbcd0453ca02d743475e24c90418c31de2c107f0f9c31c6c72fc48",
+    "cellLevel": "e9d0210eaf5894573d184798be1eb4031cbea6cc7b539987206b950ed2f6c95f"
+  },
+  "accepted": false,
+  "stopped_at": "native mesh command",
+  "reason": "OpenFOAM v2306 hexRef8 aborted because a snapped level-3 cell had only six vertices of level 3 or lower. Splitting requires eight.",
+  "failure": {
+    "cell_label": 100953,
+    "cell_level": 3,
+    "cell_in_requested_set": true,
+    "vertex_levels": [
+      3,
+      1,
+      3,
+      3,
+      3,
+      3
+    ],
+    "log": "log.refineHexMesh",
+    "core_polyMesh_unchanged_after_failure": true
+  },
+  "mesh_quality_checked": false,
+  "exact_rotor_support_checked": false,
+  "solve_started": false,
+  "sampled": false,
+  "evaluated": false,
+  "trial_source_revision": "2a2749dc81cd6b7d255fa062638674f82ce35478",
+  "reproduction": [
+    "python3 scenes/joint/study.py build --case nne-edge-postsnap --direction NNE --recipe strict",
+    "Copy the archived base mesh from table-NNE-corners/constant/polyMesh into the fresh case, verifying initial_mesh_sha256.",
+    "Add change.selection_dictionary to a topoSet dictionary with the usual FoamFile header, then run topoSet -dict system/topoSetDict.edge.",
+    "Verify the selected cellLevel histogram against preflight_selected_levels, then run change.mesh_commands."
+  ]
+}
