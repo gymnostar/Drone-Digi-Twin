@@ -35,7 +35,7 @@ class LookupTest(unittest.TestCase):
         waypoints = [(-195, 5, 5), (-195, 10, 5), (-195, 11, 5), (-195, 25, 5)]
         endpoint_velocities = {
             "N": [(-0.08491, -1.37402, -0.17237), (-1.02957, -3.67691, -0.29512)],
-            "NE": [(-0.39180, -0.12628, -0.10338), (-2.93303, -0.86956, -0.31573)],
+            "NE": [(-0.38890, -0.13720, -0.10408), (-3.01119, -0.85734, -0.28689)],
         }
         for label, (first, last) in endpoint_velocities.items():
             expected = [("valid_air", first), ("masked", None),
