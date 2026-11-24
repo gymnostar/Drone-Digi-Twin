@@ -153,7 +153,7 @@ class DirectionalStudyTest(unittest.TestCase):
                         approx_point(read_point(corner, 'span'), (15,12.5,7.5))
                         approx_point(read_point(corner, 'e1'), study.city.transform((1,0,0),theta))
                         self.assertIn('buildingCorner0 {mode inside; levels ((1E15 4));}', geom)
-                    if direction in ('N', 'NbE', 'NNE'):
+                    if direction in ('N', 'NbE', 'NNE', 'NW'):
                         self.assertEqual(p['role'], 'reference')
                         self.assertTrue(p['tight_transport'])
                     else:
@@ -192,10 +192,12 @@ class DirectionalStudyTest(unittest.TestCase):
 
             for direction in ('NE', 'NW', 'NNE'):
                 with self.subTest(direction=direction):
-                    default, dp = build(direction, direction)
+                    # NW defaults to strict until it has a checked reference.
+                    recipe = ('--recipe', 'production') if direction == 'NW' else ()
+                    default, dp = build(direction, direction, *recipe)
                     self.assertNotIn('simplec_conventional_relaxation', dp)
                     for factor in ('0.9', '0.7'):
-                        case, p = build(f'{direction}-{factor}', direction, '--simplec-relaxation', factor)
+                        case, p = build(f'{direction}-{factor}', direction, *recipe, '--simplec-relaxation', factor)
                         self.assertEqual(p['simplec_conventional_relaxation'], float(factor))
                         self.assertEqual(p['residual_thresholds'], dp['residual_thresholds'])
                         text = (case / 'system/fvSolution').read_text()

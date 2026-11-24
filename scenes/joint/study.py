@@ -105,7 +105,7 @@ def validate_solver(case,p):
         raise ValueError('Unmatched SIMPLE convention')
 
 HUB_WORLD=(0,-280,32.1)
-DEFAULT_RECIPES={'N':'production','NbE':'strict','NNE':'strict','NE':'production','NW':'production'}
+DEFAULT_RECIPES={'N':'production','NbE':'strict','NNE':'strict','NE':'production','NW':'strict'}
 JOINT_DIRECTIONS=tuple(DEFAULT_RECIPES)
 RECIPES={
     'strict': ('reference', True, True, False),
@@ -576,7 +576,7 @@ def main():
     parser.add_argument('stage',choices=['build','mesh','solve','sample','evaluate'])
     parser.add_argument('--case',required=True)
     parser.add_argument('--direction',choices=JOINT_DIRECTIONS,help='Meteorological wind-from direction for build (default N)')
-    parser.add_argument('--recipe',choices=RECIPES,help='Mesh and solver preset. Defaults to production for N, NE and NW, strict for NbE and NNE.')
+    parser.add_argument('--recipe',choices=RECIPES,help='Mesh and solver preset. Defaults to production for N and NE, strict for NbE, NNE and NW (no checked reference).')
     parser.add_argument('--role',choices=['reference','baseline','candidate'])
     parser.add_argument('--reference',help='Reference case for the mesh/solve support audit or field evaluation')
     parser.add_argument('--tight-transport',action='store_true',
