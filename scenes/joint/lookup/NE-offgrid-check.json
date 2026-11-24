@@ -1,0 +1,248 @@
+{
+  "description": "Trilinear lookup interpolation (WindField.interpolate) against OpenFOAM cellPoint samples of the same CFD solution at random positions between grid nodes. Errors measure interpolation only, not CFD accuracy against a reference or real wind.",
+  "case": "table-NE-simplec",
+  "iteration": "136",
+  "direction": "NE",
+  "wind_from_deg": 45.0,
+  "Uref_m_s": 8.7,
+  "field_file": "NE.csv.gz",
+  "field_sha256": "7a6d0b908e22c13202094f1df345c4b53ba7f3b07f6d6e918ddd3febe8e72cfe",
+  "seed": 20261124,
+  "positions_per_set": 20000,
+  "position_rounding_m": 0.001,
+  "sets": {
+    "table_box_world_m": [
+      [
+        -200.0,
+        200.0
+      ],
+      [
+        -450.0,
+        200.0
+      ],
+      [
+        5.0,
+        80.0
+      ]
+    ],
+    "flight_volume_world_m": [
+      [
+        -50.0,
+        50.0
+      ],
+      [
+        -450.0,
+        -220.0
+      ],
+      [
+        20.0,
+        60.0
+      ]
+    ]
+  },
+  "region_definitions": {
+    "all_table_box": "Table-box set only.",
+    "flight_volume": "|east| <= 50, north -450..-220, height 20..60 m; table-box positions inside it plus the flight set.",
+    "rotor_wake": "Table-box positions within evaluate_lookup's wind-aligned rotor wake bounds (|across| <= 27 m, 27..135 m downwind of the hub at north -280 m, height 5..65 m).",
+    "city_below_20m": "Table-box positions with |east|, |north| <= 200 m and height below 20 m.",
+    "height_bands": "Table-box positions with low <= height < high between consecutive table levels; the top band includes 80 m."
+  },
+  "masks": {
+    "table_masked_cfd_air": "CFD has a finite sample but the table returns None (a contributing node is masked): coverage lost near walls.",
+    "table_air_cfd_masked": "The table returns a velocity where CFD has no finite sample: the table reports air that CFD does not."
+  },
+  "regions": {
+    "all_table_box": {
+      "positions": 20000,
+      "cfd_valid": 19812,
+      "both_valid": 19421,
+      "table_masked_cfd_air": 391,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.256368393666385,
+      "P95_m_s": 0.4736038836939241,
+      "max_m_s": 6.131724896121922,
+      "max_at_world_m": [
+        -61.241,
+        15.835,
+        65.752
+      ],
+      "vector_RMSE_over_Uref": 0.02946763145590632,
+      "P95_over_Uref": 0.054437228010795875,
+      "max_over_Uref": 0.7047959650714853
+    },
+    "flight_volume": {
+      "positions": 20923,
+      "cfd_valid": 20923,
+      "both_valid": 20923,
+      "table_masked_cfd_air": 0,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.18752370178687072,
+      "P95_m_s": 0.3120814210387032,
+      "max_m_s": 1.9443843439152226,
+      "max_at_world_m": [
+        -7.97,
+        -277.626,
+        46.903
+      ],
+      "vector_RMSE_over_Uref": 0.02155444848124951,
+      "P95_over_Uref": 0.03587142770559807,
+      "max_over_Uref": 0.22349245332358883
+    },
+    "rotor_wake": {
+      "positions": 361,
+      "cfd_valid": 361,
+      "both_valid": 361,
+      "table_masked_cfd_air": 0,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.23781744660881823,
+      "P95_m_s": 0.46859328367811176,
+      "max_m_s": 1.283556212106345,
+      "max_at_world_m": [
+        -22.87,
+        -297.982,
+        47.032
+      ],
+      "vector_RMSE_over_Uref": 0.027335338690668766,
+      "P95_over_Uref": 0.05386129697449561,
+      "max_over_Uref": 0.14753519679383278
+    },
+    "city_below_20m": {
+      "positions": 2563,
+      "cfd_valid": 2411,
+      "both_valid": 2036,
+      "table_masked_cfd_air": 375,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.49939422486005175,
+      "P95_m_s": 1.0013490192819876,
+      "max_m_s": 4.5704008192484435,
+      "max_at_world_m": [
+        121.873,
+        -95.313,
+        10.931
+      ],
+      "vector_RMSE_over_Uref": 0.05740163504138526,
+      "P95_over_Uref": 0.11509758842321698,
+      "max_over_Uref": 0.5253334274998211
+    },
+    "height_5_to_10m": {
+      "positions": 1404,
+      "cfd_valid": 1287,
+      "both_valid": 955,
+      "table_masked_cfd_air": 332,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.3305454804995569,
+      "P95_m_s": 0.696420889419094,
+      "max_m_s": 1.794732018127586,
+      "max_at_world_m": [
+        -76.543,
+        -153.953,
+        5.709
+      ],
+      "vector_RMSE_over_Uref": 0.03799373339075367,
+      "P95_over_Uref": 0.08004837809414873,
+      "max_over_Uref": 0.20629103656638922
+    },
+    "height_10_to_20m": {
+      "positions": 2715,
+      "cfd_valid": 2680,
+      "both_valid": 2637,
+      "table_masked_cfd_air": 43,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.43321599785745757,
+      "P95_m_s": 0.8804868093863886,
+      "max_m_s": 4.5704008192484435,
+      "max_at_world_m": [
+        121.873,
+        -95.313,
+        10.931
+      ],
+      "vector_RMSE_over_Uref": 0.04979494228246639,
+      "P95_over_Uref": 0.10120538038924007,
+      "max_over_Uref": 0.5253334274998211
+    },
+    "height_20_to_32.1m": {
+      "positions": 3129,
+      "cfd_valid": 3118,
+      "both_valid": 3111,
+      "table_masked_cfd_air": 7,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.25234313078906956,
+      "P95_m_s": 0.4360135649139426,
+      "max_m_s": 2.8537580329484706,
+      "max_at_world_m": [
+        -19.857,
+        26.187,
+        26.248
+      ],
+      "vector_RMSE_over_Uref": 0.02900495756196202,
+      "P95_over_Uref": 0.05011650171424628,
+      "max_over_Uref": 0.3280181647067208
+    },
+    "height_32.1_to_40m": {
+      "positions": 2080,
+      "cfd_valid": 2073,
+      "both_valid": 2071,
+      "table_masked_cfd_air": 2,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.07819100355781798,
+      "P95_m_s": 0.1289468338183571,
+      "max_m_s": 0.9703569895998176,
+      "max_at_world_m": [
+        -30.237,
+        31.306,
+        36.829
+      ],
+      "vector_RMSE_over_Uref": 0.008987471673312413,
+      "P95_over_Uref": 0.014821475151535299,
+      "max_over_Uref": 0.11153528616089858
+    },
+    "height_40_to_60m": {
+      "positions": 5258,
+      "cfd_valid": 5240,
+      "both_valid": 5233,
+      "table_masked_cfd_air": 7,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.18356244191900775,
+      "P95_m_s": 0.23950164661823029,
+      "max_m_s": 2.372951084550049,
+      "max_at_world_m": [
+        -86.294,
+        -6.064,
+        49.31
+      ],
+      "vector_RMSE_over_Uref": 0.021099131255058363,
+      "P95_over_Uref": 0.02752892489864716,
+      "max_over_Uref": 0.2727529982241436
+    },
+    "height_60_to_80m": {
+      "positions": 5414,
+      "cfd_valid": 5414,
+      "both_valid": 5414,
+      "table_masked_cfd_air": 0,
+      "table_air_cfd_masked": 0,
+      "vector_RMSE_m_s": 0.23148349154864403,
+      "P95_m_s": 0.09713129139893134,
+      "max_m_s": 6.131724896121922,
+      "max_at_world_m": [
+        -61.241,
+        15.835,
+        65.752
+      ],
+      "vector_RMSE_over_Uref": 0.026607297879154487,
+      "P95_over_Uref": 0.01116451625275073,
+      "max_over_Uref": 0.7047959650714853
+    }
+  },
+  "worst_height_band_by_RMSE": "height_10_to_20m",
+  "grid_node_targets_for_context": {
+    "vector_RMSE_over_Uref_max": 0.05,
+    "P95_over_Uref_max": 0.15,
+    "note": "Frozen targets for grid-node comparisons against a strict reference. Shown for scale only; they were not set for off-grid interpolation and are not evaluated as gates here."
+  },
+  "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+  "python": "3.15.2",
+  "elapsed_s": {
+    "cfd_sampling": 7.594287208048627,
+    "total": 7.951585875009187
+  }
+}
