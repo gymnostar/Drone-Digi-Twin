@@ -1,0 +1,173 @@
+{
+  "scenario": "numerical-abl",
+  "scope": "Coupled full Niigata geometry and hypothetical full-size SWiFT rotor placement; numerical transfer only, no interaction observations.",
+  "protocol_revision": 3,
+  "protocol_sha256": "2aeb3c5662fc4898c6f8fe80c2e39265a3d7f8b35e5e78ac1fb20d6930f82f47",
+  "empty_inflow_verification": false,
+  "direction": "NE",
+  "wind_from_deg": 45.0,
+  "coordinate_frame": "World x east/y north/z up; solver frame rotates geometry and queries so incoming wind is -y.",
+  "raw_stl_to_world_scale": 250.0,
+  "closure": "realizableKE",
+  "closure_status": "Frozen shared-toy assumption; not evidence of superior physical city accuracy.",
+  "resolution": "reference",
+  "mesh_background_m": 20.0,
+  "surface_levels": [
+    2,
+    3
+  ],
+  "snap_tolerance": 1.5,
+  "repair_recipe": {
+    "mesh": false,
+    "solver": true,
+    "consistent_simple": true
+  },
+  "Uref_m_s": 8.7,
+  "Uref_height_m": 32.1,
+  "z0_m": 0.01158,
+  "ustar_m_s": 0.449941769460506,
+  "k_m2_s2": 0.6748253196841705,
+  "max_cells": 500000,
+  "iterations_cap": 2000,
+  "mesh_timeout_s": 600,
+  "solve_timeout_s": 600,
+  "residual_thresholds": {
+    "p": 0.0001,
+    "U": 1e-05,
+    "k": 1e-05,
+    "epsilon": 1e-05
+  },
+  "flux_threshold": 0.0001,
+  "probe_change_RMSE_over_Uref_threshold": 0.002,
+  "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+  "host": "studio",
+  "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+  "source_hashes": {
+    "MP_caseE.png": "0fc868d42899783dea655cee10a47c79e148bf5febef6dfed7d293f6b50c96a3",
+    "AF_caseE.csv": "267ae89113e9f51a8c437543bdc0549c9f352dced7ed571a3e6844082b555f77",
+    "RS_caseE.csv": "d2f687c052c21d734c0de2ade677984d62a348f2660e09dd6d2fc09e7586c799",
+    "BD_caseE.stl": "eef5cae06ea5be7b02f837ba291959e3de25aa47628f5eda1f164f5e4eb549d9",
+    "readme_caseE.md": "a879d029decf0ebd41362fb4693b246fb9629c518167aa02e82c8d861e86ecb5"
+  },
+  "measured_RMSE_gate": "not applicable: new incoming conditions differ from original experiment",
+  "boundary_assumption": "Open-domain sides/top slip; common coherent neutral ABL ground/inlet; domain sensitivity not yet established.",
+  "comparison_sampling": "Exact fixed world grid; common valid fluid samples only; no moved, filled or extrapolated samples.",
+  "scaled_stl_sha256": "364f6e2df2fd1490e9a69ed0a38566bec9704b574f01721cd3964aa96b6fc3ca",
+  "query_sha256": "2b7d67155bf791fa5ad231d4abaf955d28249aca49e759099f7c0c18c6c61572",
+  "joint": true,
+  "role": "reference",
+  "city_refinement_frame": "Fixed world-space floor, district and repair boxes.",
+  "tight_transport": true,
+  "additional_terminal_settling_points_m": [
+    [
+      197.98989873223329,
+      -132.9898987322333,
+      32.1
+    ],
+    [
+      197.98989873223329,
+      -251.9898987322333,
+      32.1
+    ],
+    [
+      197.98989873223329,
+      -278.9898987322333,
+      32.1
+    ],
+    [
+      197.98989873223329,
+      -305.9898987322333,
+      32.1
+    ],
+    [
+      197.98989873223329,
+      -332.9898987322333,
+      32.1
+    ]
+  ],
+  "common_reference_mesh_recipe": true,
+  "rotor_D_m": 27.0,
+  "rotor_center_m": [
+    0,
+    -280,
+    32.1
+  ],
+  "rotor_center_solver_m": [
+    197.98989873223329,
+    -197.9898987322333,
+    32.1
+  ],
+  "monitor_m": [
+    45.96194077712559,
+    -234.03805922287438,
+    32.1
+  ],
+  "monitor_solver_m": [
+    197.98989873223329,
+    -132.9898987322333,
+    32.1
+  ],
+  "diskDir": [
+    0,
+    -1,
+    0
+  ],
+  "disk_direction_world": [
+    -0.7071067811865475,
+    -0.7071067811865476,
+    0
+  ],
+  "Cp": 0.48146,
+  "Ct": 0.76927,
+  "area_m2": 572.5552611167398,
+  "density_kg_m3": 1.02,
+  "source_cell_m": 1.25,
+  "source_refinement_level": 4,
+  "wake_level": 3,
+  "force_support": {
+    "configuration_sha256": "ceca0d06aff630e0a60e3b47b569f4cce6cc6bdb9e5152549839db91b30f73ef",
+    "configuration": {
+      "base_m": 20,
+      "origin_m": [
+        -600,
+        -1200,
+        0
+      ],
+      "level": 4,
+      "cell_m": 1.25,
+      "box": [
+        [
+          177.73989873223329,
+          -204.7398987322333,
+          6.75
+        ],
+        [
+          218.23989873223329,
+          -191.2398987322333,
+          60.75
+        ]
+      ],
+      "cylinder": {
+        "p1": [
+          197.98989873223329,
+          -201.3648987322333,
+          32.1
+        ],
+        "p2": [
+          197.98989873223329,
+          -194.6148987322333,
+          32.1
+        ],
+        "radius": 13.5
+      }
+    }
+  },
+  "rotor_coefficient_convention": "Locked v3 Cp/Ct interpolated at prescribed8.7m/s; native variableScaling uses solved local monitor vector; no joint fitting.",
+  "transfer_limitation": "Separate30m cheap recipe cannot share the20m source lattice. This adapted20m candidate is not an exact replay or established optimized method.",
+  "cell_limit_adjustment": {
+    "original_cheap_target": 150000,
+    "joint_cap": 500000,
+    "reason": "One allowed adjustment: full city geometry accepted20m background plus common1.25m force support. Cheap150k target remains reported unmet if exceeded."
+  },
+  "physical_validation": "No joint observations; numerical agreement is not physical or flight validation."
+}

@@ -1,0 +1,208 @@
+{
+  "case": "table-NE-reference-retimed",
+  "scenario": "numerical-abl",
+  "scope": "Coupled full Niigata geometry and hypothetical full-size SWiFT rotor placement; numerical transfer only, no interaction observations.",
+  "closure": "realizableKE",
+  "resolution": "reference",
+  "host": "studio",
+  "cells": 425006,
+  "mesh_checks": {
+    "standard": true,
+    "quality": true,
+    "cell_cap": true,
+    "allGeometry_or_concavity_only": true
+  },
+  "preparation_cost_included": true,
+  "stage_checks": {
+    "prepare": true,
+    "mesh": true,
+    "solve": true,
+    "sample": true
+  },
+  "solver_final_iteration": "426",
+  "last_initial_residuals": {
+    "Ux": 9.922956962e-06,
+    "Uy": 2.82930612e-07,
+    "Uz": 5.671911354e-06,
+    "p": 7.817891801e-05,
+    "epsilon": 2.911158695e-07,
+    "k": 2.06388499e-06
+  },
+  "frozen_residual_checks": {
+    "p": true,
+    "U": true,
+    "k": true,
+    "epsilon": true
+  },
+  "solver_reported_convergence": true,
+  "boundary_flux_m3_s": {
+    "flux": -4438619.5099,
+    "outflux": 4438619.5112
+  },
+  "normalized_flux_imbalance": 2.9288377870495793e-10,
+  "probe_settling": [
+    {
+      "iterations": [
+        "400",
+        "425"
+      ],
+      "samples": 14,
+      "vector_change_RMSE_over_Uref": 6.883476240178001e-05
+    }
+  ],
+  "frozen_numerical_checks_pass": true,
+  "status": "checked numerical result",
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.1697132920380682,
+      "cpu_s": 1.164007,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+      "tight_transport": true
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 118.04292933398392,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 117.761812,
+      "peak_cgroup_memory_bytes_including_cache": 787738624,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "studio",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 266.6311754999915,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 775.978263,
+      "peak_cgroup_memory_bytes_including_cache": 887558144,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "studio",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "sample": {
+      "stage": "sample",
+      "elapsed_s": 9.851660583983175,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 9.660132,
+      "peak_cgroup_memory_bytes_including_cache": 561381376,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "studio",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "complete_map_generation_elapsed_s": 398.86495241802186,
+  "complete_map_generation_cpu_s": 904.564214,
+  "accounted_cpu_s_partial": 904.564214,
+  "peak_memory_accounting_complete": true,
+  "peak_cgroup_memory_bytes_including_cache": 887558144,
+  "physical_validation": "not performed: numerical-only ABL toy; experimental conditions intentionally differ",
+  "recorded_pipeline_elapsed_s": 395.6954787099967,
+  "supplemental_host_verification_cost": {
+    "host-mesh-audit": {
+      "elapsed_s": 3.169409791007638,
+      "cpu_s": 3.166229,
+      "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+    },
+    "host-solve-audit": {
+      "elapsed_s": 6.391701754182577e-05,
+      "cpu_s": 6.400000000000156e-05,
+      "scope": "Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate"
+    }
+  },
+  "generation_timing_complete": true,
+  "generation_timing_note": "Recorded stage wall time plus measured automated host verification. Incomplete totals omit unrecorded intervals. The CPU totals cover the four runner stages; host audit CPU is reported separately. Comparative scientific evaluation and manual implementation work excluded.",
+  "joint": true,
+  "role": "reference",
+  "direction": "NE",
+  "wind_from_deg": 45.0,
+  "sample_iteration": "426",
+  "force_support": {
+    "configuration_sha256": "ceca0d06aff630e0a60e3b47b569f4cce6cc6bdb9e5152549839db91b30f73ef",
+    "selected_cells": 1810,
+    "spatial_cell_vertices_sha256": "963a7e7a5158b8aa0efe6f2cdeeae14684ed30642cacfdaeb64bfb65f5398a5f",
+    "selected_refinement_levels": [
+      4
+    ],
+    "all_selected_cells_at_fixed_level": true,
+    "interpretation": "Same axis-aligned base lattice/refinement box and uniform selected level establish the intended common support; compare selected counts as well as total force.",
+    "nominal_selected_volume_m3": 3535.15625,
+    "nominal_volume_over_geometric_cylinder": 0.9147184340431165,
+    "volume_note": "Count times nominal1.25m cubed; snapped cells have small deformations. Exact selected-cell spatial geometry hash, not nominal volume, proves equal support across recipes. Cylinder center selection remains a finite support discretization."
+  },
+  "force_audit": {
+    "passed": true,
+    "force_iteration": 426.0,
+    "sample_iteration": 426.0,
+    "monitor_is_valid_fluid_sample": true,
+    "monitor_vector_m_s": [
+      -6.28288721280465,
+      -6.283389977451559,
+      -0.062235182148
+    ],
+    "disk_mean_vector_m_s": [
+      -4.647736249251125,
+      -4.559204604965444,
+      -0.11529503661
+    ],
+    "vector_frame": "world east/north/up",
+    "kinematic_thrust": 17381.788488,
+    "physical_thrust_N": 17729.424257759998,
+    "formula_relative_error": 3.294962230142e-11,
+    "sink_convention": "Native sink opposes flow along the yawed disk normal. The thrust audit uses velocity projected onto that normal in solver coordinates."
+  },
+  "cheap150k_target_met": false,
+  "cell_limit_adjustment": {
+    "original_cheap_target": 150000,
+    "joint_cap": 500000,
+    "reason": "One allowed adjustment: full city geometry accepted20m background plus common1.25m force support. Cheap150k target remains reported unmet if exceeded."
+  },
+  "transfer_limitation": "Separate30m cheap recipe cannot share the20m source lattice. This adapted20m candidate is not an exact replay or established optimized method.",
+  "sample_matches_final_iteration": true,
+  "rotor_wake_settling": {
+    "iterations": [
+      "400",
+      "425"
+    ],
+    "valid_wake_probes": 4,
+    "vector_change_RMSE_over_Uref": 3.6643738465733714e-05,
+    "passed": true
+  },
+  "checked_coupled_result": true,
+  "sampling_counts": {
+    "city": {
+      "requested": 32805,
+      "valid": 30477
+    },
+    "domain": {
+      "requested": 4940,
+      "valid": 4040
+    },
+    "inflow": {
+      "requested": 7,
+      "valid": 7
+    },
+    "rotor_wake": {
+      "requested": 24200,
+      "valid": 24200
+    },
+    "flight": {
+      "requested": 2961,
+      "valid": 2961
+    },
+    "rotor_monitor": {
+      "requested": 1,
+      "valid": 1
+    }
+  }
+}
