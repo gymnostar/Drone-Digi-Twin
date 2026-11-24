@@ -1,0 +1,91 @@
+{
+  "case": "table-NW-oriented",
+  "direction": "NW",
+  "wind_from_deg": 315.0,
+  "recipe": "strict",
+  "trial": "W1",
+  "campaign": "../../lookup/campaign.json#nw_direction",
+  "accepted": false,
+  "reason": "The 600 s solve cap expired before pressure and velocity met their strict residual targets. Per the pre-registered stop rule no NW production case, mesh repair, sampling or export was run, and no NW field was released.",
+  "mesh_accepted": true,
+  "mesh_acceptance": "provisional: standard and custom numerical quality pass; allGeometry concavity remains diagnostic",
+  "cells": 425104,
+  "last_started_iteration": 976,
+  "last_complete_iteration": 975,
+  "strict_residual_thresholds": {
+    "p": 0.0001,
+    "U": 1e-05,
+    "k": 1e-05,
+    "epsilon": 1e-05
+  },
+  "last_complete_max_initial_residuals": {
+    "Ux": 3.788292084e-05,
+    "Uy": 8.840267271e-07,
+    "Uz": 2.752851662e-05,
+    "p": 0.0004033804967,
+    "epsilon": 1.595024925e-06,
+    "k": 6.629802589e-06
+  },
+  "diagnostic_window": {
+    "completed_iterations": 500,
+    "first_iteration": 476,
+    "last_iteration": 975,
+    "median_of_iteration_max_initial_residuals": {
+      "Ux": 4.1713779635000004e-05,
+      "Uy": 9.640431908499999e-07,
+      "Uz": 3.0711987825000005e-05,
+      "p": 0.0005774918011,
+      "epsilon": 2.3399367065e-06,
+      "k": 8.106514641999999e-06
+    }
+  },
+  "solver_dictionary_sha256": "2f82a82a405b4f2869eeefa97e94c973693c415cf46f079a2dcdd07f2a550a97",
+  "mesh_dictionary_sha256": "0befaab03666df10bc0ceccc2b26d16aa5862496653ef4db0df9afa14b538709",
+  "cost": {
+    "host-mesh-audit": {
+      "elapsed_s": 3.1735727910418063,
+      "cpu_s": 3.169988,
+      "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+    },
+    "host-solve-audit": {
+      "elapsed_s": 6.9082947447896e-05,
+      "cpu_s": 6.899999999999962e-05,
+      "scope": "Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate"
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 118.14479204197414,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 117.880053,
+      "peak_cgroup_memory_bytes_including_cache": 788824064,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "studio",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.1687067500315607,
+      "cpu_s": 1.163295,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded",
+      "tight_transport": true
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 600.1544119579485,
+      "exit_code": 137,
+      "timed_out": true,
+      "cpu_s": null,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "studio",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "recorded_attempt_elapsed_s": 722.6415526239434
+}
