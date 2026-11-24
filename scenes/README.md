@@ -6,9 +6,17 @@
 |---|---|---|
 | Isolated turbine | About **6× faster** complete map generation; wake vector RMSE **1.38–1.63%** on three reserved numerical conditions | Successful numerical cost reduction within the tested setup |
 | Buildings | **112,358 cells, 81.85 s**; city RMSE **6.42%**, above the 5% target | Cheap solve works, but accuracy target is unmet and stricter references did not converge |
-| Buildings + turbine | **230,898 cells, 249.42 s**, versus **422,894 cells, 525.27 s** for the checked north-wind reference | **2.106×** cold speedup; all four regional velocity and coverage gates passed |
+| Buildings + turbine, N wind | **230,898 cells, 249.42 s**, versus **422,894 cells, 525.27 s** for the checked north-wind reference | **2.106×** cold speedup; all four regional velocity and coverage gates passed |
+| Buildings + turbine, NE wind | **228,432 cells, 200.40 s**, versus **425,006 cells, 398.86 s** for the checked northeast reference, timed back to back | **1.99×**: all gates passed, 2× target missed by 0.5% |
 
 Errors compare calculations with a numerical reference, **not with real wind**. These are research results, not flight-safety or physical-validation claims.
+
+**Wind deliverable for the drone work**
+
+- **Finished:** checked N (0°) and NE (45°) coupled wind fields on a common grid, both within every regional accuracy and coverage gate against a strict reference. Query them with `lookup.py query` or `lookup.py heading` ([Query a coupled wind field](#query-a-coupled-wind-field)).
+- **Cost target:** N is 2.11× cheaper than its reference. NE is 1.99×, just short of the 2× target.
+- **Unproven:** any heading other than 0° or 45°. `heading` falls back to the nearest released field between them and labels the result unvalidated. The between-heading estimate has no accuracy score, because the reserved 22.5° and 11.25° solves never met the strict convergence limits ([NNE trials](#estimating-wind-between-two-headings)).
+- **Out of scope:** agreement with real wind, gusts and flight safety.
 
 ### What we did
 
@@ -44,6 +52,20 @@ u_east, u_north, u_up = wind.at(0, -350, 20)
 ```
 
 The [field index](joint/lookup/index.json) lists released directions, their sampling roles, file checksums and measured export times. The Python interface returns `None` for a masked point and raises `KeyError` for an unsampled point. The masks describe sampled fluid cells at this resolution. A grid lookup does not test whether a path between two points crosses a wall.
+
+For a planner that receives an arbitrary wind heading, use `heading`. It never invents a field:
+
+| Requested wind-from heading | What you get | `heading_basis` |
+|---|---|---|
+| 0° (N) or 45° (NE) | The checked CFD field for that heading | `released` |
+| Strictly between 0° and 45° | The nearest released field, unrotated; 22.5° goes to N | `nearest_released_unvalidated` |
+| Anything else, for example 90° or 350° | An error; no field is returned | — |
+
+```sh
+python3 scenes/joint/lookup.py heading 30 0 -350 20
+```
+
+This returns the NE value at that point and labels it `nearest_released_unvalidated`. No accuracy has been measured between the released headings (see [Estimating wind between two headings](#estimating-wind-between-two-headings)), so treat such values as a placeholder for testing the planner, not as wind for that heading. In Python, `WindField.for_heading(30)` returns the field and its basis.
 
 For a short integration check, query the four waypoints below in order for each heading. All are at east −195 m and height 5 m. At the two endpoints the entries are (east, north, up) velocities in m/s, rounded to three decimals.
 
@@ -196,14 +218,17 @@ The coupled directional experiment below uses two independently generated fields
 
 ### What transferred to northeast wind
 
-The cheaper mesh passed the original numerical gates and the four regional checks on the exported table for both training directions. The northeast building wake was closest to the 5% RMSE limit, at **4.49% of inflow** (0.391 m/s). All 5,069 reference-valid points there had a candidate value. On the common 74,277-point grid, the masks agreed with the corresponding strict reference at every position for each direction. [North grid comparison](joint/lookup/N-grid-check.json) · [Northeast grid comparison](joint/lookup/NE-grid-check.json)
+The cheaper mesh passed the original numerical gates and the four regional checks on the exported table for both training directions. The northeast building wake was closest to the 5% RMSE limit, at **4.56% of inflow** (0.397 m/s). All 5,069 reference-valid points there had a candidate value. On the common 74,277-point grid, the masks agreed with the corresponding strict reference at every position for each direction. [North grid comparison](joint/lookup/N-grid-check.json) · [Northeast grid comparison](joint/lookup/NE-grid-check.json)
 
 | Wind from | Strict / production cells | Strict / production cold CFD time | Speedup |
 |---|---:|---:|---:|
 | N | 422,894 / 230,898 | 525.27 / 249.42 s | 2.11× |
-| NE | 425,006 / 228,432 | 401.14 / 237.59 s | 1.69× |
+| NE, first release (SIMPLE) | 425,006 / 228,432 | 401.14 / 237.59 s | 1.69× |
+| NE, released (conventional SIMPLEC) | 425,006 / 228,432 | 398.86 / 200.40 s, same session | 1.99× |
 
-Each entry is one complete generation timing on Studio using three CPUs and 5 GiB. The northeast case missed the original twofold cost target. Preparing the additional common-grid CSV from the finished production field took 9.59 s for north and 9.06 s for northeast in one export each. For northeast, 34,253 valid overlapping rows agreed exactly with the original regional samples. [North CFD comparison](joint/results/poc-N-agglomerated-siblings/metrics.json) · [Northeast CFD comparison](joint/results/table-NE-production/metrics.json)
+Each entry is one complete generation timing on Studio using three CPUs and 5 GiB. The released northeast field now comes from SIMPLEC with OpenFOAM's conventional relaxation: pressure unrelaxed and equations relaxed by 0.9, as in OpenFOAM's own SIMPLEC tutorial. The first release used SIMPLE's factors (pressure 0.3, equations 0.6). Relaxation changes how the solver approaches the steady answer, not the answer. On the same mesh the solve stopped after 136 iterations instead of 277, and the solve time fell from 98 s to about 60 s. **Northeast still misses the twofold target, narrowly.** The first SIMPLEC run took 198.93 s, or 2.02× against the reference timed in an earlier session. The evaluator withholds that ratio because the two runs recorded different host names, and the margin was only 1.6 s. A pre-registered back-to-back retime gave 398.86 s for the reference and 200.40 s for the candidate, which is 1.99×. Both candidate runs produced byte-identical velocity fields. About 122 s of each production run is meshing, which repeats the reference's snapped mesh, so further gains have to come from the solve. [First SIMPLEC run](joint/results/table-NE-simplec/trial.json) · [Same-session comparison](joint/results/table-NE-simplec-retimed/metrics.json) · [Retimed reference](joint/results/table-NE-reference-retimed/metrics.json)
+
+Preparing the additional common-grid CSV from the finished production field took 9.59 s for north and 9.17 s for northeast in one export each. For northeast, 34,253 valid overlapping rows agreed exactly with the original regional samples. [North CFD comparison](joint/results/poc-N-agglomerated-siblings/metrics.json) · [First northeast CFD comparison](joint/results/table-NE-production/metrics.json)
 
 The first NE mesh exceeded the 500,000-cell limit because the solver-axis bounds enlarged the refined footprint. Rotating the refinement boxes with the city brought the strict mesh to 425,006 cells. The first NNE mesh failed the extended checks at two building corners. Local refinement removed the low-determinant cells and low-weight face. Exact rotor-source geometry matches across the coarse and strict meshes **within** each training direction. Between headings, the disk selects 2,184 cells for N and 1,810 for NE as its position shifts relative to the solver lattice. This contributes numerical uncertainty to directional wake predictions. [Rejected NE mesh](joint/results/table-NE-strict/mesh-verdict.json) · [Rejected NNE mesh](joint/results/table-NNE-oriented/mesh-verdict.json)
 
@@ -217,11 +242,11 @@ python3 scenes/joint/lookup.py estimate scenes/joint/lookup/N.csv.gz scenes/join
 
 We reserved the entire **22.5° NNE direction** before fitting. Its strict SIMPLEC solve reached the ten-minute limit with pressure and velocity residuals above the frozen thresholds. A second cold run changed only the pressure–velocity coupling to standard SIMPLE on a byte-identical mesh and also timed out. Both attempts and their costs remain recorded. NNE has no released CFD field or qualifying accuracy score. [SIMPLEC run](joint/results/table-NNE-corners/solve-verdict.json) · [Standard SIMPLE run](joint/results/table-NNE-simple/solve-verdict.json)
 
-The saved checkpoints still help locate the discrepancies. At iteration 900, the two solvers differed by 0.014 m/s vector RMSE in the building wake. The estimate differed from each checkpoint by 1.76 m/s there. Corresponding differences in the flight region were 0.003 m/s between solvers and 0.66 m/s between the estimate and either checkpoint. In the narrow-gap proxy only 564 of 626 checkpoint-valid locations had valid samples in both training fields. These figures describe unfinished iterates. The formal RMSE target is 0.435 m/s against a checked reference. [Checkpoint diagnostics by region and height](joint/lookup/NNE-diagnostic.json)
+The saved checkpoints still help locate the discrepancies. At iteration 900, the two solvers differed by 0.014 m/s vector RMSE in the building wake. The estimate differed from each checkpoint by 1.77 m/s there. Corresponding differences in the flight region were 0.003 m/s between solvers and 0.66 m/s between the estimate and either checkpoint. In the narrow-gap proxy only 564 of 626 checkpoint-valid locations had valid samples in both training fields. These figures describe unfinished iterates. The formal RMSE target is 0.435 m/s against a checked reference. [Checkpoint diagnostics by region and height](joint/lookup/NNE-diagnostic.json)
 
 After the midpoint timeouts, we reserved 11.25° (north by east) as a secondary test and kept the fit fixed. One local refinement repaired its mesh. The strict solve completed 1,021 iterations within the time limit, with final pressure and x-velocity residuals of 2.29 × 10⁻⁴ and 1.48 × 10⁻⁵, above their limits of 10⁻⁴ and 10⁻⁵. Neither reserved heading produced a qualifying field. [Initial mesh](joint/results/table-NbE-strict/mesh-verdict.json) · [Secondary solve](joint/results/table-NbE-corner/solve-verdict.json)
 
-For repeated queries in the first planner experiment, use the two released CFD headings directly. A warm direct query took 0.15 µs and a wind-aligned estimate took 0.72 µs on Studio (median batch mean over five batches of 10,000 calls). Loading each field took about 0.10–0.12 s. The campaign reserves 16.875° to compare the original fit with a split interval if a 22.5° reference qualifies. Each method will be scored on the same reference-valid locations in each region. [Query workload and timings](joint/lookup/query-timing.json)
+For repeated queries in the first planner experiment, use the two released CFD headings directly. A warm direct query took 0.14 µs and a wind-aligned estimate took 0.71 µs on Studio (median batch mean over five batches of 10,000 calls). Loading each field took about 0.10–0.12 s. The campaign reserves 16.875° to compare the original fit with a split interval if a 22.5° reference qualifies. Each method will be scored on the same reference-valid locations in each region. [Query workload and timings](joint/lookup/query-timing.json)
 
 Studio can reproduce the diagnostic from the two saved parallel cases.
 
@@ -237,26 +262,27 @@ python3 scenes/joint/residual_diagnostic.py scenes/joint/runs/table-NNE-corners 
 python3 scenes/joint/residual_diagnostic.py scenes/joint/runs/table-NNE-simple --checkpoint 1000
 ```
 
-Three NNE recovery trials tested whether the original settings could be improved within the ten-minute solve limit.
+Four NNE recovery trials tested whether the original settings could be improved within the ten-minute solve limit. The fourth was a separately authorised round, registered before it ran. [Registration](joint/lookup/campaign.json)
 
 | Trial | Measured outcome |
 |---|---|
 | Refine the dominant elevated edge before snapping the mesh to the buildings | Mesh quality passed. All 2,856 rotor vertices could be paired across meshes, with a maximum shift of 0.65 μm. The exact force-support check failed and the solve was skipped. [Mesh record](joint/results/nne-edge-refined/trial.json) |
 | Subdivide the same edge on the original snapped mesh | OpenFOAM's hex splitter encountered a selected cell with six eligible vertices where it requires eight. It stopped before a solve. [Subdivision record](joint/results/nne-edge-postsnap/trial.json) |
 | Use one fewer pressure correction per iteration on the original mesh | One cold solve completed 1,123 iterations, compared with 982 in the original run. Its last completed pressure and crosswind-velocity residuals were 3.69 × 10⁻⁴ and 4.83 × 10⁻⁵. The limits were 10⁻⁴ and 10⁻⁵. [Solve record](joint/results/nne-one-corrector/trial.json) |
+| Use SIMPLEC's conventional relaxation (pressure unrelaxed, equations 0.9, as in OpenFOAM's own SIMPLEC tutorial) on the original mesh | One cold solve completed 936 iterations. Residuals stopped improving from about iteration 300. Pressure ended at 1.60 × 10⁻⁴, but crosswind velocity rose to 2.67 × 10⁻⁴, 27 times its limit. [Solve record](joint/results/nne-simplec-tutorial/trial.json) |
 
-The released table still contains N and NE. A subsequent mesh study can use the measured building-edge locations to refine the city while holding the rotor mesh fixed, then repeat the strict NNE solve. The regional interpolation check at 16.875° depends on obtaining a qualified intermediate field.
+**NNE is unproven and this line of work is closed.** No mesh repair, solver setting or relaxation tried so far reaches the strict limits within ten minutes, so neither reserved heading has a checked field and the between-heading estimate has no accuracy score. The released table contains only N and NE. A later mesh study can use the measured building-edge locations to refine the city while holding the rotor mesh fixed, then repeat the strict NNE solve. The regional interpolation check at 16.875° depends on obtaining a qualified intermediate field.
 
 ### Directional simulation settings
 
-A new build defaults to the cheaper production recipe for N and NE, and to the strict reference for the reserved NNE and NbE directions. Use `--recipe strict` or `--recipe production` to select a comparison explicitly. Both use the same rotor support for a given direction. The building geometry and city refinement boxes rotate together into the solver frame. The world hub remains at (0, −280, 32.1) m and the rotor yaws with the inflow. Fixed world positions make direct field comparisons possible.
+A new build defaults to the cheaper production recipe for N and NE, and to the strict reference for the reserved NNE and NbE directions. Use `--recipe strict` or `--recipe production` to select a comparison explicitly. The released NE field also needs `--simplec-relaxation 0.9`. That flag is accepted only for NE production and the strict NNE reference. Both use the same rotor support for a given direction. The building geometry and city refinement boxes rotate together into the solver frame. The world hub remains at (0, −280, 32.1) m and the rotor yaws with the inflow. Fixed world positions make direct field comparisons possible.
 
 ```sh
 set -e
 study=scenes/joint/study.py
 python3 "$study" build --case ne-reference --direction NE --recipe strict
 for stage in mesh solve sample evaluate; do python3 "$study" "$stage" --case ne-reference; done
-python3 "$study" build --case ne-candidate --direction NE --recipe production
+python3 "$study" build --case ne-candidate --direction NE --recipe production --simplec-relaxation 0.9
 for stage in mesh solve sample evaluate; do
   python3 "$study" "$stage" --case ne-candidate --reference ne-reference
 done
