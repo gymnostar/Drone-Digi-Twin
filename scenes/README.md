@@ -13,9 +13,9 @@ Errors compare calculations with a numerical reference, **not with real wind**. 
 
 **Wind deliverable for the drone work**
 
-- **Finished:** checked N (0°) and NE (45°) coupled wind fields on a common grid, both within every regional accuracy and coverage gate against a strict reference. Query them with `lookup.py query` or `lookup.py heading` ([Query a coupled wind field](#query-a-coupled-wind-field)).
+- **Finished:** checked N (0°) and NE (45°) coupled wind fields on a common grid, both within every regional accuracy and coverage gate against a strict reference. A simulator can query them at any position inside the table, with a measured interpolation error between grid nodes ([Use the table in a drone simulation](#use-the-table-in-a-drone-simulation)).
 - **Cost target:** N is 2.11× cheaper than its reference. NE is 1.99×, just short of the 2× target.
-- **Unproven:** any heading other than 0° or 45°. `heading` falls back to the nearest released field between them and labels the result unvalidated. The between-heading estimate has no accuracy score, because the reserved 22.5° and 11.25° solves never met the strict convergence limits ([NNE trials](#estimating-wind-between-two-headings)).
+- **Unproven:** any heading other than 0° or 45°. `heading` falls back to the nearest released field between them and labels the result unvalidated. The between-heading estimate has no accuracy score, because the reserved 22.5° and 11.25° solves never met the strict convergence limits ([NNE trials](#estimating-wind-between-two-headings)). A northwest (315°) reference also timed out, so NW is not released.
 - **Out of scope:** agreement with real wind, gusts and flight safety.
 
 ### What we did
@@ -75,6 +75,44 @@ For a short integration check, query the four waypoints below in order for each 
 | 10 | masked | masked |
 | 11 | unsampled | unsampled |
 | 25 | (−1.030, −3.677, −0.295) | (−3.011, −0.857, −0.287) |
+
+### Use the table in a drone simulation
+
+A drone sits between grid nodes almost all the time, so a simulator should use `interpolate`, not `at`. It blends the eight surrounding nodes linearly in east, north and height. The reader uses only the Python standard library and is tested on Python 3.9.6, the version in the project's Project AirSim setup. AirSim works in north-east-down axes; `enu_to_ned` reorders a velocity for it.
+
+```python
+from scenes.joint.lookup import WindField, enu_to_ned
+
+wind, basis = WindField.for_heading(0)       # load once per inflow heading
+u_enu = wind.interpolate(12.3, -341.7, 27.4)  # east, north, height above ground (m)
+u_ned = enu_to_ned(u_enu)                     # (north, east, down) in m/s
+```
+
+| Result | Meaning | What the simulator should do |
+|---|---|---|
+| A vector | Steady mean wind at that position | Apply it |
+| `None` | A contributing node has no CFD sample: inside a building or within one table cell of a wall (5 m sideways, up to the next height level vertically) | Treat as obstacle or no data; never as calm air |
+| `KeyError` | Outside the table: east −200 to 200 m, north −450 to 200 m, height 5 to 80 m | Decide explicitly, e.g. stop the episode; the table has no values there |
+
+The CLI equivalent is `python3 scenes/joint/lookup.py query N 12.3 -341.7 27.4 --interpolate`; its output then includes `"interpolated": true`. An interpolated query took a median of 4.9 µs per call on a MacBook Pro under Python 3.9.6, over five batches of 10,000 random positions. Loading a field takes about 0.1 s.
+
+**How accurate is a value between nodes?** We sampled each released CFD solution directly at 20,000 random positions in the table box, plus 20,000 in the flight volume, and compared it with `interpolate` at the same positions. These errors are additional to the field's error against its strict reference. Values are vector RMSE / P95 as a percentage of the 8.7 m/s inflow.
+
+| Region | N | NE |
+|---|---|---|
+| Whole table | 2.9% / 5.2% | 2.9% / 5.4% |
+| Flight volume (east ±50 m, north −450 to −220 m, 20–60 m high) | 2.5% / 4.8% | 2.2% / 3.6% |
+| Rotor wake | 2.5% / 5.3% | 2.7% / 5.4% |
+| City below 20 m | 5.6% / 11.5% | 5.7% / 11.5% |
+
+- **Largest errors:** near the ground among buildings, worst between the 10 m and 20 m levels.
+- **Worst single position:** (−61, 16, 66) m, 6.6 m/s off for N. It lies in the shear layer above a roof. The wind there is near zero at the 60 m node and almost 10 m/s at the 80 m node, so a straight line between them misses the profile. Denser height levels near rooftops would reduce this.
+- **Coverage lost near walls:** about 2% of positions with CFD air came back `None`.
+- **Safety check:** no position inside a building came back as air.
+
+[North check](joint/lookup/N-offgrid-check.json) · [Northeast check](joint/lookup/NE-offgrid-check.json) · [Check script](joint/offgrid_check.py)
+
+The table holds steady mean wind only: no gusts or turbulence, and only the N and NE inflows.
 
 ### Main implementation choices
 
@@ -228,6 +266,8 @@ The cheaper mesh passed the original numerical gates and the four regional check
 
 Each entry is one complete generation timing on Studio using three CPUs and 5 GiB. The released northeast field now comes from SIMPLEC with OpenFOAM's conventional relaxation: pressure unrelaxed and equations relaxed by 0.9, as in OpenFOAM's own SIMPLEC tutorial. The first release used SIMPLE's factors (pressure 0.3, equations 0.6). Relaxation changes how the solver approaches the steady answer, not the answer. On the same mesh the solve stopped after 136 iterations instead of 277, and the solve time fell from 98 s to about 60 s. **Northeast still misses the twofold target, narrowly.** The first SIMPLEC run took 198.93 s, or 2.02× against the reference timed in an earlier session. The evaluator withholds that ratio because the two runs recorded different host names, and the margin was only 1.6 s. A pre-registered back-to-back retime gave 398.86 s for the reference and 200.40 s for the candidate, which is 1.99×. Both candidate runs gave identical regional errors. About 122 s of each production run is meshing, which repeats the reference's snapped mesh, so further gains have to come from the solve. [First SIMPLEC run](joint/results/table-NE-simplec/trial.json) · [Same-session comparison](joint/results/table-NE-simplec-retimed/metrics.json) · [Retimed reference](joint/results/table-NE-reference-retimed/metrics.json)
 
+We also tried to add **northwest (315°)**, the protocol's remaining development direction. Its strict reference mesh passed the existing checks with 425,104 cells. The solve then reached the 600 s limit after 975 iterations, with pressure, crosswind-velocity and vertical-velocity residuals of 4.03 × 10⁻⁴, 3.79 × 10⁻⁵ and 2.75 × 10⁻⁵ against limits of 10⁻⁴, 10⁻⁵ and 10⁻⁵. The pre-registered rule stopped the work there, so there is no NW production run or released field. Strict solves converged for N and NE but not for the three other headings tried. [NW record](joint/results/table-NW-oriented/solve-verdict.json)
+
 Preparing the additional common-grid CSV from the finished production field took 9.59 s for north and 9.17 s for northeast in one export each. For northeast, 34,253 valid overlapping rows agreed exactly with the original regional samples. [North CFD comparison](joint/results/poc-N-agglomerated-siblings/metrics.json) · [First northeast CFD comparison](joint/results/table-NE-production/metrics.json)
 
 The first NE mesh exceeded the 500,000-cell limit because the solver-axis bounds enlarged the refined footprint. Rotating the refinement boxes with the city brought the strict mesh to 425,006 cells. The first NNE mesh failed the extended checks at two building corners. Local refinement removed the low-determinant cells and low-weight face. Exact rotor-source geometry matches across the coarse and strict meshes **within** each training direction. Between headings, the disk selects 2,184 cells for N and 1,810 for NE as its position shifts relative to the solver lattice. This contributes numerical uncertainty to directional wake predictions. [Rejected NE mesh](joint/results/table-NE-strict/mesh-verdict.json) · [Rejected NNE mesh](joint/results/table-NNE-oriented/mesh-verdict.json)
@@ -275,7 +315,7 @@ Four NNE recovery trials tested whether the original settings could be improved 
 
 ### Directional simulation settings
 
-A new build defaults to the cheaper production recipe for N and NE, and to the strict reference for the reserved NNE and NbE directions. Use `--recipe strict` or `--recipe production` to select a comparison explicitly. The released NE field also needs `--simplec-relaxation 0.9`. That flag is accepted only for NE production and the strict NNE reference. Both use the same rotor support for a given direction. The building geometry and city refinement boxes rotate together into the solver frame. The world hub remains at (0, −280, 32.1) m and the rotor yaws with the inflow. Fixed world positions make direct field comparisons possible.
+A new build defaults to the cheaper production recipe for N and NE, and to the strict reference for NNE, NbE and NW, which have no checked reference. Use `--recipe strict` or `--recipe production` to select a comparison explicitly. The released NE field also needs `--simplec-relaxation 0.9`. That flag is accepted only for NE and NW production and the strict NNE reference. The strict and production recipes use the same rotor support for a given direction. The building geometry and city refinement boxes rotate together into the solver frame. The world hub remains at (0, −280, 32.1) m and the rotor yaws with the inflow. Fixed world positions make direct field comparisons possible.
 
 ```sh
 set -e

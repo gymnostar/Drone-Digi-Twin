@@ -40,12 +40,12 @@ def simplec_relaxation(factor):
     return f'relaxationFactors {{equations {{U {factor}; ".*" {factor};}}}}'
 
 def simplec_relaxation_allowed(p):
-    """The strict NNE reference and the NE production baseline only."""
+    """The strict NNE reference and the NE and NW production baselines only."""
     strict_nne=(p.get('role')=='reference' and p.get('tight_transport',False)
                 and p.get('direction')=='NNE')
-    ne_production=(p.get('role')=='baseline' and p.get('direction')=='NE'
-                   and bool(p.get('post_snap_agglomeration')))
-    return (strict_nne or ne_production) and not p.get('standard_simple_recovery',False)
+    production=(p.get('role')=='baseline' and p.get('direction') in ('NE','NW')
+                and bool(p.get('post_snap_agglomeration')))
+    return (strict_nne or production) and not p.get('standard_simple_recovery',False)
 
 def support_audit(case,p):
     result=source.support_audit(case,p)
@@ -85,7 +85,7 @@ def validate_solver(case,p):
     if simplec is not None and (type(simplec) is not float or simplec not in SIMPLEC_RELAXATION_FACTORS):
         raise ValueError('Invalid simplec_conventional_relaxation setting')
     if simplec is not None and not simplec_relaxation_allowed(p):
-        raise ValueError('Conventional SIMPLEC relaxation requires the strict NNE reference or the NE production baseline')
+        raise ValueError('Conventional SIMPLEC relaxation requires the strict NNE reference or the NE or NW production baseline')
     if text.count('relaxationFactors')!=1:raise ValueError('Retained relaxation factors changed')
     relaxation='relaxationFactors'+text.split('relaxationFactors',1)[1]
     if simplec is not None:
@@ -105,7 +105,7 @@ def validate_solver(case,p):
         raise ValueError('Unmatched SIMPLE convention')
 
 HUB_WORLD=(0,-280,32.1)
-DEFAULT_RECIPES={'N':'production','NbE':'strict','NNE':'strict','NE':'production'}
+DEFAULT_RECIPES={'N':'production','NbE':'strict','NNE':'strict','NE':'production','NW':'strict'}
 JOINT_DIRECTIONS=tuple(DEFAULT_RECIPES)
 RECIPES={
     'strict': ('reference', True, True, False),
@@ -139,7 +139,7 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,di
         simplec_relaxation_factor=float(simplec_relaxation_factor)
         if not simplec_relaxation_allowed({'role':role,'direction':direction,'tight_transport':tight_transport,
                                            'post_snap_agglomeration':agglomerate,'standard_simple_recovery':standard_simple}):
-            raise ValueError('Conventional SIMPLEC relaxation requires the strict NNE reference or the NE production baseline')
+            raise ValueError('Conventional SIMPLEC relaxation requires the strict NNE reference or the NE or NW production baseline')
     case=ROOT/'runs'/name
     if direction not in JOINT_DIRECTIONS:
         raise ValueError('Unsupported coupled direction '+direction)
@@ -576,7 +576,7 @@ def main():
     parser.add_argument('stage',choices=['build','mesh','solve','sample','evaluate'])
     parser.add_argument('--case',required=True)
     parser.add_argument('--direction',choices=JOINT_DIRECTIONS,help='Meteorological wind-from direction for build (default N)')
-    parser.add_argument('--recipe',choices=RECIPES,help='Mesh and solver preset. Defaults to production for N and NE, strict for NbE and NNE.')
+    parser.add_argument('--recipe',choices=RECIPES,help='Mesh and solver preset. Defaults to production for N and NE, strict for NbE, NNE and NW (no checked reference).')
     parser.add_argument('--role',choices=['reference','baseline','candidate'])
     parser.add_argument('--reference',help='Reference case for the mesh/solve support audit or field evaluation')
     parser.add_argument('--tight-transport',action='store_true',
@@ -587,7 +587,7 @@ def main():
                         help='Reproduce the strict NNE standard-SIMPLE trial that exceeded the 600 s solve limit')
     parser.add_argument('--simplec-relaxation',type=float,choices=SIMPLEC_RELAXATION_FACTORS,
                         help='SIMPLEC with unrelaxed pressure and U/".*" equation relaxation: 0.9 as in the '
-                             'v2306 pitzDaily tutorial, 0.7 the pre-registered fallback. Strict NNE or NE production only')
+                             'v2306 pitzDaily tutorial, 0.7 the pre-registered fallback. Strict NNE or NE/NW production only')
     args=parser.parse_args()
     if args.stage!='build' and (args.direction or args.recipe or args.simplec_relaxation is not None):
         parser.error('--direction, --recipe and --simplec-relaxation apply to build')

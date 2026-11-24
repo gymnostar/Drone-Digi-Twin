@@ -1,0 +1,23 @@
+{
+  "campaign": "../../lookup/campaign.json#nw_direction",
+  "runs": {
+    "W1": {
+      "case": "table-NW-oriented",
+      "status": "failed",
+      "verdict": "solve-verdict.json",
+      "reason": "Strict solve reached the 600 s cap at iteration 975 with p, Ux and Uz above the frozen residual limits."
+    },
+    "W2": {
+      "case": "table-NW-simplec",
+      "status": "skipped",
+      "reason": "Pre-registered stop: no NW production run without a qualifying strict reference."
+    },
+    "repair": {
+      "status": "not applicable",
+      "reason": "The strict NW mesh passed the existing mesh gates (425,104 cells, standard and custom checks; only allGeometry concavity, accepted as for N and NE)."
+    }
+  },
+  "solver_or_mesh_runs_used": 1,
+  "docker_sampling_or_export_jobs_used": 0,
+  "released": false
+}
