@@ -1,0 +1,201 @@
+{
+  "case": "nne-simplec-tutorial",
+  "trial": "C1",
+  "campaign": "../../lookup/campaign.json#simplec_relaxation_trials",
+  "baseline": "table-NNE-corners",
+  "direction": "NNE",
+  "recipe": "strict",
+  "change": {
+    "study_parameter": "simplec_conventional_relaxation",
+    "factor": 0.9,
+    "fvSolution_relaxation": "relaxationFactors {equations {U 0.9; \".*\" 0.9;}}",
+    "consistent": "yes",
+    "pressure_field_relaxation": "none",
+    "source": {
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "path": "/usr/lib/openfoam/openfoam2306/tutorials/incompressible/simpleFoam/pitzDaily/system/fvSolution",
+      "sha256": "c562b517547fd9445cb070fb1826f9eaffad42ec2f34694fc727bea99f6b7dd1",
+      "SIMPLE": "nNonOrthogonalCorrectors 0; consistent yes;",
+      "relaxationFactors": "equations { U 0.9; // 0.9 is more stable but 0.95 more convergent\n \".*\" 0.9; // 0.9 is more stable but 0.95 more convergent }",
+      "adopted": "Only consistent yes and the relaxationFactors block. The tutorial's solvers, tolerances, residualControl and nNonOrthogonalCorrectors were not adopted."
+    },
+    "selection": "Factor 0.9 because B1 (table-NE-simplec) was stable at 0.9.",
+    "baseline_relaxation": "relaxationFactors {fields {p 0.3;} equations {U 0.6; k 0.6; epsilon 0.6;}}",
+    "baseline_consistent": "yes",
+    "hypothesis": "Conventional SIMPLEC factors reach the same steady solution in fewer outer iterations."
+  },
+  "cold_start": true,
+  "start_time": 0,
+  "fvSolution_sha256": {
+    "baseline": "2f82a82a405b4f2869eeefa97e94c973693c415cf46f079a2dcdd07f2a550a97",
+    "trial": "6099ede61f2375afc51284b5e9fff106c6bdae48473baa299c2fdafa42251925"
+  },
+  "identical_inputs": "0/p, 0/U, 0/k, 0/epsilon, 0/nut, system/controlDict, fvSchemes, snappyHexMeshDict, topoSetDict, decomposeParDict, roiSampling, queries.json, constant/fvOptions, transportProperties and turbulenceProperties are byte-identical to table-NNE-corners (sha256 compared per file).",
+  "identical_input_sha256": {
+    "0/p": "e92066ad307ebebfb7821fb8d2895ea5c40c228844273ec2405ad81a25d4dfd9",
+    "0/U": "e715ad966672fccfb84040721f3dedb5b727574efdc474fdf7c23864ac72f9d2",
+    "system/controlDict": "8f23754279cf3a12f3a152b055ae8c04dc69d8366b3eba8aba4945e3fd4e2499",
+    "system/fvSchemes": "ec3d9a209b9963ec6140f306580755add145825f3442848f181a05c974e88f4c",
+    "system/snappyHexMeshDict": "03863190c6435cb7814578859c49e73ccba352693a6122c119e003840ac07a37",
+    "queries.json": "bada9a5ffdd8d1c2aefa775934c4e0ee1fb5085e88db9c622c199f8d0d7b4b22",
+    "constant/fvOptions": "40c7c351514f328645b835bd55c2ddbd467b904adcb33d0321c441fb361f8903"
+  },
+  "mesh": {
+    "source": "Byte-identical copy of the archived table-NNE-corners constant/polyMesh (including sets) and its three checkMesh logs, mesh-acceptance.json and cost.mesh.json. Archived mesh cost is provenance.",
+    "cells": 428930,
+    "trial_byte_identical": true,
+    "verified_files": 20,
+    "file_manifest_sha256": "20738d4fcb73211de6766727566a3f4c284ad6b29097d68287c01f239b1edcc6",
+    "manifest_definition": "sha256 of sorted `shasum -a 256` lines for every file under constant/polyMesh plus log.checkMesh, log.checkMesh.standard and log.checkMesh.quality",
+    "archived_stage_cost": {
+      "stage": "mesh",
+      "elapsed_s": 123.03486662500654,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 122.694795,
+      "peak_cgroup_memory_bytes_including_cache": 768770048,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "rotor_support": {
+    "exact_match": true,
+    "configuration_sha256": "1df29f0e66649a64286362410a3996273f00d5f62197da5437252acd242961f5",
+    "selected_cells": 2184,
+    "spatial_cell_vertices_sha256": "3ac0f7db20ad46689051571d9c2ee65dcfd47f2c1236e51a1b4c817c53f30cea"
+  },
+  "budget": {
+    "mesh_s": 600,
+    "solve_s": 600,
+    "cpus": 3,
+    "memory_bytes": 5368709120
+  },
+  "strict_residual_thresholds": {
+    "p": 0.0001,
+    "U": 1e-05,
+    "k": 1e-05,
+    "epsilon": 1e-05
+  },
+  "accepted": false,
+  "stopped_at": "solve timeout",
+  "reason": "The cold solve reached the 600 s cap before satisfying the original residual limits. Residuals plateaued from about iteration 300. No checked terminal iterate was produced, so sampling, evaluation, export and holdout scoring were not run.",
+  "solve_started": true,
+  "solver_reported_convergence": false,
+  "sampled": false,
+  "evaluated": false,
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.1642076669959351,
+      "cpu_s": 1.1537300000000001,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "tight_transport": true
+    },
+    "host-solve-audit": {
+      "elapsed_s": 6.687501445412636e-05,
+      "cpu_s": 6.799999999999862e-05
+    },
+    "host-support-check": {
+      "elapsed_s": null,
+      "scope": "Manual support_audit of the copied mesh before the solve; not timed"
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 600.2026250000345,
+      "exit_code": 137,
+      "timed_out": true,
+      "cpu_s": null,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "studio",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "last_started_iteration": 937,
+  "last_complete_iteration": 936,
+  "last_complete_max_initial_residuals": {
+    "Ux": 0.0002673143207,
+    "Uy": 1.834096452e-06,
+    "Uz": 9.022116091e-05,
+    "p": 0.0001604904932,
+    "epsilon": 5.276534562e-06,
+    "k": 9.189802792e-06
+  },
+  "last_complete_residual_over_limit": {
+    "Ux": 26.73143207,
+    "Uy": 0.18340964519999997,
+    "Uz": 9.022116091,
+    "p": 1.604904932,
+    "epsilon": 0.5276534561999999,
+    "k": 0.9189802792
+  },
+  "diagnostic_window": {
+    "first_iteration": 437,
+    "last_iteration": 936,
+    "completed_iterations": 500,
+    "median_of_iteration_max_initial_residuals": {
+      "Ux": 0.0002522531401,
+      "Uy": 1.6886743505e-06,
+      "Uz": 8.127339745e-05,
+      "p": 0.00015540265615000002,
+      "epsilon": 4.8693243915e-06,
+      "k": 8.2051805245e-06
+    }
+  },
+  "residual_history": {
+    "200": {
+      "Ux": 0.0002955822437,
+      "p": 0.0001914544401
+    },
+    "300": {
+      "Ux": 0.0002547435905,
+      "p": 0.0001474747791
+    },
+    "500": {
+      "Ux": 0.0002453452138,
+      "p": 0.0001467155475
+    }
+  },
+  "aligned_iteration_comparison": {
+    "scope": "Equal outer-iteration counts. Maximum initial residual per field per completed iteration.",
+    "baseline_at_iteration_936": {
+      "Ux": 3.377577464e-05,
+      "Uy": 3.666682005e-07,
+      "Uz": 1.486266935e-05,
+      "p": 0.0002860044989,
+      "epsilon": 1.073133636e-06,
+      "k": 2.668803277e-06
+    },
+    "trial_at_iteration_936": {
+      "Ux": 0.0002673143207,
+      "Uy": 1.834096452e-06,
+      "Uz": 9.022116091e-05,
+      "p": 0.0001604904932,
+      "epsilon": 5.276534562e-06,
+      "k": 9.189802792e-06
+    },
+    "baseline_last_500_in_aligned_window": {
+      "first_iteration": 437,
+      "last_iteration": 936,
+      "median_of_iteration_max_initial_residuals": {
+        "Ux": 4.119920813e-05,
+        "Uy": 4.4379455085e-07,
+        "Uz": 1.8010237265e-05,
+        "p": 0.0003109930465,
+        "epsilon": 1.1832499825e-06,
+        "k": 3.1888246665e-06
+      }
+    },
+    "pressure_GAMG_cycles_trial": 9798
+  },
+  "finding": "Pressure residual fell about twofold relative to the baseline (median 1.55e-4 versus 3.11e-4) but the crosswind velocity residual rose about sixfold (median 2.52e-4 versus 4.12e-5), so U moved further from its 1e-5 limit. Fewer iterations fit in the cap (936 versus 982).",
+  "reproduction": [
+    "python3 scenes/joint/study.py build --case nne-simplec-tutorial --direction NNE --recipe strict --simplec-relaxation 0.9",
+    "Copy the archived table-NNE-corners constant/polyMesh, its three checkMesh logs, mesh-acceptance.json and cost.mesh.json. Verify the file manifest and support_audit against the baseline.",
+    "python3 scenes/joint/study.py solve --case nne-simplec-tutorial"
+  ]
+}
