@@ -29,6 +29,23 @@ TRANSPORT_TOLERANCE=re.compile(
     r'("\(U\|k\|epsilon\)"\s*\{\s*solver smoothSolver;\s*'
     r'smoother symGaussSeidel;\s*tolerance )([0-9.eE+-]+)(;\s*relTol 0\.05;\s*\})'
 )
+RETAINED_RELAXATION='relaxationFactors {fields {p 0.3;} equations {U 0.6; k 0.6; epsilon 0.6;}}'
+# OpenFOAM v2306 tutorials/incompressible/simpleFoam/pitzDaily/system/fvSolution
+# (sha256 c562b517547fd9445cb070fb1826f9eaffad42ec2f34694fc727bea99f6b7dd1) relaxes
+# only the equations, U and ".*" by 0.9, with no pressure field relaxation. 0.7 is
+# the one pre-registered fallback in lookup/campaign.json simplec_relaxation_trials.
+SIMPLEC_RELAXATION_FACTORS=(0.9,0.7)
+
+def simplec_relaxation(factor):
+    return f'relaxationFactors {{equations {{U {factor}; ".*" {factor};}}}}'
+
+def simplec_relaxation_allowed(p):
+    """The strict NNE reference and the NE production baseline only."""
+    strict_nne=(p.get('role')=='reference' and p.get('tight_transport',False)
+                and p.get('direction')=='NNE')
+    ne_production=(p.get('role')=='baseline' and p.get('direction')=='NE'
+                   and bool(p.get('post_snap_agglomeration')))
+    return (strict_nne or ne_production) and not p.get('standard_simple_recovery',False)
 
 def support_audit(case,p):
     result=source.support_audit(case,p)
@@ -64,16 +81,26 @@ def validate_solver(case,p):
     block=re.search(r'residualControl \{([^}]+)\}',text)[1]
     actual={key:float(value) for key,value in re.findall(r'(p|U|k|epsilon) ([0-9.eE+-]+);',block)}
     if actual!=p['residual_thresholds']:raise ValueError('Frozen outer residual controls changed')
-    relaxation=text.split('relaxationFactors',1)[1]
-    expected={'p':.3,'U':.6,'k':.6,'epsilon':.6}
-    actual={key:float(value) for key,value in re.findall(r'(p|U|k|epsilon) ([0-9.eE+-]+);',relaxation)}
-    if actual!=expected:raise ValueError('Retained relaxation factors changed')
+    simplec=p.get('simplec_conventional_relaxation')
+    if simplec is not None and (type(simplec) is not float or simplec not in SIMPLEC_RELAXATION_FACTORS):
+        raise ValueError('Invalid simplec_conventional_relaxation setting')
+    if simplec is not None and not simplec_relaxation_allowed(p):
+        raise ValueError('Conventional SIMPLEC relaxation requires the strict NNE reference or the NE production baseline')
+    if text.count('relaxationFactors')!=1:raise ValueError('Retained relaxation factors changed')
+    relaxation='relaxationFactors'+text.split('relaxationFactors',1)[1]
+    if simplec is not None:
+        if relaxation.strip()!=simplec_relaxation(simplec):
+            raise ValueError('Conventional SIMPLEC relaxation factors changed')
+    else:
+        expected={'p':.3,'U':.6,'k':.6,'epsilon':.6}
+        actual={key:float(value) for key,value in re.findall(r'(p|U|k|epsilon) ([0-9.eE+-]+);',relaxation)}
+        if actual!=expected or '"' in relaxation:raise ValueError('Retained relaxation factors changed')
     standard_simple = p.get('standard_simple_recovery', False)
     if not isinstance(standard_simple, bool):
         raise ValueError('Invalid standard_simple_recovery setting')
     if standard_simple and not (tight_transport and p['direction'] == 'NNE'):
         raise ValueError('Standard SIMPLE recovery requires the strict NNE reference')
-    expected = 'yes' if p['role'] != 'baseline' and not standard_simple else 'no'
+    expected = 'yes' if (p['role'] != 'baseline' or simplec is not None) and not standard_simple else 'no'
     if re.findall(r'\bconsistent\s+(\w+)\s*;', text) != [expected]:
         raise ValueError('Unmatched SIMPLE convention')
 
@@ -99,7 +126,7 @@ def foam_point(point):
     return '('+' '.join(map(str,point))+')'
 
 
-def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,direction='N',standard_simple=False):
+def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,direction='N',standard_simple=False,simplec_relaxation_factor=None):
     started=time.monotonic();cpu=time.process_time()
     if Path(name).name!=name:raise ValueError('One fresh case name required')
     if tight_transport and (role!='reference' or not common_mesh):
@@ -108,6 +135,11 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,di
         raise ValueError('Agglomeration requires --role baseline --common-mesh')
     if standard_simple and not (direction == 'NNE' and tight_transport):
         raise ValueError('Standard SIMPLE recovery requires the strict NNE reference')
+    if simplec_relaxation_factor is not None:
+        simplec_relaxation_factor=float(simplec_relaxation_factor)
+        if not simplec_relaxation_allowed({'role':role,'direction':direction,'tight_transport':tight_transport,
+                                           'post_snap_agglomeration':agglomerate,'standard_simple_recovery':standard_simple}):
+            raise ValueError('Conventional SIMPLEC relaxation requires the strict NNE reference or the NE production baseline')
     case=ROOT/'runs'/name
     if direction not in JOINT_DIRECTIONS:
         raise ValueError('Unsupported coupled direction '+direction)
@@ -131,6 +163,12 @@ def build(name,role,common_mesh=False,tight_transport=False,agglomerate=False,di
             raise ValueError('Expected one original inner transport tolerance')
         text=TRANSPORT_TOLERANCE.sub(r'\g<1>1e-10\g<3>',text)
         p['tight_transport']=True
+    if simplec_relaxation_factor is not None:
+        if text.count(RETAINED_RELAXATION)!=1 or len(re.findall(r'\bconsistent (?:yes|no);',text))!=1:
+            raise ValueError('Expected the retained relaxation and one SIMPLE convention')
+        text=text.replace(RETAINED_RELAXATION,simplec_relaxation(simplec_relaxation_factor))
+        text=re.sub(r'\bconsistent (?:yes|no);','consistent yes;',text)
+        p['simplec_conventional_relaxation']=simplec_relaxation_factor
     fv.write_text(text)
     wake_level=3 if common_mesh else {'reference':3,'baseline':2,'candidate':1}[role]
     support_box=((-20.25,-286.75,6.75),(20.25,-273.25,60.75))
@@ -547,9 +585,12 @@ def main():
                         help='Build a baseline with interior sibling agglomeration after common-mesh snapping')
     parser.add_argument('--standard-simple',action='store_true',
                         help='Reproduce the strict NNE standard-SIMPLE trial that exceeded the 600 s solve limit')
+    parser.add_argument('--simplec-relaxation',type=float,choices=SIMPLEC_RELAXATION_FACTORS,
+                        help='SIMPLEC with unrelaxed pressure and U/".*" equation relaxation: 0.9 as in the '
+                             'v2306 pitzDaily tutorial, 0.7 the pre-registered fallback. Strict NNE or NE production only')
     args=parser.parse_args()
-    if args.stage!='build' and (args.direction or args.recipe):
-        parser.error('--direction and --recipe apply to build')
+    if args.stage!='build' and (args.direction or args.recipe or args.simplec_relaxation is not None):
+        parser.error('--direction, --recipe and --simplec-relaxation apply to build')
     if args.stage=='build' and not (args.recipe or args.role):
         args.recipe=DEFAULT_RECIPES[args.direction or 'N']
     if args.recipe:
@@ -564,7 +605,7 @@ def main():
         parser.error('--standard-simple requires build --direction NNE with the strict recipe')
     case=ROOT/'runs'/args.case
     reference=ROOT/'runs'/args.reference if args.reference else None
-    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.agglomerate,args.direction or 'N',args.standard_simple)
+    if args.stage=='build':build(args.case,args.role,args.common_mesh,args.tight_transport,args.agglomerate,args.direction or 'N',args.standard_simple,args.simplec_relaxation)
     elif args.stage=='mesh':mesh(case,reference)
     elif args.stage=='solve':
         validate_solver(case,json.loads((case/'parameters.json').read_text()))
