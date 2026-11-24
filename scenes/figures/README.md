@@ -18,7 +18,7 @@ for s in render3d fig_turbine fig_data fig_nne fig_fail fig_ne fig_flow fig_quer
 ../../../.venv-figures/bin/python recon.py /tmp/recon.npz && ../../../.venv-figures/bin/python fig_mesh.py /tmp
 ```
 
-The figures are written into this folder; set `FIG_OUT=/some/folder` to write them elsewhere. `recon.py` takes about a minute and prints the reconstructed merge counts next to the recorded ones. With numpy 2.5, matplotlib 3.11, pyvista 0.49 and vtk 9.7 on macOS, the scripts reproduce the stored PNGs pixel for pixel. Another font (the scripts prefer Helvetica, then DejaVu Sans) shifts text slightly. `01-turbine-result.png`, `03-city-limit.png`, `niigata-map.png` and `swift-sketch.png` come from earlier slides and have no script here.
+The figures are written into this folder; set `FIG_OUT=/some/folder` to write them elsewhere. `recon.py` takes about a minute and prints the reconstructed merge counts next to the recorded ones. With numpy 2.5, matplotlib 3.11, pyvista 0.49 and vtk 9.7 on macOS, the scripts reproduce the stored PNGs pixel for pixel. Another font (the scripts prefer Helvetica, then DejaVu Sans) shifts text slightly. `01-turbine-result.png`, `03-city-limit.png`, `niigata-map.png` and `swift-sketch.png`, `check-niigata-tunnel.png` and `check-swift-wake.png` come from earlier work and have no script here.
 
 | Script | Figures |
 |---|---|
@@ -143,6 +143,8 @@ The figures are written into this folder; set `FIG_OUT=/some/folder` to write th
 
 - `niigata-map.png`: the Niigata district and the 80 wind-tunnel measurement points (district at 1:250 scale in the tunnel).
 - `swift-sketch.png`: the SWiFT site: upstream met tower for the inflow, rear-facing lidar for the wake.
+- `check-swift-wake.png`: first check of the turbine alone against the SWiFT lidar. Wake slices 2D to 5D downstream (D = 27 m rotor diameter): measured (top), simulated (middle), simulated minus measured (bottom, red = simulated wake too weak). Standard k-epsilon, 46,504 cells, wake RMSE 1.11 m/s. Mesh refinement to 155,306 and 302,354 cells leaves the error at 1.11 m/s, so the gap comes from the model, not the mesh; realizableKE lowers it to 0.86 m/s (see `scenes/turbine/results/closure-comparison.json`). The lidar proxy is a line-of-sight speed, not the full vector.
+- `check-niigata-tunnel.png`: first check of the district against the wind tunnel, 77 matched samples of 80. Left: measured scalar speed against simulated mean-velocity magnitude (below the line: simulation slower). Right: where the speed-ratio error sits. Speed-ratio RMSE about 0.198. The tunnel records a scalar speed and the simulation a mean vector, and the tunnel inflow and turbulence metadata were incomplete, which is why the city comparison became a cheap-versus-strict numerical test.
 - `01-turbine-result.png`: the isolated-turbine result on three held-out conditions: 5.97–6.09× faster, 1.38–1.63% wake RMSE against the 5% limit. fig02 shows the same change on the mesh itself.
 - `03-city-limit.png`: why the city alone was not certified: 6.42% (whole city), 7.24% (below 40 m) and 7.40% (downstream buildings) against a provisional reference that never converged.
 
