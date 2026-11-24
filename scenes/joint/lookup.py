@@ -32,9 +32,18 @@ def planner_grid():
 
 
 def sample_grid(case, parameters, iteration, *, reconstruct=False):
+    """Sample the planner grid. Returns {world point: ENU vector or None}."""
+    return sample_points(case, parameters, iteration, planner_grid(), reconstruct=reconstruct)
+
+
+def sample_points(case, parameters, iteration, points, *, reconstruct=False):
+    """Sample CFD velocity at world points with OpenFOAM cellPoint interpolation.
+
+    Returns {world point: ENU vector, or None where OpenFOAM gives no finite sample}.
+    """
     study = import_module(".study", __package__) if __package__ else import_module("study")
 
-    xyz = planner_grid()
+    xyz = list(dict.fromkeys(tuple(p) for p in points))
     degrees = parameters["wind_from_deg"]
     expected = {p: study.city.transform(p, degrees) for p in xyz}
     input_dir = case / "processor0" if reconstruct else case
