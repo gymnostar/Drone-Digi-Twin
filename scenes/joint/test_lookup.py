@@ -7,7 +7,7 @@ import unittest
 from types import SimpleNamespace
 
 from evaluate_lookup import score
-from lookup import ROOT, WindField, WindSector, read_json
+from lookup import ROOT, WindField, WindSector, enu_to_ned, read_json
 
 
 class LookupTest(unittest.TestCase):
@@ -72,6 +72,29 @@ class LookupTest(unittest.TestCase):
                                  capture_output=True, text=True)
         self.assertNotEqual(refused.returncode, 0)
         self.assertIn("No released or fallback field", refused.stderr)
+
+    def test_interpolation_is_trilinear_and_masks_near_buildings(self):
+        field = WindField.__new__(WindField)
+        field.metadata = self.north.metadata
+        linear = lambda x, y, z: (1 + x, 2 * y - z, 0.5 * z)
+        field.points = {(x, y, z): linear(x, y, z) for x in (0, 5) for y in (0, 5) for z in (5, 10)}
+        self.assertLess(math.dist(field.interpolate(1.5, 4, 7.25), linear(1.5, 4, 7.25)), 1e-12)
+        self.assertEqual(field.interpolate(5, 0, 10), linear(5, 0, 10))
+        for outside in ((-0.1, 0, 5), (0, 5.1, 5), (0, 0, 4.9)):
+            with self.assertRaises(KeyError):
+                field.interpolate(*outside)
+        field.points[5, 5, 10] = None
+        self.assertIsNone(field.interpolate(4, 4, 9))
+        # A masked node only masks positions it contributes to.
+        self.assertEqual(field.interpolate(0, 2.5, 7.5), linear(0, 2.5, 7.5))
+        self.assertEqual(enu_to_ned((1., 2., 3.)), (2., 1., -3.))
+        self.assertIsNone(enu_to_ned(None))
+        # On the released grid, nodes are reproduced and a building mask spreads one cell.
+        self.assertEqual(self.north.interpolate(0, -350, 20), self.north.at(0, -350, 20))
+        mid = self.north.interpolate(0, -347.5, 20)
+        expected = [(a + b) / 2 for a, b in zip(self.north.at(0, -350, 20), self.north.at(0, -345, 20))]
+        self.assertLess(math.dist(mid, expected), 1e-12)
+        self.assertIsNone(self.north.interpolate(-195, 7, 5))
 
     def test_sector_reproduces_endpoint_and_requires_both_masks_inside(self):
         points = {(0, 0, 5): (4., -4., 0.), (5, 0, 5): (1., 0., 0.)}

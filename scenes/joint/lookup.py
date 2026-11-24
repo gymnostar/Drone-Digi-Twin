@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Export and query sampled mean wind at exact world coordinates (metres, east/north/up)."""
 import argparse
+import bisect
 import csv
 import gzip
 import hashlib
@@ -239,6 +240,42 @@ class WindField:
         """Return ENU velocity, None for a masked sample, or raise KeyError off the grid."""
         return self.points[x, y, z]
 
+    def interpolate(self, x, y, z):
+        """Trilinear ENU velocity at any position inside the table.
+
+        Returns None when a grid node that contributes to the value is masked, which
+        happens within one grid cell of a building. Raises KeyError outside the table:
+        east -200..200 m, north -450..200 m, height 5..80 m above ground.
+        """
+        if not hasattr(self, "_axes"):
+            self._axes = tuple(sorted({p[i] for p in self.points}) for i in range(3))
+        corners = []
+        for value, axis in zip((x, y, z), self._axes):
+            if not axis[0] <= value <= axis[-1]:
+                raise KeyError((x, y, z))
+            upper = min(bisect.bisect_right(axis, value), len(axis) - 1)
+            low, high = axis[upper - 1], axis[upper]
+            weight = (value - low) / (high - low)
+            # Nodes with zero weight are skipped, so a point on a valid node is never masked.
+            corners.append([(node, w) for node, w in ((low, 1 - weight), (high, weight)) if w > 0])
+        total = [0., 0., 0.]
+        for xn, wx in corners[0]:
+            for yn, wy in corners[1]:
+                for zn, wz in corners[2]:
+                    vector = self.points[xn, yn, zn]
+                    if vector is None:
+                        return None
+                    w = wx * wy * wz
+                    total[0] += w * vector[0]
+                    total[1] += w * vector[1]
+                    total[2] += w * vector[2]
+        return tuple(total)
+
+
+def enu_to_ned(vector):
+    """Convert an (east, north, up) vector to the (north, east, down) order used by AirSim."""
+    return None if vector is None else (vector[1], vector[0], -vector[2])
+
 
 class WindSector:
     """Interpolate wind-aligned components at each common-air world location."""
@@ -294,7 +331,10 @@ def main():
         "heading", help="Any wind-from heading: released field, or nearest released field labelled unvalidated")
     heading.add_argument("degrees", type=float)
     heading.add_argument("xyz", type=float, nargs=3, metavar="METRES")
-    estimate =commands.add_parser("estimate", help="Experimental linear directional estimate")
+    for command in (query, heading):
+        command.add_argument("--interpolate", action="store_true",
+                             help="Trilinear value at any position inside the table instead of an exact grid node")
+    estimate = commands.add_parser("estimate", help="Experimental linear directional estimate")
     estimate.add_argument("lower", type=Path)
     estimate.add_argument("upper", type=Path)
     estimate.add_argument("degrees", type=float)
@@ -315,7 +355,7 @@ def main():
                 degrees = args.degrees % 360
                 extra = {"field": field.metadata["direction"],
                          "field_wind_from_deg": field.metadata["wind_from_deg"], "heading_basis": basis}
-                query_at = field.at
+                query_at = field.interpolate if args.interpolate else field.at
             elif args.command == "estimate":
                 field = WindSector(WindField(args.lower), WindField(args.upper))
                 degrees = args.degrees
@@ -325,7 +365,7 @@ def main():
                 field = (WindField.for_direction(args.field) if args.field.isalpha() and not Path(args.field).is_file()
                          else WindField(args.field))
                 degrees = field.metadata["wind_from_deg"]
-                query_at = field.at
+                query_at = field.interpolate if args.interpolate else field.at
         except (ValueError, OSError) as error:
             parser.error(str(error))
         try:
