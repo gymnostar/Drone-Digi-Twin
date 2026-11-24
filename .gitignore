@@ -46,3 +46,9 @@ __pycache__/
 /scenes/review-export/.qa/
 
 /scenes/local/
+
+# Wind atlas: solver cases and gridded fields are large (rebuild with DLR/atlas/run_atlas.sh)
+/DLR/atlas/cases.noindex/
+/DLR/atlas/grid.noindex/
+/DLR/atlas/run_atlas.out
+.pytest_cache/
