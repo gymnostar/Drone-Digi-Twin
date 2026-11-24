@@ -42,5 +42,30 @@
       "reserved_test_deg": 16.875,
       "use": "If a new 22.5-degree anchor qualifies, compare the original 0/45 model with the split interval at the same previously unused heading. Keep the existing regional accuracy thresholds and reference-valid coverage denominator. No fitting or tuning on the reserved case."
     }
+  },
+  "simplec_relaxation_trials": {
+    "baseline_revision": "6d62505",
+    "authorisation": "Separately authorised round after the three-attempt midpoint_recovery. Registered before any run in this round.",
+    "variant": {
+      "study_parameter": "simplec_conventional_relaxation",
+      "build_flag": "--simplec-relaxation FACTOR",
+      "fvSolution": "consistent yes; relaxationFactors {equations {U FACTOR; \".*\" FACTOR;}} with no pressure field relaxation",
+      "primary_factor": 0.9,
+      "fallback_factor": 0.7,
+      "source": "OpenFOAM v2306 tutorials/incompressible/simpleFoam/pitzDaily/system/fvSolution in the pinned image sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289; file sha256 c562b517547fd9445cb070fb1826f9eaffad42ec2f34694fc727bea99f6b7dd1",
+      "allowed_cases": "Strict NNE reference and NE production baseline only. Residual controls, inner tolerances, nNonOrthogonalCorrectors, schemes, mesh, forcing, queries, 600 s caps, 3 CPUs and 5 GiB unchanged."
+    },
+    "hypothesis": "All recipes so far ran SIMPLEC with SIMPLE-style factors (p 0.3, U/k/epsilon 0.6). SIMPLEC with its conventional factors changes only the iteration path to the same steady solution, so it may reach the frozen residual limits in fewer outer iterations.",
+    "runs": {
+      "B1": "Fresh cold NE production case with factor 0.9, the full README Directional simulation settings pipeline (build, mesh, solve, sample, evaluate against table-NE-oriented).",
+      "B2": "Only if B1 diverges or fails a numerical-stability or settling check: one fresh cold NE production case with factor 0.7. Not run if B1 merely misses speed or accuracy.",
+      "C1": "Exactly one cold strict NNE solve with the factor that was stable in B (0.7 if neither was), on a byte-identical copy of the table-NNE-corners mesh, 600 s solve cap. If converged: sample, evaluate, export to a non-released file and score the frozen N/NE estimate with evaluate_lookup.py, without refitting."
+    },
+    "max_solver_or_mesh_runs": 4,
+    "acceptance": {
+      "NE": "Existing frozen gates: all frozen numerical checks, all four regional gates against table-NE-oriented, exact support match, and complete map generation <= 200.57 s (speedup >= 2.0 against the recorded 401.14 s reference). On success the NE release is replaced.",
+      "NNE": "midpoint_recovery acceptance unchanged: a checked strict terminal reference within the 600 s solve cap. NNE is not added to the released index in this round."
+    },
+    "stop": "No tuning loop and no other settings. Stop after C1, at the run budget, or at 08:30 CET on 2026-11-24, whichever comes first. Report every run, including failures."
   }
 }
