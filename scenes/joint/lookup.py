@@ -214,6 +214,8 @@ class WindField:
         if not math.isfinite(wind_from_deg):
             raise ValueError("Wind heading must be finite")
         heading = wind_from_deg % 360
+        if heading == 360:  # A tiny negative input rounds up to 360; that is north.
+            heading = 0.
         released = sorted((record["wind_from_deg"], label) for label, record in
                           read_json(ROOT / "lookup" / "index.json")["fields"].items())
         low, high = released[0][0], released[-1][0]

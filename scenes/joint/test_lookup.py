@@ -53,7 +53,7 @@ class LookupTest(unittest.TestCase):
                         self.assertLess(math.dist(result["U_enu_m_s"], velocity), 1e-5)
 
     def test_any_heading_uses_released_or_labelled_nearest_field(self):
-        cases = {0: ("N", "released"), 360: ("N", "released"), 45: ("NE", "released"),
+        cases = {0: ("N", "released"), 360: ("N", "released"), -1e-14: ("N", "released"), 45: ("NE", "released"),
                  10: ("N", "nearest_released_unvalidated"), 22.5: ("N", "nearest_released_unvalidated"),
                  30: ("NE", "nearest_released_unvalidated")}
         for degrees, (label, basis) in cases.items():

@@ -71,10 +71,10 @@ For a short integration check, query the four waypoints below in order for each 
 
 | North coordinate (m) | North wind | Northeast wind |
 |---:|---|---|
-| 5 | (−0.085, −1.374, −0.172) | (−0.392, −0.126, −0.103) |
+| 5 | (−0.085, −1.374, −0.172) | (−0.389, −0.137, −0.104) |
 | 10 | masked | masked |
 | 11 | unsampled | unsampled |
-| 25 | (−1.030, −3.677, −0.295) | (−2.933, −0.870, −0.316) |
+| 25 | (−1.030, −3.677, −0.295) | (−3.011, −0.857, −0.287) |
 
 ### Main implementation choices
 
@@ -226,7 +226,7 @@ The cheaper mesh passed the original numerical gates and the four regional check
 | NE, first release (SIMPLE) | 425,006 / 228,432 | 401.14 / 237.59 s | 1.69× |
 | NE, released (conventional SIMPLEC) | 425,006 / 228,432 | 398.86 / 200.40 s, same session | 1.99× |
 
-Each entry is one complete generation timing on Studio using three CPUs and 5 GiB. The released northeast field now comes from SIMPLEC with OpenFOAM's conventional relaxation: pressure unrelaxed and equations relaxed by 0.9, as in OpenFOAM's own SIMPLEC tutorial. The first release used SIMPLE's factors (pressure 0.3, equations 0.6). Relaxation changes how the solver approaches the steady answer, not the answer. On the same mesh the solve stopped after 136 iterations instead of 277, and the solve time fell from 98 s to about 60 s. **Northeast still misses the twofold target, narrowly.** The first SIMPLEC run took 198.93 s, or 2.02× against the reference timed in an earlier session. The evaluator withholds that ratio because the two runs recorded different host names, and the margin was only 1.6 s. A pre-registered back-to-back retime gave 398.86 s for the reference and 200.40 s for the candidate, which is 1.99×. Both candidate runs produced byte-identical velocity fields. About 122 s of each production run is meshing, which repeats the reference's snapped mesh, so further gains have to come from the solve. [First SIMPLEC run](joint/results/table-NE-simplec/trial.json) · [Same-session comparison](joint/results/table-NE-simplec-retimed/metrics.json) · [Retimed reference](joint/results/table-NE-reference-retimed/metrics.json)
+Each entry is one complete generation timing on Studio using three CPUs and 5 GiB. The released northeast field now comes from SIMPLEC with OpenFOAM's conventional relaxation: pressure unrelaxed and equations relaxed by 0.9, as in OpenFOAM's own SIMPLEC tutorial. The first release used SIMPLE's factors (pressure 0.3, equations 0.6). Relaxation changes how the solver approaches the steady answer, not the answer. On the same mesh the solve stopped after 136 iterations instead of 277, and the solve time fell from 98 s to about 60 s. **Northeast still misses the twofold target, narrowly.** The first SIMPLEC run took 198.93 s, or 2.02× against the reference timed in an earlier session. The evaluator withholds that ratio because the two runs recorded different host names, and the margin was only 1.6 s. A pre-registered back-to-back retime gave 398.86 s for the reference and 200.40 s for the candidate, which is 1.99×. Both candidate runs gave identical regional errors. About 122 s of each production run is meshing, which repeats the reference's snapped mesh, so further gains have to come from the solve. [First SIMPLEC run](joint/results/table-NE-simplec/trial.json) · [Same-session comparison](joint/results/table-NE-simplec-retimed/metrics.json) · [Retimed reference](joint/results/table-NE-reference-retimed/metrics.json)
 
 Preparing the additional common-grid CSV from the finished production field took 9.59 s for north and 9.17 s for northeast in one export each. For northeast, 34,253 valid overlapping rows agreed exactly with the original regional samples. [North CFD comparison](joint/results/poc-N-agglomerated-siblings/metrics.json) · [First northeast CFD comparison](joint/results/table-NE-production/metrics.json)
 
