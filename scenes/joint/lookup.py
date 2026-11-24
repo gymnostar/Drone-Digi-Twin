@@ -265,6 +265,8 @@ class WindField:
             upper = min(bisect.bisect_right(axis, value), len(axis) - 1)
             low, high = axis[upper - 1], axis[upper]
             weight = (value - low) / (high - low)
+            if weight < 1e-9 or weight > 1 - 1e-9:  # Float-close to a node counts as on it.
+                weight = float(round(weight))
             # Nodes with zero weight are skipped, so a point on a valid node is never masked.
             corners.append([(node, w) for node, w in ((low, 1 - weight), (high, weight)) if w > 0])
         total = [0., 0., 0.]
@@ -365,6 +367,7 @@ def main():
                 extra = {"field": field.metadata["direction"],
                          "field_wind_from_deg": field.metadata["wind_from_deg"], "heading_basis": basis}
                 query_at = field.interpolate if args.interpolate else field.at
+                extra["interpolated"] = args.interpolate
             elif args.command == "estimate":
                 field = WindSector(WindField(args.lower), WindField(args.upper))
                 degrees = args.degrees
@@ -375,6 +378,7 @@ def main():
                          else WindField(args.field))
                 degrees = field.metadata["wind_from_deg"]
                 query_at = field.interpolate if args.interpolate else field.at
+                extra = {"interpolated": args.interpolate}
         except (ValueError, OSError) as error:
             parser.error(str(error))
         try:

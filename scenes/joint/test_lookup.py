@@ -95,6 +95,9 @@ class LookupTest(unittest.TestCase):
         expected = [(a + b) / 2 for a, b in zip(self.north.at(0, -350, 20), self.north.at(0, -345, 20))]
         self.assertLess(math.dist(mid, expected), 1e-12)
         self.assertIsNone(self.north.interpolate(-195, 7, 5))
+        # A computed height a rounding error away from a node is treated as on it.
+        field.points[5, 5, 5] = None
+        self.assertEqual(field.interpolate(5, 5, 10 - 1e-12), field.interpolate(5, 5, 10))
 
     def test_sector_reproduces_endpoint_and_requires_both_masks_inside(self):
         points = {(0, 0, 5): (4., -4., 0.), (5, 0, 5): (1., 0., 0.)}
