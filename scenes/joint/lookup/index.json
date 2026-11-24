@@ -12,9 +12,9 @@
       "wind_from_deg": 45,
       "file": "NE.csv.gz",
       "split": "fit",
-      "case": "table-NE-production",
-      "sha256": "57ecd53f3c40146c03c9aa6c1d7254d97da4903cfcd893444db5d8238ff10a15",
-      "export_elapsed_s": 9.058757083985256
+      "case": "table-NE-simplec",
+      "sha256": "7a6d0b908e22c13202094f1df345c4b53ba7f3b07f6d6e918ddd3febe8e72cfe",
+      "export_elapsed_s": 9.173492582980543
     }
   }
 }

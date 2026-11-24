@@ -77,7 +77,8 @@ class DirectionalStudyTest(unittest.TestCase):
             study.dump(scenes / 'turbine/reference/data-sources.json', {'files': []})
 
             for direction, recipe, recovery in [('N', 'strict', False), ('NE', None, False),
-                                                ('NbE', None, False), ('NNE', None, False), ('NNE', 'strict', True)]:
+                                                ('NbE', None, False), ('NNE', None, False), ('NNE', 'strict', True),
+                                                ('NW', None, False)]:
                 with self.subTest(direction=direction, recovery=recovery):
                     name = direction + ('-simple' if recovery else '')
                     args = ['study.py', 'build', '--case', name,
@@ -152,7 +153,7 @@ class DirectionalStudyTest(unittest.TestCase):
                         approx_point(read_point(corner, 'span'), (15,12.5,7.5))
                         approx_point(read_point(corner, 'e1'), study.city.transform((1,0,0),theta))
                         self.assertIn('buildingCorner0 {mode inside; levels ((1E15 4));}', geom)
-                    if direction in ('N', 'NbE', 'NNE'):
+                    if direction in ('N', 'NbE', 'NNE', 'NW'):
                         self.assertEqual(p['role'], 'reference')
                         self.assertTrue(p['tight_transport'])
                     else:
@@ -161,6 +162,78 @@ class DirectionalStudyTest(unittest.TestCase):
                         box = (case / 'system/agglomerationBox').read_text()
                         approx_point(read_point(box, 'min'), (h_solver[0]-26,h_solver[1]-12,1.5))
                         approx_point(read_point(box, 'max'), (h_solver[0]+26,h_solver[1]+12,66))
+
+    def test_conventional_simplec_relaxation_only_for_two_recipes(self):
+        with TemporaryDirectory() as tmp:
+            scenes = Path(tmp)
+            root = scenes / 'joint'
+            root.mkdir()
+            (root / 'agglomeration').symlink_to(study.ROOT / 'agglomeration')
+            city = scenes / 'buildings'
+            (city / 'data/raw').mkdir(parents=True)
+            stl = city / 'data/raw/BD_caseE.stl'
+            stl.write_text('solid fixture\nendsolid fixture\n')
+            (city / 'inputs.json').write_text(json.dumps({'files': [{
+                'file': stl.name, 'sha256': study.hashlib.sha256(stl.read_bytes()).hexdigest()
+            }]}))
+            study.dump(scenes / 'turbine/reference/data-sources.json', {'files': []})
+
+            def build(name, direction, *extra):
+                args = ['study.py', 'build', '--case', name, '--direction', direction, *extra]
+                with (patch.object(study, 'ROOT', root),
+                      patch.object(study, 'SCENES', scenes),
+                      patch.object(study.city, 'ROOT', city),
+                      patch.object(study.turbine_prepare, 'rotor_coefficients',
+                                   return_value=(.48146, .76927)),
+                      patch.object(sys, 'argv', args), redirect_stdout(StringIO())):
+                    study.main()
+                case = root / 'runs' / name
+                return case, json.loads((case / 'parameters.json').read_text())
+
+            for direction in ('NE', 'NW', 'NNE'):
+                with self.subTest(direction=direction):
+                    # NW defaults to strict until it has a checked reference.
+                    recipe = ('--recipe', 'production') if direction == 'NW' else ()
+                    default, dp = build(direction, direction, *recipe)
+                    self.assertNotIn('simplec_conventional_relaxation', dp)
+                    for factor in ('0.9', '0.7'):
+                        case, p = build(f'{direction}-{factor}', direction, *recipe, '--simplec-relaxation', factor)
+                        self.assertEqual(p['simplec_conventional_relaxation'], float(factor))
+                        self.assertEqual(p['residual_thresholds'], dp['residual_thresholds'])
+                        text = (case / 'system/fvSolution').read_text()
+                        expected = (default / 'system/fvSolution').read_text().replace(
+                            study.RETAINED_RELAXATION,
+                            f'relaxationFactors {{equations {{U {factor}; ".*" {factor};}}}}'
+                        ).replace('consistent no;', 'consistent yes;')
+                        self.assertEqual(text, expected)
+                        self.assertIn('consistent yes;', text)
+                        self.assertNotIn('fields', text.split('relaxationFactors', 1)[1])
+                        if direction == 'NNE':
+                            self.assertTrue(study.strict_reference_configuration(case, p))
+                        # Any other heading, recipe or relaxation edit stays rejected.
+                        with self.assertRaisesRegex(ValueError, 'strict NNE reference or the NE or NW production'):
+                            study.validate_solver(case, dict(p, direction='N'))
+                        with self.assertRaisesRegex(ValueError, 'Invalid simplec'):
+                            study.validate_solver(case, dict(p, simplec_conventional_relaxation=0.8))
+                        with self.assertRaisesRegex(ValueError, 'Invalid simplec'):
+                            study.validate_solver(case, dict(p, simplec_conventional_relaxation=True))
+                        legacy = dict(p)
+                        del legacy['simplec_conventional_relaxation']
+                        with self.assertRaisesRegex(ValueError, 'Retained relaxation'):
+                            study.validate_solver(case, legacy)
+                        other = '0.7' if factor == '0.9' else '0.9'
+                        with self.assertRaisesRegex(ValueError, 'Conventional SIMPLEC relaxation factors changed'):
+                            study.validate_solver(case, dict(p, simplec_conventional_relaxation=float(other)))
+            with self.assertRaisesRegex(ValueError, 'strict NNE reference or the NE or NW production'):
+                build('N-simplec', 'N', '--simplec-relaxation', '0.9')
+            with self.assertRaisesRegex(ValueError, 'strict NNE reference or the NE or NW production'):
+                build('NE-strict-simplec', 'NE', '--recipe', 'strict', '--simplec-relaxation', '0.9')
+            with self.assertRaisesRegex(ValueError, 'strict NNE reference or the NE or NW production'):
+                build('NNE-simple-simplec', 'NNE', '--standard-simple', '--simplec-relaxation', '0.9')
+            for direction, recipe in (('NW', 'strict'), ('NbE', 'strict'), ('NbE', 'production'),
+                                      ('NNE', 'production'), ('N', 'strict')):
+                with self.assertRaisesRegex(ValueError, 'strict NNE reference or the NE or NW production'):
+                    build(f'{direction}-{recipe}-simplec', direction, '--recipe', recipe, '--simplec-relaxation', '0.9')
 
     def test_raw_samples_rotate_velocity_and_preserve_missing_ids(self):
         with TemporaryDirectory() as tmp:

@@ -2,21 +2,21 @@
   "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
   "python": "3.15.2",
   "load_s": {
-    "N.csv.gz": 0.10252595899510197,
-    "NE.csv.gz": 0.12277054201695137
+    "N.csv.gz": 0.09897529194131494,
+    "NE.csv.gz": 0.1223022909834981
   },
   "direct_query": {
     "calls_per_batch": 10000,
     "valid_per_batch": 9679,
     "seed": 20261118,
     "batch_mean_us_per_call": [
-      0.16703340224921703,
-      0.15007079928182065,
-      0.1435958984075114,
-      0.14797500043641776,
-      0.14314169820863754
+      0.16407080693170428,
+      0.1474207965657115,
+      0.14287910889834166,
+      0.1431541983038187,
+      0.1418125000782311
     ],
-    "median_batch_mean_us_per_call": 0.14797500043641776,
+    "median_batch_mean_us_per_call": 0.1431541983038187,
     "scope": "Warm in-process single-position calls, including Python loop and valid check. One fixed inflow with heading weights prepared before the calls. Uniform fixed-grid requests with replacement, including mask hits. One warmup plus five batches."
   },
   "interpolated_query": {
@@ -24,13 +24,13 @@
     "valid_per_batch": 9665,
     "seed": 20261118,
     "batch_mean_us_per_call": [
-      0.7187709008576348,
-      0.7118125009583309,
-      0.7173541991505772,
-      0.715958297951147,
-      0.713550002546981
+      0.7174125057645142,
+      0.7171500008553267,
+      0.7084583048708737,
+      0.707341602537781,
+      0.7083249976858497
     ],
-    "median_batch_mean_us_per_call": 0.715958297951147,
+    "median_batch_mean_us_per_call": 0.7084583048708737,
     "scope": "Warm in-process single-position calls, including Python loop and valid check. One fixed inflow with heading weights prepared before the calls. Uniform fixed-grid requests with replacement, including mask hits. One warmup plus five batches."
   },
   "timed_estimate_wind_from_deg": 22.5

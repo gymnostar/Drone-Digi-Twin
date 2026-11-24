@@ -1,0 +1,130 @@
+{
+  "case": "table-NE-simplec",
+  "trial": "B1",
+  "campaign": "../../lookup/campaign.json#simplec_relaxation_trials",
+  "baseline": "table-NE-production",
+  "reference": "table-NE-oriented",
+  "direction": "NE",
+  "recipe": "production",
+  "change": {
+    "study_parameter": "simplec_conventional_relaxation",
+    "factor": 0.9,
+    "fvSolution_relaxation": "relaxationFactors {equations {U 0.9; \".*\" 0.9;}}",
+    "consistent": "yes",
+    "pressure_field_relaxation": "none",
+    "source": {
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "path": "/usr/lib/openfoam/openfoam2306/tutorials/incompressible/simpleFoam/pitzDaily/system/fvSolution",
+      "sha256": "c562b517547fd9445cb070fb1826f9eaffad42ec2f34694fc727bea99f6b7dd1",
+      "SIMPLE": "nNonOrthogonalCorrectors 0; consistent yes;",
+      "relaxationFactors": "equations { U 0.9; // 0.9 is more stable but 0.95 more convergent\n \".*\" 0.9; // 0.9 is more stable but 0.95 more convergent }",
+      "adopted": "Only consistent yes and the relaxationFactors block. The tutorial's solvers, tolerances, residualControl and nNonOrthogonalCorrectors were not adopted."
+    },
+    "baseline_relaxation": "relaxationFactors {fields {p 0.3;} equations {U 0.6; k 0.6; epsilon 0.6;}}",
+    "baseline_consistent": "no"
+  },
+  "fvSolution_sha256": {
+    "baseline": "127850409470a3c614ab2790bf3826937c4f4141f47cf1e70effd5170bb0aef5",
+    "trial": "ebc110f9856b4103c43ad3f39ddb068c6abbb4040a3c84946bf3ec539fe6401d"
+  },
+  "identical_input_sha256": {
+    "0/p": "e92066ad307ebebfb7821fb8d2895ea5c40c228844273ec2405ad81a25d4dfd9",
+    "0/U": "e715ad966672fccfb84040721f3dedb5b727574efdc474fdf7c23864ac72f9d2",
+    "system/controlDict": "f0b11bf4991a0c45a8c566b99717d45113719b8b95c3c616a0287f84807bcc88",
+    "system/fvSchemes": "ec3d9a209b9963ec6140f306580755add145825f3442848f181a05c974e88f4c",
+    "system/snappyHexMeshDict": "22bbdfa53e9b3e21af55444f3af1f6bcd9ebe8ee0e6ff85a1654f211cb423ed6",
+    "queries.json": "2b7d67155bf791fa5ad231d4abaf955d28249aca49e759099f7c0c18c6c61572",
+    "constant/fvOptions": "46faae3c6c76fc027e8182bf00c20d11764aef9969b908a514de8e8d7d5194b0"
+  },
+  "cold_start": true,
+  "cells": 228432,
+  "iterations": {
+    "trial": 136,
+    "baseline": 277
+  },
+  "final_initial_residuals": {
+    "Ux": 9.680006288e-05,
+    "Uy": 1.44375744e-06,
+    "Uz": 7.977661061e-05,
+    "p": 0.000102787035,
+    "epsilon": 4.245040027e-06,
+    "k": 1.415310681e-05
+  },
+  "residual_thresholds": {
+    "p": 0.001,
+    "U": 0.0001,
+    "k": 0.0001,
+    "epsilon": 0.0001
+  },
+  "stage_elapsed_s": {
+    "prepare": 1.1659871669253334,
+    "mesh": 121.89104029198643,
+    "solve": 60.00872883293778,
+    "sample": 7.623729249928147,
+    "host-mesh-audit": 2.564553666044958,
+    "host-solve-audit": 5.680220332928002
+  },
+  "baseline_stage_elapsed_s": {
+    "prepare": 1.2200336669920944,
+    "mesh": 122.16245195901138,
+    "solve": 98.34820554201724,
+    "sample": 7.667141500016442,
+    "host-mesh-audit": 2.509237916005077,
+    "host-solve-audit": 5.686486249993322
+  },
+  "complete_map_generation_elapsed_s": 198.93425954075065,
+  "reference_complete_map_generation_elapsed_s": 401.1406657920161,
+  "elapsed_ratio": 2.0164483820839543,
+  "win_elapsed_limit_s": 200.57,
+  "checks": {
+    "frozen_numerical_checks_pass": true,
+    "checked_coupled_result": true,
+    "reference_checked": true,
+    "support_exact_match": true,
+    "all_declared_ROI_targets_pass": true,
+    "generation_timing_complete": true,
+    "cost_environment_matches": false,
+    "metrics_speedup": null,
+    "metrics_overall_target_pass": false
+  },
+  "regions": {
+    "city": {
+      "vector_RMSE_over_Uref": 0.024567580285601708,
+      "P95_over_Uref": 0.050241525922466466,
+      "coverage": 1.0,
+      "targets_pass": true
+    },
+    "building_wake": {
+      "vector_RMSE_over_Uref": 0.04559090140157507,
+      "P95_over_Uref": 0.10141647396607185,
+      "coverage": 1.0,
+      "targets_pass": true
+    },
+    "rotor_wake": {
+      "vector_RMSE_over_Uref": 0.010907576564327288,
+      "P95_over_Uref": 0.025155287716652985,
+      "coverage": 1.0,
+      "targets_pass": true
+    },
+    "flight": {
+      "vector_RMSE_over_Uref": 0.008898939728113658,
+      "P95_over_Uref": 0.018318402144126455,
+      "coverage": 1.0,
+      "targets_pass": true
+    },
+    "domain": {
+      "vector_RMSE_over_Uref": 0.011309364160026642,
+      "P95_over_Uref": 0.021160178870397017,
+      "coverage": 1.0,
+      "targets_pass": true
+    }
+  },
+  "environment_note": "cost_environment_matches is false only because socket.gethostname() on Studio now returns 'studio'; the reference timing recorded 'Host-018.homenet.telecomitalia.it'. Image, host_platform, CPU and memory limits are identical in every stage. With equal host names the check passes, so metrics.json leaves speedup null and overall_target_pass false.",
+  "timing_note": "One cold measurement. The margin to the 200.57 s limit is 1.64 s, smaller than the variation seen in mesh-stage timings across earlier runs (121.9-123.0 s).",
+  "verdict": "Passes every frozen numerical, settling, force, support and regional gate. Complete map generation 198.93 s is within the pre-registered 200.57 s limit (ratio 2.016). The formal metrics speedup is null owing to the host-name record only. B2 not run because B1 was stable.",
+  "accepted": true,
+  "reproduction": [
+    "python3 scenes/joint/study.py build --case table-NE-simplec --direction NE --recipe production --simplec-relaxation 0.9",
+    "for stage in mesh solve sample evaluate; do python3 scenes/joint/study.py $stage --case table-NE-simplec --reference table-NE-oriented; done"
+  ]
+}

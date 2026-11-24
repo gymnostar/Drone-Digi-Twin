@@ -7,7 +7,7 @@ import unittest
 from types import SimpleNamespace
 
 from evaluate_lookup import score
-from lookup import ROOT, WindField, WindSector, read_json
+from lookup import ROOT, WindField, WindSector, enu_to_ned, read_json
 
 
 class LookupTest(unittest.TestCase):
@@ -35,7 +35,7 @@ class LookupTest(unittest.TestCase):
         waypoints = [(-195, 5, 5), (-195, 10, 5), (-195, 11, 5), (-195, 25, 5)]
         endpoint_velocities = {
             "N": [(-0.08491, -1.37402, -0.17237), (-1.02957, -3.67691, -0.29512)],
-            "NE": [(-0.39180, -0.12628, -0.10338), (-2.93303, -0.86956, -0.31573)],
+            "NE": [(-0.38890, -0.13720, -0.10408), (-3.01119, -0.85734, -0.28689)],
         }
         for label, (first, last) in endpoint_velocities.items():
             expected = [("valid_air", first), ("masked", None),
@@ -51,6 +51,53 @@ class LookupTest(unittest.TestCase):
                         self.assertIsNone(result["U_enu_m_s"])
                     else:
                         self.assertLess(math.dist(result["U_enu_m_s"], velocity), 1e-5)
+
+    def test_any_heading_uses_released_or_labelled_nearest_field(self):
+        cases = {0: ("N", "released"), 360: ("N", "released"), -1e-14: ("N", "released"), 45: ("NE", "released"),
+                 10: ("N", "nearest_released_unvalidated"), 22.5: ("N", "nearest_released_unvalidated"),
+                 30: ("NE", "nearest_released_unvalidated")}
+        for degrees, (label, basis) in cases.items():
+            with self.subTest(degrees=degrees):
+                field, actual = WindField.for_heading(degrees)
+                self.assertEqual((field.metadata["direction"], actual), (label, basis))
+        for degrees in (-10, 90, 180, 350, math.nan):
+            with self.subTest(degrees=degrees), self.assertRaises(ValueError):
+                WindField.for_heading(degrees)
+        command = [sys.executable, str(ROOT / "lookup.py"), "heading", "30", "0", "-350", "20"]
+        result = json.loads(subprocess.check_output(command))
+        self.assertEqual((result["field"], result["field_wind_from_deg"], result["heading_basis"]),
+                         ("NE", 45, "nearest_released_unvalidated"))
+        self.assertEqual(result["U_enu_m_s"], list(WindField.for_direction("NE").at(0, -350, 20)))
+        refused = subprocess.run([sys.executable, str(ROOT / "lookup.py"), "heading", "180", "0", "-350", "20"],
+                                 capture_output=True, text=True)
+        self.assertNotEqual(refused.returncode, 0)
+        self.assertIn("No released or fallback field", refused.stderr)
+
+    def test_interpolation_is_trilinear_and_masks_near_buildings(self):
+        field = WindField.__new__(WindField)
+        field.metadata = self.north.metadata
+        linear = lambda x, y, z: (1 + x, 2 * y - z, 0.5 * z)
+        field.points = {(x, y, z): linear(x, y, z) for x in (0, 5) for y in (0, 5) for z in (5, 10)}
+        self.assertLess(math.dist(field.interpolate(1.5, 4, 7.25), linear(1.5, 4, 7.25)), 1e-12)
+        self.assertEqual(field.interpolate(5, 0, 10), linear(5, 0, 10))
+        for outside in ((-0.1, 0, 5), (0, 5.1, 5), (0, 0, 4.9)):
+            with self.assertRaises(KeyError):
+                field.interpolate(*outside)
+        field.points[5, 5, 10] = None
+        self.assertIsNone(field.interpolate(4, 4, 9))
+        # A masked node only masks positions it contributes to.
+        self.assertEqual(field.interpolate(0, 2.5, 7.5), linear(0, 2.5, 7.5))
+        self.assertEqual(enu_to_ned((1., 2., 3.)), (2., 1., -3.))
+        self.assertIsNone(enu_to_ned(None))
+        # On the released grid, nodes are reproduced and a building mask spreads one cell.
+        self.assertEqual(self.north.interpolate(0, -350, 20), self.north.at(0, -350, 20))
+        mid = self.north.interpolate(0, -347.5, 20)
+        expected = [(a + b) / 2 for a, b in zip(self.north.at(0, -350, 20), self.north.at(0, -345, 20))]
+        self.assertLess(math.dist(mid, expected), 1e-12)
+        self.assertIsNone(self.north.interpolate(-195, 7, 5))
+        # A computed height a rounding error away from a node is treated as on it.
+        field.points[5, 5, 5] = None
+        self.assertEqual(field.interpolate(5, 5, 10 - 1e-12), field.interpolate(5, 5, 10))
 
     def test_sector_reproduces_endpoint_and_requires_both_masks_inside(self):
         points = {(0, 0, 5): (4., -4., 0.), (5, 0, 5): (1., 0., 0.)}

@@ -1,0 +1,353 @@
+{
+  "case": "table-NE-simplec",
+  "scenario": "numerical-abl",
+  "scope": "Coupled full Niigata geometry and hypothetical full-size SWiFT rotor placement; numerical transfer only, no interaction observations.",
+  "closure": "realizableKE",
+  "resolution": "reference",
+  "host": "studio",
+  "cells": 228432,
+  "mesh_checks": {
+    "standard": true,
+    "quality": true,
+    "cell_cap": true,
+    "allGeometry_or_concavity_only": true
+  },
+  "preparation_cost_included": true,
+  "stage_checks": {
+    "prepare": true,
+    "mesh": true,
+    "solve": true,
+    "sample": true
+  },
+  "solver_final_iteration": "136",
+  "last_initial_residuals": {
+    "Ux": 9.680006288e-05,
+    "Uy": 1.44375744e-06,
+    "Uz": 7.977661061e-05,
+    "p": 0.000102787035,
+    "epsilon": 4.245040027e-06,
+    "k": 1.415310681e-05
+  },
+  "frozen_residual_checks": {
+    "p": true,
+    "U": true,
+    "k": true,
+    "epsilon": true
+  },
+  "solver_reported_convergence": true,
+  "boundary_flux_m3_s": {
+    "flux": -4438627.2611,
+    "outflux": 4438627.6455
+  },
+  "normalized_flux_imbalance": 8.660335217450446e-08,
+  "probe_settling": [
+    {
+      "iterations": [
+        "100",
+        "125"
+      ],
+      "samples": 14,
+      "vector_change_RMSE_over_Uref": 0.000471526270503954
+    }
+  ],
+  "frozen_numerical_checks_pass": true,
+  "status": "checked numerical result",
+  "cost": {
+    "prepare": {
+      "stage": "prepare",
+      "elapsed_s": 1.1659871669253334,
+      "cpu_s": 1.159181,
+      "peak_cgroup_memory_bytes_including_cache": null,
+      "scope": "Full source hash checks, case dictionaries, geometry transform and frozen query preparation; acquisition excluded"
+    },
+    "mesh": {
+      "stage": "mesh",
+      "elapsed_s": 121.89104029198643,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 121.566618,
+      "peak_cgroup_memory_bytes_including_cache": 723836928,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "studio",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "solve": {
+      "stage": "solve",
+      "elapsed_s": 60.00872883293778,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 164.948728,
+      "peak_cgroup_memory_bytes_including_cache": 675655680,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "studio",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    },
+    "sample": {
+      "stage": "sample",
+      "elapsed_s": 7.623729249928147,
+      "exit_code": 0,
+      "timed_out": false,
+      "cpu_s": 7.418595,
+      "peak_cgroup_memory_bytes_including_cache": 409403392,
+      "cpu_limit": 3,
+      "memory_limit_bytes": 5368709120,
+      "image": "sha256:7df8c49ff2f966deb0d8afba54a5deb19befc93ea4346e974f0f13869572c289",
+      "host": "studio",
+      "host_platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O"
+    }
+  },
+  "complete_map_generation_elapsed_s": 198.93425954075065,
+  "complete_map_generation_cpu_s": 295.093122,
+  "accounted_cpu_s_partial": 295.093122,
+  "peak_memory_accounting_complete": true,
+  "peak_cgroup_memory_bytes_including_cache": 723836928,
+  "physical_validation": "not performed: numerical-only ABL toy; experimental conditions intentionally differ",
+  "recorded_pipeline_elapsed_s": 190.68948554177769,
+  "supplemental_host_verification_cost": {
+    "host-mesh-audit": {
+      "elapsed_s": 2.564553666044958,
+      "cpu_s": 2.555421,
+      "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+    },
+    "host-solve-audit": {
+      "elapsed_s": 5.680220332928002,
+      "cpu_s": 5.675731,
+      "scope": "Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate"
+    }
+  },
+  "generation_timing_complete": true,
+  "generation_timing_note": "Recorded stage wall time plus measured automated host verification. Incomplete totals omit unrecorded intervals. The CPU totals cover the four runner stages; host audit CPU is reported separately. Comparative scientific evaluation and manual implementation work excluded.",
+  "joint": true,
+  "role": "baseline",
+  "direction": "NE",
+  "wind_from_deg": 45.0,
+  "sample_iteration": "136",
+  "force_support": {
+    "configuration_sha256": "ceca0d06aff630e0a60e3b47b569f4cce6cc6bdb9e5152549839db91b30f73ef",
+    "selected_cells": 1810,
+    "spatial_cell_vertices_sha256": "963a7e7a5158b8aa0efe6f2cdeeae14684ed30642cacfdaeb64bfb65f5398a5f",
+    "selected_refinement_levels": [
+      4
+    ],
+    "all_selected_cells_at_fixed_level": true,
+    "interpretation": "Same axis-aligned base lattice/refinement box and uniform selected level establish the intended common support; compare selected counts as well as total force.",
+    "nominal_selected_volume_m3": 3535.15625,
+    "nominal_volume_over_geometric_cylinder": 0.9147184340431165,
+    "volume_note": "Count times nominal1.25m cubed; snapped cells have small deformations. Exact selected-cell spatial geometry hash, not nominal volume, proves equal support across recipes. Cylinder center selection remains a finite support discretization."
+  },
+  "force_audit": {
+    "passed": true,
+    "force_iteration": 136.0,
+    "sample_iteration": 136.0,
+    "monitor_is_valid_fluid_sample": true,
+    "monitor_vector_m_s": [
+      -6.282792929146665,
+      -6.2576529185372785,
+      -0.055999990641
+    ],
+    "disk_mean_vector_m_s": [
+      -4.663976354948782,
+      -4.567095487053489,
+      -0.1177286687
+    ],
+    "vector_frame": "world east/north/up",
+    "kinematic_thrust": 17309.804442,
+    "physical_thrust_N": 17656.00053084,
+    "formula_relative_error": 2.2010966198476558e-11,
+    "sink_convention": "Native sink opposes flow along the yawed disk normal. The thrust audit uses velocity projected onto that normal in solver coordinates."
+  },
+  "cheap150k_target_met": false,
+  "cell_limit_adjustment": {
+    "original_cheap_target": 150000,
+    "joint_cap": 500000,
+    "reason": "One allowed adjustment: full city geometry accepted20m background plus common1.25m force support. Cheap150k target remains reported unmet if exceeded."
+  },
+  "transfer_limitation": "Separate30m cheap recipe cannot share the20m source lattice. This adapted20m candidate is not an exact replay or established optimized method.",
+  "sample_matches_final_iteration": true,
+  "rotor_wake_settling": {
+    "iterations": [
+      "100",
+      "125"
+    ],
+    "valid_wake_probes": 4,
+    "vector_change_RMSE_over_Uref": 9.729784934520986e-05,
+    "passed": true
+  },
+  "checked_coupled_result": true,
+  "sampling_counts": {
+    "city": {
+      "requested": 32805,
+      "valid": 30477
+    },
+    "domain": {
+      "requested": 4940,
+      "valid": 4040
+    },
+    "inflow": {
+      "requested": 7,
+      "valid": 7
+    },
+    "rotor_wake": {
+      "requested": 24200,
+      "valid": 24200
+    },
+    "flight": {
+      "requested": 2961,
+      "valid": 2961
+    },
+    "rotor_monitor": {
+      "requested": 1,
+      "valid": 1
+    }
+  },
+  "comparison": {
+    "reference": "table-NE-oriented",
+    "reference_checked": true,
+    "reference_strict_configuration": true,
+    "reference_sample_iteration": "426",
+    "reference_solver_final_iteration": "426",
+    "reference_sample_matches_final_iteration": true,
+    "reference_complete_map_generation_elapsed_s": 401.1406657920161,
+    "reference_generation_timing_complete": true,
+    "reference_supplemental_host_verification_cost": {
+      "host-mesh-audit": {
+        "elapsed_s": 3.233756625006208,
+        "cpu_s": 3.231184,
+        "scope": "Host dictionary/mesh acceptance and exact support hash; excludes Docker stage already accounted"
+      },
+      "host-solve-audit": {
+        "elapsed_s": 6.887500057928264e-05,
+        "cpu_s": 6.600000000000356e-05,
+        "scope": "Mandatory exact support comparison to reference before solve; original reference requires no cross-recipe gate"
+      }
+    },
+    "both_generation_timings_complete": true,
+    "cost_environment_matches": false,
+    "support_exact_match": true,
+    "regions": {
+      "city": {
+        "reference_valid": 30477,
+        "common_valid": 30477,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.21373794848473485,
+        "P95_m_s": 0.43710127552545824,
+        "vector_RMSE_over_Uref": 0.024567580285601708,
+        "P95_over_Uref": 0.050241525922466466,
+        "targets_pass": true
+      },
+      "building_wake": {
+        "reference_valid": 5069,
+        "common_valid": 5069,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.39664084219370305,
+        "P95_m_s": 0.8823233235048251,
+        "vector_RMSE_over_Uref": 0.04559090140157507,
+        "P95_over_Uref": 0.10141647396607185,
+        "targets_pass": true
+      },
+      "rotor_wake": {
+        "reference_valid": 24200,
+        "common_valid": 24200,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.0948959161096474,
+        "P95_m_s": 0.21885100313488096,
+        "vector_RMSE_over_Uref": 0.010907576564327288,
+        "P95_over_Uref": 0.025155287716652985,
+        "targets_pass": true
+      },
+      "flight": {
+        "reference_valid": 2961,
+        "common_valid": 2961,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.07742077563458881,
+        "P95_m_s": 0.15937009865390014,
+        "vector_RMSE_over_Uref": 0.008898939728113658,
+        "P95_over_Uref": 0.018318402144126455,
+        "targets_pass": true
+      },
+      "domain": {
+        "reference_valid": 4040,
+        "common_valid": 4040,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.09839146819223178,
+        "P95_m_s": 0.18409355617245401,
+        "vector_RMSE_over_Uref": 0.011309364160026642,
+        "P95_over_Uref": 0.021160178870397017,
+        "targets_pass": true
+      }
+    },
+    "elapsed_ratio_descriptive": 2.0164483820839543,
+    "speedup": null,
+    "descriptive_diagnostics": {
+      "scope": "Descriptive diagnostics outside the four selection gates.",
+      "city_by_height_agl_m": {
+        "5": {
+          "requested": 6561,
+          "reference_valid": 4443,
+          "common_valid": 4443,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.17483973504642697,
+          "P95_m_s": 0.33899169335592716,
+          "vector_RMSE_over_Uref": 0.02009652126970425,
+          "P95_over_Uref": 0.038964562454704275
+        },
+        "10": {
+          "requested": 6561,
+          "reference_valid": 6421,
+          "common_valid": 6421,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.24983360429729368,
+          "P95_m_s": 0.5236225513202493,
+          "vector_RMSE_over_Uref": 0.02871650624106824,
+          "P95_over_Uref": 0.060186500151752795
+        },
+        "20": {
+          "requested": 6561,
+          "reference_valid": 6515,
+          "common_valid": 6515,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.25928763425832546,
+          "P95_m_s": 0.5741209487026654,
+          "vector_RMSE_over_Uref": 0.029803176351531666,
+          "P95_over_Uref": 0.06599091364398453
+        },
+        "40": {
+          "requested": 6561,
+          "reference_valid": 6537,
+          "common_valid": 6537,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.2398291092249896,
+          "P95_m_s": 0.529449337672399,
+          "vector_RMSE_over_Uref": 0.02756656427873444,
+          "P95_over_Uref": 0.06085624570947115
+        },
+        "80": {
+          "requested": 6561,
+          "reference_valid": 6561,
+          "common_valid": 6561,
+          "coverage": 1.0,
+          "vector_RMSE_m_s": 0.07973548368629527,
+          "P95_m_s": 0.15522930919052633,
+          "vector_RMSE_over_Uref": 0.009164998124861526,
+          "P95_over_Uref": 0.017842449332244405
+        }
+      },
+      "narrow_gap_proxy_definition": "Reference-valid city points bracketed along x or y at the same requested height by reference-invalid requested city points within 10 m on each side. Reference sampling validity is a geometric proxy.",
+      "narrow_gap_proxy": {
+        "reference_valid": 650,
+        "common_valid": 650,
+        "coverage": 1.0,
+        "vector_RMSE_m_s": 0.16034318462736052,
+        "P95_m_s": 0.2772768809721425,
+        "vector_RMSE_over_Uref": 0.018430251106593167,
+        "P95_over_Uref": 0.031870905858866955
+      }
+    },
+    "all_declared_ROI_targets_pass": true,
+    "overall_target_pass": false
+  }
+}
