@@ -77,5 +77,27 @@
     "counts_against": "Runs 3 and 4 of the four allowed in simplec_relaxation_trials; no further runs in this round.",
     "decision": "Report B1, R1 and R2 timings together. The NE twofold target is met only if the evaluator computes R1/R2 >= 2.0 with all frozen numerical checks, all four regional gates and exact support. Otherwise record the NE cost target as missed. The released NE field stays the B1 field if its accuracy gates pass, irrespective of the timing outcome.",
     "registered_before_runs": true
+  },
+  "nw_direction": {
+    "wind_from_deg": 315,
+    "direction": "NW",
+    "split": "development",
+    "baseline_revision": "23df745",
+    "authorisation": "Separately authorised round to add a third released heading. NW is a development direction in ../../poc-protocol.json; the E, S and W final holdouts are not run. Registered before any NW run.",
+    "runs": {
+      "W1": "Fresh cold strict NW reference (README Directional simulation settings, --direction NW --recipe strict, as table-NE-oriented was built for NE), full pipeline: build, mesh, solve, sample, evaluate.",
+      "W2": "Only if W1 qualifies, immediately after it in the same driver: a fresh cold NW production case with --simplec-relaxation 0.9, full pipeline, mesh and evaluate against W1.",
+      "repair": "Only if the W1 mesh fails the existing mesh gates: ONE local corner refinement, a repairs_by_direction['NW'] entry built from the failing locations reported by the extended mesh checks (as for NNE and NbE), then a fresh strict NW build. It replaces W1 as the reference and counts as a run."
+    },
+    "max_solver_or_mesh_runs": 3,
+    "max_docker_sampling_or_export_jobs": 4,
+    "acceptance": {
+      "strict_reference": "Existing frozen gates: reference residual controls, flux, terminal settling and force checks, within the 600 s solve cap, 600 s meshing, 3 CPUs and 5 GiB.",
+      "production": "All frozen numerical checks, all four regional gates against the strict NW reference, and an exact force-support match.",
+      "release": "Export the production grid to lookup/NW.csv.gz and the strict grid to a scratch path; run evaluate_lookup.py lookup/NW.csv.gz --compare-reference <strict grid>. Add NW to lookup/index.json (split development) only if all four regions pass.",
+      "speed": "Reported from the same-session W1/W2 timings, not gated for release."
+    },
+    "stop": "No tuning loop and no other settings. Stop without any further NW run if W1 (or its single repair) does not converge or qualify. Stop at the run budget or at 09:15 CET on 2026-11-24, whichever comes first. Report every run, including failures.",
+    "registered_before_runs": true
   }
 }
