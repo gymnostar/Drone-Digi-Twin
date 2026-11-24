@@ -200,6 +200,31 @@ class WindField:
             raise ValueError("Lookup index and field direction disagree")
         return field
 
+    @classmethod
+    def for_heading(cls, wind_from_deg):
+        """Load the field for any wind-from heading and say how far it is validated.
+
+        Returns (field, basis). A released heading gives basis "released". A heading
+        strictly between the lowest and highest released headings falls back to the
+        nearest released field (ties go to the lower heading) with basis
+        "nearest_released_unvalidated": that field was solved for another inflow
+        and no between-heading accuracy has been established. Other headings raise
+        ValueError instead of reusing a field solved for a distant inflow.
+        """
+        if not math.isfinite(wind_from_deg):
+            raise ValueError("Wind heading must be finite")
+        heading = wind_from_deg % 360
+        released = sorted((record["wind_from_deg"], label) for label, record in
+                          read_json(ROOT / "lookup" / "index.json")["fields"].items())
+        low, high = released[0][0], released[-1][0]
+        if not low <= heading <= high:
+            names = ", ".join(f"{label} ({degrees:g}°)" for degrees, label in released)
+            raise ValueError(f"No released or fallback field for {heading:g}°. "
+                             f"Released CFD headings: {names}")
+        degrees, label = min(released, key=lambda item: (abs(item[0] - heading), item[0]))
+        basis = "released" if degrees == heading else "nearest_released_unvalidated"
+        return cls.for_direction(label), basis
+
     def check_grid_and_physics(self, other):
         for key in ("Uref_m_s", "Uref_height_m", "z0_m", "closure", "rotor_center_world_m",
                     "protocol_sha256", "source_hashes", "coordinate_frame", "rotor_D_m", "Cp", "Ct"):
@@ -263,7 +288,11 @@ def main():
     query = commands.add_parser("query")
     query.add_argument("field", help="Released compass label or a compressed CSV path")
     query.add_argument("xyz", type=float, nargs=3, metavar="METRES")
-    estimate = commands.add_parser("estimate", help="Experimental linear directional estimate")
+    heading = commands.add_parser(
+        "heading", help="Any wind-from heading: released field, or nearest released field labelled unvalidated")
+    heading.add_argument("degrees", type=float)
+    heading.add_argument("xyz", type=float, nargs=3, metavar="METRES")
+    estimate =commands.add_parser("estimate", help="Experimental linear directional estimate")
     estimate.add_argument("lower", type=Path)
     estimate.add_argument("upper", type=Path)
     estimate.add_argument("degrees", type=float)
@@ -277,8 +306,15 @@ def main():
         if not all(map(math.isfinite, args.xyz)):
             parser.error("Coordinates must be finite")
         interpolated = False
+        extra = {}
         try:
-            if args.command == "estimate":
+            if args.command == "heading":
+                field, basis = WindField.for_heading(args.degrees)
+                degrees = args.degrees % 360
+                extra = {"field": field.metadata["direction"],
+                         "field_wind_from_deg": field.metadata["wind_from_deg"], "heading_basis": basis}
+                query_at = field.at
+            elif args.command == "estimate":
                 field = WindSector(WindField(args.lower), WindField(args.upper))
                 degrees = args.degrees
                 query_at = field.at_angle(degrees)
@@ -299,7 +335,7 @@ def main():
                 status = "estimated" if velocity is not None else "masked_endpoint"
             else:
                 status = "valid_air" if velocity is not None else "masked"
-        print(json.dumps({"wind_from_deg": degrees, "xyz_m": args.xyz,
+        print(json.dumps({"wind_from_deg": degrees, "xyz_m": args.xyz, **extra,
                           "status": status, "U_enu_m_s": velocity}))
 
 

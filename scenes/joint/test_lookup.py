@@ -52,6 +52,27 @@ class LookupTest(unittest.TestCase):
                     else:
                         self.assertLess(math.dist(result["U_enu_m_s"], velocity), 1e-5)
 
+    def test_any_heading_uses_released_or_labelled_nearest_field(self):
+        cases = {0: ("N", "released"), 360: ("N", "released"), 45: ("NE", "released"),
+                 10: ("N", "nearest_released_unvalidated"), 22.5: ("N", "nearest_released_unvalidated"),
+                 30: ("NE", "nearest_released_unvalidated")}
+        for degrees, (label, basis) in cases.items():
+            with self.subTest(degrees=degrees):
+                field, actual = WindField.for_heading(degrees)
+                self.assertEqual((field.metadata["direction"], actual), (label, basis))
+        for degrees in (-10, 90, 180, 350, math.nan):
+            with self.subTest(degrees=degrees), self.assertRaises(ValueError):
+                WindField.for_heading(degrees)
+        command = [sys.executable, str(ROOT / "lookup.py"), "heading", "30", "0", "-350", "20"]
+        result = json.loads(subprocess.check_output(command))
+        self.assertEqual((result["field"], result["field_wind_from_deg"], result["heading_basis"]),
+                         ("NE", 45, "nearest_released_unvalidated"))
+        self.assertEqual(result["U_enu_m_s"], list(WindField.for_direction("NE").at(0, -350, 20)))
+        refused = subprocess.run([sys.executable, str(ROOT / "lookup.py"), "heading", "180", "0", "-350", "20"],
+                                 capture_output=True, text=True)
+        self.assertNotEqual(refused.returncode, 0)
+        self.assertIn("No released or fallback field", refused.stderr)
+
     def test_sector_reproduces_endpoint_and_requires_both_masks_inside(self):
         points = {(0, 0, 5): (4., -4., 0.), (5, 0, 5): (1., 0., 0.)}
         def field(angle, values):
