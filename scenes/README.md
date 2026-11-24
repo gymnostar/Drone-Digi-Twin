@@ -336,6 +336,8 @@ The exporter samples the final reconstructed field on the common grid. It requir
 
 Double-click `review-export/Open3D.command` for the coupled baseline. To select another scene, run that launcher with `turbine-cheap` or `turbine-reference`. No simulation is started by opening these files.
 
+Presentation figures, with what each one shows and its limits, are in [figures/](figures/README.md). They are rebuilt from the files in this folder without running any solver.
+
 ### Are these different files or different views?
 
 There are **three separate saved simulation scenes**, not one run with three alternatives overlaid:
