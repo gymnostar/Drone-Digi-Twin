@@ -67,5 +67,15 @@
       "NNE": "midpoint_recovery acceptance unchanged: a checked strict terminal reference within the 600 s solve cap. NNE is not added to the released index in this round."
     },
     "stop": "No tuning loop and no other settings. Stop after C1, at the run budget, or at 08:30 CET on 2026-11-24, whichever comes first. Report every run, including failures."
+  },
+  "simplec_same_session_retime": {
+    "reason": "B1 measured 198.93 s against the 401.14 s NE reference recorded in an earlier session. The evaluator withheld the speedup because the recorded host names differ (Studio now reports 'studio'), and the 1.64 s margin is within plausible run-to-run variation.",
+    "runs": {
+      "R1": "Fresh cold strict NE reference (README Directional simulation settings, --recipe strict), full pipeline: build, mesh, solve, sample, evaluate.",
+      "R2": "Immediately after R1, a fresh cold NE production case with --simplec-relaxation 0.9, full pipeline, evaluated against R1."
+    },
+    "counts_against": "Runs 3 and 4 of the four allowed in simplec_relaxation_trials; no further runs in this round.",
+    "decision": "Report B1, R1 and R2 timings together. The NE twofold target is met only if the evaluator computes R1/R2 >= 2.0 with all frozen numerical checks, all four regional gates and exact support. Otherwise record the NE cost target as missed. The released NE field stays the B1 field if its accuracy gates pass, irrespective of the timing outcome.",
+    "registered_before_runs": true
   }
 }
