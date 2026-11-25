@@ -52,3 +52,4 @@ __pycache__/
 /DLR/atlas/grid.noindex/
 /DLR/atlas/run_atlas.out
 .pytest_cache/
+/DLR/planner/results/cache/
