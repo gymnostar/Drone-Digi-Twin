@@ -30,9 +30,12 @@ PY
         || { echo "!!! extend $run FAILED (see $W/log.*)"; continue; }
     cp DLR/atlas/grid.noindex/$run.npz DLR/atlas/grid.noindex/prev_$run.npz        # keep the shorter run's field
     "$PV" DLR/atlas/sample_grid.py "$W" "$PWD/DLR/atlas/grid.noindex/$run.npz" > "$W/log.sample" 2>&1 || echo "!!! sampling $run failed"
-    $PY DLR/atlas/extend_runs.py --compare "$run"
+    $PY DLR/atlas/extend_runs.py --compare "$run" > "$W/log.compare" 2>&1
+    rm -rf "$W"                                        # free ~300 MB; the sampled grid is what we keep
     echo "== extend $run end $(date '+%H:%M')"
 done
+# the auto-rebuild loop (docs/overnight-2026-11-25/autorebuild.sh) may be rebuilding at the same time
+while pgrep -f "autorebuild.sh" > /dev/null; do sleep 20; done
 $PY DLR/atlas/validate_atlas.py > /dev/null && $PY DLR/atlas/make_figures.py > /dev/null
 $PY DLR/planner/run_experiments.py > DLR/atlas/extend_planner.log 2>&1
 sh DLR/slides/2026-11-26/build.sh; $PY docs/overnight-2026-11-25/build_report.py
