@@ -17,7 +17,7 @@
   \fbox{\parbox[c][2cm][c]{\dimexpr#1-2\fboxsep-2\fboxrule}{\centering\scriptsize\texttt{\detokenize{#2}}\\not generated yet}}}}}}
 \input{numbers.tex}
 
-\title{DLR campus: a wind atlas for any direction,\\and a first wind-aware path planner}
+\title{DLR campus: a wind atlas from \NDirs{} directions,\\and a first wind-aware path planner}
 \author{Henry Delacroix}
 \institute{Politecnico di Milano, Multidisciplinary Project SWARM-LINK (wind track)}
 \date{26 November 2026}
@@ -64,8 +64,8 @@
 \begin{column}{0.42\textwidth}\small
 Last week: 3 meshes (4 / 2 / 1\,m cells around the weather station), west wind.
 \begin{itemize}\setlength{\itemsep}{2pt}
-  \item At drone heights ($\geq 20$\,m above ground) the base mesh is within 1--2\,\% of the 1\,m mesh at most probes (worst: 10\,\% in a street canyon).
-  \item Near the ground in building wakes: up to 13\,\%.
+  \item Coarse vs.\ fine (1\,m) mesh at 20--40\,m above ground: $\leq$\,2\,\% at most probes, 9\,\% in a street canyon (not mesh-converged there: GCI 15\,\%).
+  \item Near the ground (5\,m) in a building wake: up to 15\,\%.
 \end{itemize}
 \textbf{Decision:} build the atlas on the base mesh (1.19\,M cells, $\sim$30\,min per direction on a laptop), and quote this error band.
 \end{column}
@@ -82,9 +82,9 @@ Last week: 3 meshes (4 / 2 / 1\,m cells around the weather station), west wind.
 \begin{enumerate}\setlength{\itemsep}{3pt}
   \item \textbf{One mesh.} The domain is a cylinder: a new direction only needs a new inlet/outlet split. No remeshing.
   \item \textbf{One speed per direction (5\,m/s).} Reynolds independence: around sharp-edged buildings with rough ground the flow \emph{pattern} does not depend on speed, so $U\propto U_\mathrm{ref}$, $k\propto U_\mathrm{ref}^2$.
-  \item \textbf{30\,$^\circ$ steps}, solved in order of the EDMO 2020--2025 wind climate (SW: 23\,\% of hours, 58\,\% of the wind energy).
+  \item \textbf{30\,$^\circ$ steps}, solved in order of the EDMO 2020--2025 wind climate (240\,$^\circ$, WSW: 23\,\% of directional reports, 58\,\% of the wind energy).
   \item \textbf{Resampled once} onto $5\times5\times2.5$\,m (169$\times$161$\times$49): every consumer (planner, RF, AirSim) gets an $O(1)$ lookup in the same frame.
-  \item \textbf{Any direction}: linear blend of the two nearest solved directions.
+  \item \textbf{Any direction}: rotate the two nearest solved fields to it, then blend (gaps $\leq 60^\circ$).
 \end{enumerate}
 \end{column}
 \begin{column}{0.43\textwidth}\small
@@ -101,7 +101,7 @@ Query 1000 points & \QueryThousandMs\,ms \\
 \end{tabular}
 
 \medskip
-\footnotesize Convergence: every run's probes drift $<$\,\MaxDriftPct\,\% of $U_\mathrm{ref}$ over its last 50 iterations at drone heights.
+\footnotesize Convergence: probe drift $<$\,\MaxDriftPct\,\% of $U_\mathrm{ref}$ over the last 50 iterations at drone heights (probes near the station, set out for west wind). \OscSentence
 \end{column}
 \end{columns}
 \end{frame}
@@ -142,7 +142,7 @@ RMS vector error over the campus (air within 60\,m of a building), as a fraction
 
 \medskip
 \raggedright\footnotesize
-The empty-field log-law is what a planner would assume without any CFD. All errors are against our own RANS model (a model reference, not measured wind).
+The empty-field log-law is what a planner would assume without any CFD. All errors are against our own RANS model (a model reference, not measured wind), so the ``full CFD'' row is zero by definition. 60$^\circ$ rows: \NLoo{} hidden direction(s); 30$^\circ$ row: 1.
 \end{frame}
 
 % ---------------------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ Into a headwind the drone should fly \emph{faster through the air} (20.8\,m/s ai
 Equivalent-circuit LiPo pack (6S, 5\,Ah, $R_\mathrm{int}$, OCV curve): $I^2R$ losses grow with power.
 \begin{itemize}\setlength{\itemsep}{2pt}
   \item Warm pack: losses $\approx$\,2\,\% of the energy; the optimal speed moves by only 0.2\,m/s.
-  \item Cold or aged pack at 20\,\% charge: losses up to 8\,\% at cruise, 19\,\% with aggressive power pulses.
+  \item Cold or aged pack at 20\,\% charge: losses up to 8\,\% at cruise, and aggressive power pulses cost 16--19\,\% more cell energy.
 \end{itemize}
 \textbf{So:} minimising propulsion energy is enough for planning; the battery matters for low-charge, cold or aggressive flight.
 \end{column}
@@ -208,7 +208,7 @@ Equivalent-circuit LiPo pack (6S, 5\,Ah, $R_\mathrm{int}$, OCV curve): $I^2R$ lo
 \textbf{Graph:} the atlas grid coarsened to 10\,m $\times$ 10\,m $\times$ 5\,m, \PlanNodes{} free nodes from 10 to 100\,m above ground, obstacles inflated by 5\,m, 26 neighbours per node.
 
 \medskip
-\textbf{Directed edges:} flying $i\to j$ into the wind costs more than $j\to i$.
+\textbf{Directed edges:} $c_{ij}\neq c_{ji}$: the same segment costs more upwind than downwind at efficient airspeeds.
 \[
 c_{ij}=\frac{P\big(|v_g\hat{\mathbf d}_{ij}-\mathbf w_{ij}|\big)}{v_g}\,\ell_{ij}\quad\text{[J]}
 \]
@@ -254,7 +254,7 @@ EDMO 2020--2025 reports per sector. Typical wind: the sector's mean speed.
 \textbf{Next}
 \begin{itemize}\setlength{\itemsep}{1pt}
   \item Add turbulence ($\sqrt{k}$) as a risk term; add the RF term.
-  \item Wrap the cost as an RL reward (Gym-style environment) with Dijkstra as the optimal reference.
+  \item RL: prototype environment done (reward $=-$energy, exact Dijkstra oracle; a tabular agent reaches the optimum). Next: PPO over the whole wind climate.
   \item Run the same pipeline on the RF group's scenarios.
 \end{itemize}
 \end{column}

@@ -55,7 +55,13 @@ def convergence(case: Path):
             r = re.findall(rf"Solving for {fld}, Initial residual = ([0-9.eE+-]+)", txt)
             if r:
                 res[fld] = float(r[-1])
+    k = it >= it[-1] - 150                       # oscillation: range over the last 150 iterations
+    rng = (m[k].max(0) - m[k].min(0)) / uref
+    dsign = (np.sign(np.diff(m[k], axis=0)[1:]) != np.sign(np.diff(m[k], axis=0)[:-1])).sum(0)
     return {"iterations": int(it[-1]),
+            "range_last150_over_Uref_ge10m": float(rng[PROBE_AGL >= 10].max()),
+            # limit cycle = a visible range AND many turning points (ignore round-off wiggles)
+            "oscillating": bool(rng[PROBE_AGL >= 10].max() > 0.003 and np.median(dsign[PROBE_AGL >= 10]) >= 10),
             "drift_last50_over_Uref_all_probes": float(d.max()),
             "drift_last50_over_Uref_probes_ge10m": float(d[PROBE_AGL >= 10].max()),
             "final_initial_residuals": res}

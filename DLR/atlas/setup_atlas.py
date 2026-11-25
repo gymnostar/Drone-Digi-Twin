@@ -25,7 +25,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 SRC = HERE.parent / "meshStudy" / "coarse"        # the base mesh, already meshed and checked
 CASES = HERE / "cases.noindex"
-NITER = 450      # mesh study: every probe within 0.5 % of its final value by iteration ~360 (coarse); drift is re-checked per run
+NITER = 450      # validation runs and the first directions; later directions were cut to 350 at 01:40 (drift at 240 deg: 0.09 % of Uref per 50 it at drone heights)
 NPROC = 8
 
 # Priority order = EDMO 2020-2025 wind climate (share of hours / share of wind energy sum U^3):

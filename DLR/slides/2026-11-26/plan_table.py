@@ -39,7 +39,7 @@ def build(plan):
                 ("wind-adaptive speed: best per segment vs.\\ 18.3\\,m/s", "effect_wind_speed_adaptation_pct", 1),
                 ("wind-aware route, both at best speed", "effect_route_given_best_speed_pct", 1),
                 ("wind-aware route, fixed 10\\,m/s", "effect_route_only_pct", 1),
-                ("direction of travel: A$\\to$B vs.\\ B$\\to$A, same path", "effect_direction_asym_best_pct", 0)]
+                ("(not a saving: zero on a round trip) energy gap A$\\to$B vs.\\ B$\\to$A", "effect_direction_asym_best_pct", 0)]
         for n, k, nd in rows:
             lv.append(f"{n} & {ew[k]:.{nd}f} & {es[k]:.{nd}f} \\\\")
     lv += ["\\bottomrule", "\\end{tabular}"]

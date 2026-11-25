@@ -46,9 +46,12 @@ def rotate_horizontal(U, deg):
 
 
 class WindAtlas:
-    def __init__(self, grid_dir=GRID_DIR, uref=5.0, exclude=()):
+    def __init__(self, grid_dir=GRID_DIR, uref=5.0, exclude=(), max_gap=60.0):
         """Load every <grid_dir>/dTTT_uSS.npz with reference speed `uref` (other speeds are kept
-        in self.extra for validation). `exclude` = directions to leave out (leave-one-out tests)."""
+        in self.extra for validation). `exclude` = directions to leave out (leave-one-out tests).
+        `max_gap` = largest angular gap (deg) allowed between the two solved directions a request
+        is blended from; a larger gap raises instead of silently blending across half the compass."""
+        self.max_gap = max_gap
         self.runs, self.extra = {}, {}
         for f in sorted(Path(grid_dir).glob("d*_u*.npz")):
             z = np.load(f)
@@ -79,6 +82,9 @@ class WindAtlas:
         if a == b:
             return [(a, 1.0)]
         span = (b - a) % 360
+        if span > self.max_gap + 1e-6:
+            raise ValueError(f"direction {theta:g} lies in a {span:g} deg gap between solved directions "
+                             f"{a:g} and {b:g} (max_gap = {self.max_gap:g}); solve more directions")
         wb = ((theta - a) % 360) / span
         return [(a, 1 - wb), (b, wb)]
 
