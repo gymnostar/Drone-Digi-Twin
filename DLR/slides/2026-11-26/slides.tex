@@ -1,0 +1,264 @@
+% Thursday 26 Nov 2026 update: DLR wind atlas, drone energy model, first wind-aware planner.
+% Build: sh DLR/slides/2026-11-26/build.sh  (numbers.tex is generated from the JSON results)
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{default}
+\usecolortheme{dove}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\graphicspath{{../../atlas/results/}{../../planner/fig/}{../../meshStudy/report/fig/}}
+\newcommand{\pic}[2]{\IfFileExists{../../atlas/results/#2}{\includegraphics[width=#1]{#2}}{%
+  \IfFileExists{../../planner/fig/#2}{\includegraphics[width=#1]{#2}}{%
+  \IfFileExists{../../meshStudy/report/fig/#2}{\includegraphics[width=#1]{#2}}{%
+  \fbox{\parbox[c][2cm][c]{\dimexpr#1-2\fboxsep-2\fboxrule}{\centering\scriptsize\texttt{\detokenize{#2}}\\not generated yet}}}}}}
+\input{numbers.tex}
+
+\title{DLR campus: a wind atlas for any direction,\\and a first wind-aware path planner}
+\author{Henry Delacroix}
+\institute{Politecnico di Milano, Multidisciplinary Project SWARM-LINK (wind track)}
+\date{26 November 2026}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\begin{center}\scriptsize\textit{\BuildStatus}\end{center}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{What was asked on 24 Nov, and what this deck covers}
+\small
+\textbf{Arthur's roadmap:} lookup table $\rightarrow$ cost function $\rightarrow$ trajectory planner
+(shortest path vs.\ wind-aware) $\rightarrow$ drag and energy $\rightarrow$ RF term $\rightarrow$ RL with the cost as reward.
+
+\medskip
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\textbf{Done for the DLR campus}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+  \item \textbf{Wind atlas}: \NDirs{} CFD directions on one mesh, wind at any $(x,y,z)$, any direction and speed.
+  \item \textbf{Validation} of every shortcut in the lookup (speed scaling, direction blending, convergence).
+  \item \textbf{Drone power and drag model} (Zeng et al.\ 2019) with wind, plus a battery model.
+  \item \textbf{Planner}: shortest vs.\ minimum-energy path on the atlas, \NPairs{} start--goal pairs per direction.
+\end{enumerate}
+\end{column}
+\begin{column}{0.47\textwidth}
+\textbf{Not done / open}
+\begin{itemize}\setlength{\itemsep}{2pt}
+  \item No comparison with measured wind yet (DLR station data pending).
+  \item No turbine in the DLR scene yet.
+  \item Turbulence ($k$) and RF are not in the cost yet.
+  \item RL: the cost is ready to be used as a reward (reward $=-$cost).
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Starting point: the mesh study fixed the mesh}
+\begin{columns}[T]
+\begin{column}{0.42\textwidth}\small
+Last week: 3 meshes (4 / 2 / 1\,m cells around the weather station), west wind.
+\begin{itemize}\setlength{\itemsep}{2pt}
+  \item At drone heights ($\geq 20$\,m above ground) the base mesh is within 1--2\,\% of the 1\,m mesh at most probes (worst: 10\,\% in a street canyon).
+  \item Near the ground in building wakes: up to 13\,\%.
+\end{itemize}
+\textbf{Decision:} build the atlas on the base mesh (1.19\,M cells, $\sim$30\,min per direction on a laptop), and quote this error band.
+\end{column}
+\begin{column}{0.56\textwidth}
+\centering\pic{\linewidth}{mesh_study_profiles.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Wind atlas: one mesh, many directions, one regular grid}
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}\small
+\begin{enumerate}\setlength{\itemsep}{3pt}
+  \item \textbf{One mesh.} The domain is a cylinder: a new direction only needs a new inlet/outlet split. No remeshing.
+  \item \textbf{One speed per direction (5\,m/s).} Reynolds independence: around sharp-edged buildings with rough ground the flow \emph{pattern} does not depend on speed, so $U\propto U_\mathrm{ref}$, $k\propto U_\mathrm{ref}^2$.
+  \item \textbf{30\,$^\circ$ steps}, solved in order of the EDMO 2020--2025 wind climate (SW: 23\,\% of hours, 58\,\% of the wind energy).
+  \item \textbf{Resampled once} onto $5\times5\times2.5$\,m (169$\times$161$\times$49): every consumer (planner, RF, AirSim) gets an $O(1)$ lookup in the same frame.
+  \item \textbf{Any direction}: linear blend of the two nearest solved directions.
+\end{enumerate}
+\end{column}
+\begin{column}{0.43\textwidth}\small
+\centering
+\begin{tabular}{@{}lr@{}}
+\toprule
+Step & Cost \\
+\midrule
+CFD, one direction (450 it, 8 cores) & \SolveMinutes\,min \\
+Resample to grid (pvpython) & $\sim$80\,s \\
+Blend a whole field & \FieldBlendMs\,ms \\
+Query 1000 points & \QueryThousandMs\,ms \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\footnotesize Convergence: every run's probes drift $<$\,\MaxDriftPct\,\% of $U_\mathrm{ref}$ over its last 50 iterations at drone heights.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{The atlas, 10\,m above ground: shelter (blue) and speed-up (red)}
+\centering\pic{0.92\textwidth}{atlas_maps_10m.png}
+\end{frame}
+
+\begin{frame}{The atlas, 30\,m above ground: wakes fade with height}
+\centering\pic{0.92\textwidth}{atlas_maps_30m.png}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Can we trust the shortcuts? Speed scaling and direction blending}
+\begin{columns}[T]
+\begin{column}{0.49\textwidth}\small
+\textbf{Speed scaling} (240\,$^\circ$ at 10\,m/s vs.\ $2\times$ the 5\,m/s run):\\
+RMS error \ReynoldsRmsTwenty\,\% of $U_\mathrm{ref}$ at 20\,m, \ReynoldsRmsTen\,\% at 10\,m.
+\pic{\linewidth}{atlas_reynolds.png}
+\end{column}
+\begin{column}{0.49\textwidth}\small
+\textbf{Direction blending}: hide a solved direction, predict it from its neighbours.\\
+\BlendSentence
+\pic{\linewidth}{atlas_loo.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Cost against accuracy: what each wind model buys}
+\small
+RMS vector error over the campus (air within 60\,m of a building), as a fraction of the 10\,m wind speed:
+\medskip
+
+\centering
+\input{tab_models.tex}
+
+\medskip
+\raggedright\footnotesize
+The empty-field log-law is what a planner would assume without any CFD. All errors are against our own RANS model (a model reference, not measured wind).
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Drone power and the drag function}
+\begin{columns}[T]
+\begin{column}{0.47\textwidth}\small
+Rotary-wing model of Zeng, Xu \& Zhang (IEEE TWC 2019), the standard one in UAV communications:
+\[
+P(V)=\underbrace{P_0\!\left(1+\tfrac{3V^2}{U_\mathrm{tip}^2}\right)}_{\text{blade profile}}
++\underbrace{P_i\Big(\sqrt{1+\tfrac{V^4}{4v_0^4}}-\tfrac{V^2}{2v_0^2}\Big)^{1/2}}_{\text{induced (lift)}}
++\underbrace{\tfrac12 d_0\rho sAV^3}_{\text{drag}\,\times\,V}
+\]
+\vspace{-1em}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item Wind enters through the \textbf{airspeed}: $V=|\mathbf v_g-\mathbf w|$.
+  \item Drag force $\mathbf D=-\tfrac12\rho\,(d_0sA)\,|\mathbf v_a|\,\mathbf v_a$.
+  \item Climb adds $W\dot z$; descent gets no credit.
+  \item Hover \HoverW\,W; cheapest cruise \BestJm\,J/m at \BestSpeed\,m/s (2\,kg reference UAV).
+\end{itemize}
+\end{column}
+\begin{column}{0.51\textwidth}
+\centering\pic{\linewidth}{energy_power_breakdown.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Wind changes both the cost per metre and the best speed}
+\begin{columns}[T]
+\begin{column}{0.58\textwidth}
+\centering\pic{\linewidth}{energy_per_metre_wind.png}
+\end{column}
+\begin{column}{0.4\textwidth}\small
+5\,m/s wind, drone free to choose its speed:
+\begin{itemize}\setlength{\itemsep}{2pt}
+  \item headwind: 11.9\,J/m (+34\,\%), best ground speed 15.8\,m/s;
+  \item tailwind: 6.9\,J/m ($-$22\,\%), best ground speed 21.6\,m/s.
+\end{itemize}
+Into a headwind the drone should fly \emph{faster through the air} (20.8\,m/s airspeed): time in the wind costs hover power.
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Does the battery's nonlinearity change the answer? (Stefano's question)}
+\begin{columns}[T]
+\begin{column}{0.62\textwidth}
+\centering\pic{\linewidth}{energy_battery_losses.png}
+\end{column}
+\begin{column}{0.36\textwidth}\small
+Equivalent-circuit LiPo pack (6S, 5\,Ah, $R_\mathrm{int}$, OCV curve): $I^2R$ losses grow with power.
+\begin{itemize}\setlength{\itemsep}{2pt}
+  \item Warm pack: losses $\approx$\,2\,\% of the energy; the optimal speed moves by only 0.2\,m/s.
+  \item Cold or aged pack at 20\,\% charge: losses up to 8\,\% at cruise, 19\,\% with aggressive power pulses.
+\end{itemize}
+\textbf{So:} minimising propulsion energy is enough for planning; the battery matters for low-charge, cold or aggressive flight.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Planner: shortest path vs.\ minimum-energy path}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}\small
+\textbf{Graph:} the atlas grid coarsened to 10\,m $\times$ 10\,m $\times$ 5\,m, \PlanNodes{} free nodes from 10 to 100\,m above ground, obstacles inflated by 5\,m, 26 neighbours per node.
+
+\medskip
+\textbf{Directed edges:} flying $i\to j$ into the wind costs more than $j\to i$.
+\[
+c_{ij}=\frac{P\big(|v_g\hat{\mathbf d}_{ij}-\mathbf w_{ij}|\big)}{v_g}\,\ell_{ij}\quad\text{[J]}
+\]
+\textbf{Solver:} Dijkstra (exact on the graph). Baseline: same graph, cost $=\ell_{ij}$.
+
+\medskip
+\textbf{Fair comparison:} both paths re-evaluated in the same wind, sampled every 2\,m.
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering\pic{\linewidth}{\PlanMapFile}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Planner results: how much energy does the wind-aware path save?}
+\centering\input{tab_plan.tex}
+
+\medskip
+\raggedright\small
+\PlanSentence
+\end{frame}
+
+% ---------------------------------------------------------------------------------------------
+\begin{frame}{Limits, next steps, and questions}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}\small
+\textbf{Limits}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item Steady RANS, neutral atmosphere: mean wind only, no gusts.
+  \item No validation against measured wind (DLR station data pending).
+  \item Invented flat terrain outside the original strip.
+  \item Planner: steady wind, quasi-steady power, no acceleration or turn costs.
+\end{itemize}
+\textbf{Next}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item Add turbulence ($\sqrt{k}$) as a risk term; add the RF term.
+  \item Wrap the cost as an RL reward (Gym-style environment) with Dijkstra as the optimal reference.
+  \item Run the same pipeline on the RF group's scenarios.
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}\small
+\textbf{Questions}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+  \item Which drone should the energy model represent (mass, size)? A real DLR platform?
+  \item Fausto's lookup and this atlas: same grid and file format for both scenes?
+  \item Flight envelope for the planner: altitude band, clearance, airfield restrictions?
+  \item Can we get the DLR weather-station data for a first validation?
+\end{enumerate}
+\end{column}
+\end{columns}
+\end{frame}
+
+\end{document}

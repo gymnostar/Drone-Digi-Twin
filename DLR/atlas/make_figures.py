@@ -93,20 +93,26 @@ def loo_plot():
     loo = rep.get("leave_one_out", {})
     if not loo:
         return None
-    hs = [f"{h:g}m" for h in V.HEIGHTS]
-    fig, ax = plt.subplots(figsize=(7, 3.8))
-    models = [("loglaw_no_buildings", "log-law, no buildings (no CFD)", "#999999"),
-              ("nearest_60deg", "nearest solved direction (60° gap)", "#e08a2c"),
-              ("blend_60deg", "linear blend of neighbours (60° gap)", "#2c6fbb")]
+    hs = ["10m", "20m", "40m", "60m"]
+    fig, ax = plt.subplots(figsize=(8, 4.2))
+    models = [("loglaw_no_buildings", "log-law, no buildings (no CFD)", "#b8b8b8"),
+              ("nearest_unrotated_60deg", "nearest solved run, as is", "#e8a35c"),
+              ("nearest_rotated_60deg", "nearest solved run, rotated", "#c96f1f"),
+              ("blend_linear_60deg", "linear blend of raw vectors", "#8fb3dd"),
+              ("blend_rotate_60deg", "rotate, then blend (atlas default)", "#2c6fbb")]
     w = 0.8 / len(models)
     for i, (key, lab, col) in enumerate(models):
         vals = [np.mean([loo[t][key][h]["rmse"] for t in loo]) for h in hs]
-        ax.bar(np.arange(len(hs)) + (i - 1) * w, vals, w, label=lab, color=col)
+        ax.bar(np.arange(len(hs)) + (i - (len(models) - 1) / 2) * w, vals, w, label=lab, color=col)
     ax.set_xticks(range(len(hs))); ax.set_xticklabels([h.replace("m", " m") for h in hs])
     ax.set_xlabel("height above ground"); ax.set_ylabel("RMS vector error / Uref")
     ax.set_title(f"Predicting a hidden direction (mean over {len(loo)} directions: "
                  f"{', '.join(str(t) for t in loo)}°) — campus columns")
-    ax.legend(fontsize=8); ax.grid(axis="y", alpha=0.3)
+    b30 = rep.get("blend_30deg_255", {})
+    if b30:
+        ax.plot(np.arange(len(hs)) + 2 * w, [b30["blend_rotate_30deg"][h]["rmse"] for h in hs], "k*", ms=10,
+                label="rotate+blend at the real 30° gap (255° held out)")
+    ax.legend(fontsize=7.5, ncol=2); ax.grid(axis="y", alpha=0.3)
     f = OUT / "atlas_loo.png"
     fig.tight_layout(); fig.savefig(f, bbox_inches="tight"); plt.close(fig)
     return f

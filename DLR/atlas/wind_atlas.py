@@ -10,9 +10,13 @@ How a query is answered (three approximations, each one tested in DLR/atlas/vali
    between grid points, trilinear interpolation.
 2. SPEED: Reynolds independence. U scales linearly with the 10 m reference speed and k with its
    square, so a 5 m/s run serves every speed. Checked against a 10 m/s run at 240 deg.
-3. DIRECTION: linear blend of the two nearest solved directions (30 deg apart). This smears
-   wakes that sit at different angles, so it is the weakest of the three; leave-one-out tests
-   (predict a solved direction from its two neighbours 60 deg apart) give an upper bound on its error.
+3. DIRECTION: blend of the two nearest solved directions (30 deg apart). Default method "rotate":
+   each neighbour's horizontal vectors are first rotated by the angle between its direction and the
+   requested one, then blended. Far from buildings this is exact (the free stream just turns);
+   near buildings it interpolates the local deflections. The plain "linear" blend of raw vectors
+   shrinks the free stream by cos(gap/2) (-3.4 % at 30 deg, -13 % at 60 deg), so it is kept only for
+   comparison. Wakes that sit at different angles still smear: that is the remaining error, measured
+   by leave-one-out tests and by the held-out 255 deg run.
 
 theta = meteorological FROM direction (deg clockwise from north); speed = wind at 10 m above
 ground upstream (what EDMO reports). Coordinates: case frame, x east, y north, z up (m).
@@ -22,6 +26,23 @@ import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 
 GRID_DIR = Path(__file__).resolve().parent / "grid.noindex"
+
+
+def signed_diff(a, b):
+    """Smallest signed angle a - b in degrees, in (-180, 180]."""
+    return (a - b + 180.0) % 360.0 - 180.0
+
+
+def rotate_horizontal(U, deg):
+    """Rotate the horizontal components of vectors U (..., 3) counter-clockwise by deg degrees.
+    Wind FROM theta flows towards math angle 270 - theta, so going from a field solved at theta_i
+    to theta means rotating by -(theta - theta_i)."""
+    a = np.radians(deg)
+    c, s = np.cos(a), np.sin(a)
+    out = U.copy()
+    out[..., 0] = c * U[..., 0] - s * U[..., 1]
+    out[..., 1] = s * U[..., 0] + c * U[..., 1]
+    return out
 
 
 class WindAtlas:
@@ -61,10 +82,16 @@ class WindAtlas:
         wb = ((theta - a) % 360) / span
         return [(a, 1 - wb), (b, wb)]
 
-    def field(self, theta, speed=5.0, var="U"):
+    def field(self, theta, speed=5.0, var="U", method="rotate"):
         """Whole-grid field for wind FROM theta at reference speed `speed` (m/s at 10 m).
-        var = "U" -> (nx, ny, nz, 3) m/s; var = "k" -> (nx, ny, nz) m^2/s^2. NaN inside solids."""
-        out = sum(w * self.runs[t][var] for t, w in self._weights(theta))
+        var = "U" -> (nx, ny, nz, 3) m/s; var = "k" -> (nx, ny, nz) m^2/s^2. NaN inside solids.
+        method = "rotate" (default) or "linear" (raw vector blend, for comparison only)."""
+        out = 0.0
+        for t, w in self._weights(theta):
+            F = self.runs[t][var]
+            if var == "U" and method == "rotate":
+                F = rotate_horizontal(F, -signed_diff(theta, t))
+            out = out + w * F
         return out * (speed if var == "U" else speed**2)
 
     def query(self, pts, theta, speed=5.0, var="U"):

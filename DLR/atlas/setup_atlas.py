@@ -32,9 +32,10 @@ NPROC = 8
 # 240: 23 %/58 %   210: 16 %/7 %   60: 8 %/5 %   180: 8 %/2 %   30: 7 %/3 %   150: 7 %/1 %
 # 90: 6 %/3 %   300: 4 %/3 %   0: 4 %/1 %   330: 4 %/2 %   120: 3 %/0.4 %   (270: 10 %/15 %, already
 # solved in the mesh study). The 10 m/s run tests Reynolds independence on the dominant sector.
-RUNS = [(240, 5), (210, 5), (60, 5), (240, 10), (180, 5), (30, 5), (150, 5), (90, 5),
-        (300, 5), (0, 5), (330, 5), (120, 5),
-        (255, 5)]   # 255 = VALIDATION ONLY: tests the real 30 deg blend (240 + 270) where it matters most
+RUNS = [(240, 5), (210, 5),
+        (255, 5), (240, 10),   # validation runs first: they only need 240 + 270, which are solved first
+        (60, 5), (180, 5), (30, 5), (150, 5), (90, 5), (300, 5), (0, 5), (330, 5), (120, 5)]
+# 255 = VALIDATION ONLY: tests the real 30 deg blend (240 + 270) where the wind blows most often.
 
 
 def name(theta, u):

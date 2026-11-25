@@ -20,7 +20,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from wind_atlas import WindAtlas  # noqa: E402
+from wind_atlas import WindAtlas, rotate_horizontal, signed_diff  # noqa: E402
 
 CASES = HERE / "cases.noindex"
 OUT = HERE / "results"
@@ -108,6 +108,12 @@ def errors(pred, true, mask, uref):
     return out
 
 
+def avg_err(preds, true, mask, uref=5.0):
+    """Mean over candidate predictions of the per-height error statistics (rmse, mean, p95)."""
+    es = [errors(p, true, mask, uref) for p in preds]
+    return {h: {k: float(np.mean([e[h][k] for e in es])) for k in ("rmse", "mean", "p95")} for h in es[0]}
+
+
 if __name__ == "__main__":
     ATLAS = WindAtlas()
     dirs = [int(d) for d in ATLAS.directions]
@@ -145,10 +151,10 @@ if __name__ == "__main__":
             true = ATLAS.field(th, 5.0)
             blend = sub.field(th, 5.0)
             loo[th] = {
-                "blend_60deg": errors(blend, true, mask, 5.0),
-                "nearest_60deg": {h: {"rmse": 0.5 * (errors(sub.field(a, 5.0), true, mask, 5.0)[h]["rmse"]
-                                                     + errors(sub.field(b, 5.0), true, mask, 5.0)[h]["rmse"])}
-                                  for h in [f"{x:g}m" for x in HEIGHTS]},
+                "blend_rotate_60deg": errors(sub.field(th, 5.0), true, mask, 5.0),
+                "blend_linear_60deg": errors(sub.field(th, 5.0, method="linear"), true, mask, 5.0),
+                "nearest_rotated_60deg": avg_err([rotate_horizontal(sub.field(n, 5.0), -signed_diff(th, n)) for n in (a, b)], true, mask),
+                "nearest_unrotated_60deg": avg_err([sub.field(n, 5.0) for n in (a, b)], true, mask),
                 "loglaw_no_buildings": errors(loglaw_field(ATLAS, th, 5.0), true, mask, 5.0),
             }
     report["leave_one_out"] = loo
@@ -158,10 +164,10 @@ if __name__ == "__main__":
         sub = WindAtlas(exclude=(255,))
         true = ATLAS.field(255, 5.0)
         report["blend_30deg_255"] = {
-            "blend_30deg": errors(sub.field(255, 5.0), true, mask, 5.0),
-            "nearest_30deg": {h: {"rmse": 0.5 * (errors(sub.field(240, 5.0), true, mask, 5.0)[h]["rmse"]
-                                                 + errors(sub.field(270, 5.0), true, mask, 5.0)[h]["rmse"])}
-                              for h in [f"{x:g}m" for x in HEIGHTS]},
+            "blend_rotate_30deg": errors(sub.field(255, 5.0), true, mask, 5.0),
+            "blend_linear_30deg": errors(sub.field(255, 5.0, method="linear"), true, mask, 5.0),
+            "nearest_rotated_30deg": avg_err([rotate_horizontal(sub.field(n, 5.0), -signed_diff(255, n)) for n in (240, 270)], true, mask),
+            "nearest_unrotated_30deg": avg_err([sub.field(n, 5.0) for n in (240, 270)], true, mask),
             "loglaw_no_buildings": errors(loglaw_field(ATLAS, 255, 5.0), true, mask, 5.0),
         }
 
