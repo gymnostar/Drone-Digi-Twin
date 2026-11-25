@@ -21,7 +21,12 @@ def pct(x, nd=1):
 dirs = [d for d in val.get("directions", []) if d % 30 == 0]
 N["NDirs"] = str(len(dirs))
 conv = val.get("convergence", {})
-drifts = [c["drift_last50_over_Uref_probes_ge10m"] for c in conv.values() if "drift_last50_over_Uref_probes_ge10m" in c]
+extf = ROOT / "DLR/atlas/results/extension.json"
+ext = json.loads(extf.read_text()) if extf.exists() else {}
+drifts = [c["drift_last50_over_Uref_probes_ge10m"] for k, c in conv.items()
+          if "drift_last50_over_Uref_probes_ge10m" in c and k.split(" ")[0] not in ext]
+N["ExtSentence"] = ("The run with the worst drift (%s$^\\circ$) was continued by 200 iterations: the field changed by %.1f\\,\\%% RMS of $U_\\mathrm{ref}$ at 20\\,m above ground."
+                    % (next(iter(ext)).split("_")[0][1:].lstrip("0") or "0", 100 * next(iter(ext.values()))["20m"]["rms"])) if ext else ""
 N["MaxDriftPct"] = f"{100 * max(drifts):.2f}" if drifts else "--"
 tm = val.get("timing", {})
 N["FieldBlendMs"] = f"{1e3 * tm['field_blend_s']:.0f}" if tm else "--"

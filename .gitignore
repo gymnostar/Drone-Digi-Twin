@@ -53,3 +53,7 @@ __pycache__/
 /DLR/atlas/run_atlas.out
 .pytest_cache/
 /DLR/planner/results/cache/
+
+/DLR/atlas/*.out
+/DLR/atlas/*.log
+/DLR/slides/*/build.log

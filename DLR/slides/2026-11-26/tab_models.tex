@@ -1,0 +1,13 @@
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Model & Cost per new direction & 10\,m & 20\,m & 40\,m & 60\,m \\
+\midrule
+Empty-field log-law (no CFD) & 0 & 44.0\,\% & 24.2\,\% & 5.6\,\% & 4.3\,\% \\
+Nearest solved run, as is (60$^\circ$ gap) & $\mu$s & 41.7\,\% & 54.8\,\% & 67.9\,\% & 73.3\,\% \\
+Nearest solved run, rotated (60$^\circ$ gap) & $\mu$s & 20.0\,\% & 15.8\,\% & 5.1\,\% & 2.6\,\% \\
+Linear blend of raw vectors (60$^\circ$ gap) & $\mu$s & 16.5\,\% & 18.1\,\% & 17.9\,\% & 19.0\,\% \\
+\textbf{Rotate, then blend} (60$^\circ$ gap) & $\mu$s & 14.1\,\% & 12.0\,\% & 3.7\,\% & 1.6\,\% \\
+\textbf{Rotate, then blend} (30$^\circ$, real spacing) & $\mu$s & 7.1\,\% & 7.5\,\% & 2.3\,\% & 0.6\,\% \\
+Full CFD for that direction & 25--35 min & 0.0\,\% & 0.0\,\% & 0.0\,\% & 0.0\,\% \\
+\bottomrule
+\end{tabular}

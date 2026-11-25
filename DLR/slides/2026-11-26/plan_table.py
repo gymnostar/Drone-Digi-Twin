@@ -19,7 +19,7 @@ def build(plan):
     t = ["\\footnotesize\\begin{tabular}{@{}rr rrr rrr@{}}", "\\toprule",
          " & & \\multicolumn{3}{c}{typical wind (EDMO mean)} & \\multicolumn{3}{c}{8\\,m/s} \\\\",
          "\\cmidrule(lr){3-5}\\cmidrule(l){6-8}",
-         "from & hours & $U_{10}$ & 10\\,m/s & best speed & 10\\,m/s & best speed & p90 \\\\",
+         "from & reports & $U_{10}$ & 10\\,m/s & best speed & 10\\,m/s & best speed & p90 \\\\",
          " & (\\%) & (m/s) & \\multicolumn{2}{c}{energy saved (\\%)} & \\multicolumn{2}{c}{energy saved (\\%)} & best \\\\", "\\midrule"]
     edmo = {0: 3.6, 30: 7.1, 60: 8.3, 90: 6.1, 120: 3.1, 150: 6.8, 180: 8.2, 210: 15.8, 240: 22.9, 270: 10.3, 300: 4.1, 330: 3.7}
     for th in sorted(by_dir):
@@ -49,7 +49,8 @@ def build(plan):
     if "effect_route_given_best_speed_pct" in ew:
         s += (f"\\textbf{{Reading:}} the wind-aware \\emph{{route}} saves about {ew['effect_route_given_best_speed_pct']:.0f}\\,\\% at typical "
               f"winds and {es['effect_route_given_best_speed_pct']:.0f}\\,\\% at 8\\,m/s (some trips 15--25\\,\\%). Flying at the right \\emph{{speed}} "
-              f"is worth more ({ew['effect_wind_speed_adaptation_pct']:.0f}\\,\\% from adapting it to the wind, {ew['effect_speed_choice_still_air_pct']:.0f}\\,\\% "
-              "from leaving 10\\,m/s), and the \\emph{direction} of a leg changes its cost by 40--70\\,\\%. So the cost function pays off mostly in "
+              f"is worth more ({ew['effect_wind_speed_adaptation_pct']:.0f}--{es['effect_wind_speed_adaptation_pct']:.0f}\\,\\% from adapting it to the wind, "
+              f"{ew['effect_speed_choice_still_air_pct']:.0f}\\,\\% from leaving 10\\,m/s), and the \\emph{{direction}} of a leg changes its cost by "
+              f"{ew['effect_direction_asym_best_pct']:.0f}--{es['effect_direction_asym_best_pct']:.0f}\\,\\% (A to B vs.\\ back). So the cost function pays off mostly in "
               "speed scheduling and leg ordering; the route matters on windy days and in the shelter of buildings.")
     return "\n".join(t) + "\n", "\n".join(lv) + "\n", s
