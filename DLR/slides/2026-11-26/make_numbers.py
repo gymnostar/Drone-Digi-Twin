@@ -80,8 +80,9 @@ maps = sorted((ROOT / "DLR/planner/fig").glob("plan_map_*.png"))
 pref = [m for m in maps if m.stem.endswith("_240")] or maps
 N["PlanMapFile"] = pref[0].name if pref else "plan_map_240.png"
 import plan_table  # noqa: E402  (written after the planner's summary format is known)
-tab_plan, sentence = plan_table.build(plan)
+tab_plan, tab_levers, sentence = plan_table.build(plan)
 (HERE / "tab_plan.tex").write_text(tab_plan)
+(HERE / "tab_levers.tex").write_text(tab_levers)
 N["PlanSentence"] = sentence
 
 # ---- energy (fixed numbers from DLR/planner/energy.py) -----------------------------------------

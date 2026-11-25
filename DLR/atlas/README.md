@@ -18,7 +18,7 @@ u = atlas.query([[0, 0, 60]], 250, 6.0)      # (N, 3) at arbitrary points, trili
 |---|---|---|---|
 | 1. One mesh | All runs use the mesh-study base mesh: 16 m background, 4 m over campus, 2 m at walls; 1.19 M cells. Only the inlet/outlet split of the cylinder and the inflow direction change. | The mesh study (`DLR/meshStudy`) shows this mesh is within ~1–2 % of the 1 m mesh at ≥ 20 m above ground at most probes; the worst probe (in a street canyon) is 10 %. | `DLR/meshStudy/report` |
 | 2. One speed | Every direction is solved at 5 m/s, then rescaled: U ∝ speed, k ∝ speed². | Reynolds independence: around sharp-edged buildings, with rough walls (z0), the flow pattern doesn't depend on speed. | One extra 10 m/s run at 240° |
-| 3. Direction blending | Between two solved directions (30° apart), linear blend of the two fields. | Cheap and smooth. It can smear wakes, so it's the weakest step. | Leave-one-out (60° gaps) + one extra 255° run (the real 30° gap, in the dominant sector) |
+| 3. Direction blending | Between two solved directions (30° apart): rotate each field's horizontal vectors to the requested direction, then blend linearly. | The far field is then exact (blending raw vectors shrinks it by cos(gap/2)). Near buildings it can smear wakes, so it's the weakest step. | Leave-one-out (60° gaps) + one extra 255° run (the real 30° gap, in the dominant sector) |
 
 Each run is resampled **once** onto a regular grid: x −400..440 and y −360..440 every 5 m, z 10..130 m (absolute) every 2.5 m. Points inside buildings or below the terrain are NaN, and `valid` is the air mask. A regular grid gives every consumer (planner, RF side, AirSim) an O(1) lookup in the same frame. The CFD mesh is unstructured, so it can't do that.
 
@@ -32,7 +32,7 @@ The order follows the EDMO 2020–2025 wind climate (share of hours / share of w
 | wind energy % | 57.7 | 15.1 | 7.3 | 5.1 | 1.5 | 3.2 | 1.2 | 2.6 | 2.8 | 1.4 | 1.7 | 0.4 |
 
 - 270° is the mesh study's coarse run (1000 iterations).
-- The others run 450 SIMPLE iterations on 8 cores (~30 min each). The mesh study showed every probe within 0.5 % of its final value by iteration ~360, and `validate_atlas.py` re-checks the probe drift of every run.
+- 240, 210, 255 and the 10 m/s run use 450 SIMPLE iterations; the remaining directions use 350 (cut overnight when the machine was busy: the 240 run's drift at drone heights was 0.09 % of Uref per 50 iterations). The mesh study showed every probe within 0.5 % of its final value by iteration ~360, and `validate_atlas.py` re-checks the probe drift of every run.
 - Validation-only runs: 240° at 10 m/s (Reynolds check) and 255° at 5 m/s (blending check).
 
 ## Files

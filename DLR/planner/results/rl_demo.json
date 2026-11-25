@@ -1,0 +1,60 @@
+{
+  "wind": {
+    "theta_deg": 240.0,
+    "speed_mps": 8.0
+  },
+  "layer_z_m": 40.0,
+  "stride": [
+    8,
+    8,
+    2
+  ],
+  "start_xyz": [
+    240.0,
+    260.0,
+    40.0
+  ],
+  "goal_xyz": [
+    -180.0,
+    40.0,
+    40.0
+  ],
+  "n_layer_nodes": 460,
+  "optimal_energy_J": 7374.5502661573355,
+  "shortest_path_energy_J": 8222.982443844388,
+  "shortest_path_excess_pct": 11.504866697846051,
+  "final_gap_to_oracle_pct": 0.0,
+  "episodes": 1500,
+  "wall_seconds": 46.7,
+  "tabular_q_learning": {
+    "final_greedy_energy_J": 7374.5502661573355,
+    "final_gap_to_oracle_pct": 0.0,
+    "reached_goal": true,
+    "episodes": 1500,
+    "episodes_to_within_5pct": 650,
+    "episodes_to_within_1pct": 650,
+    "episodes_to_exact": 675,
+    "train_seconds": 23.1
+  },
+  "tabular_q_learning_with_potential_shaping": {
+    "final_greedy_energy_J": 7374.5502661573355,
+    "final_gap_to_oracle_pct": 0.0,
+    "reached_goal": true,
+    "episodes": 1500,
+    "episodes_to_within_5pct": 375,
+    "episodes_to_within_1pct": 375,
+    "episodes_to_exact": 375,
+    "train_seconds": 17.8
+  },
+  "hyperparameters": {
+    "alpha": 0.5,
+    "gamma": 1.0,
+    "eps_start": 0.2,
+    "eps_end": 0.02,
+    "eps_decay_episodes": 1000,
+    "q_init": 0.0,
+    "max_steps": 120,
+    "seed": 0
+  },
+  "note": "gap = (greedy energy - optimal energy) / optimal energy; optimal is exact Dijkstra on the same graph. Headline numbers are the plain agent (no shaping)."
+}

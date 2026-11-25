@@ -2,6 +2,9 @@
 # Thursday 26 Nov deck: numbers from the JSON results -> numbers.tex -> slides.pdf
 #   sh DLR/slides/2026-11-26/build.sh
 cd "$(dirname "$0")" || exit 1
+LOCK=/tmp/dlr-slides-2026-11-26.lock            # the overnight auto-rebuild may run at the same time
+until mkdir "$LOCK" 2>/dev/null; do sleep 2; done
+trap 'rmdir "$LOCK"' EXIT
 REPO=$(cd ../../.. && pwd)
 PATH="/Library/TeX/texbin:$PATH"; export PATH
 "$REPO/.venv/bin/python" make_numbers.py || exit 1

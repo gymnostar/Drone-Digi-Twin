@@ -1,51 +1,55 @@
-"""Planner table + one-paragraph reading for slides.tex, from DLR/planner/results/plan_summary.json.
-Uses the 'fair' comparison (straight-line shortest vs energy-aware-smoothed energy path) when present,
-otherwise falls back to the raw graph paths."""
+"""Planner tables and one-paragraph reading for slides.tex, from DLR/planner/results/plan_summary.json.
+build(plan) -> (tab_plan: one row per direction, tab_levers: effect decomposition, sentence)."""
 
 
-def _mode(v, base):
-    for prefix in ("fair_", "raw_"):
-        if prefix + base in v:
-            return prefix + base, prefix.rstrip("_")
-    return None, None
+def _label(per):
+    return "fair" if any(k.startswith("fair_") for v in per.values() for k in v) else "raw"
 
 
 def build(plan):
     per = plan.get("per_direction", {})
     if not per:
-        return "\\textit{planner results not available yet}\n", "--"
-    rows, label = [], None
-    for key in sorted(per, key=lambda k: (k.split("_")[1] != "edmo", int(k.split("_")[0]))):
-        v = per[key]
+        miss = "\\textit{planner results not available yet}\n"
+        return miss, miss, "--"
+    lab = _label(per)
+    by_dir = {}
+    for key, v in per.items():
         th, kind = key.split("_")
-        mb, label = _mode(v, "best")
-        mf, _ = _mode(v, "fix10")
-        if not mb:
+        by_dir.setdefault(int(th), {})[kind] = v
+    t = ["\\footnotesize\\begin{tabular}{@{}rr rrr rrr@{}}", "\\toprule",
+         " & & \\multicolumn{3}{c}{typical wind (EDMO mean)} & \\multicolumn{3}{c}{8\\,m/s} \\\\",
+         "\\cmidrule(lr){3-5}\\cmidrule(l){6-8}",
+         "from & hours & $U_{10}$ & 10\\,m/s & best speed & 10\\,m/s & best speed & p90 \\\\",
+         " & (\\%) & (m/s) & \\multicolumn{2}{c}{energy saved (\\%)} & \\multicolumn{2}{c}{energy saved (\\%)} & best \\\\", "\\midrule"]
+    edmo = {0: 3.6, 30: 7.1, 60: 8.3, 90: 6.1, 120: 3.1, 150: 6.8, 180: 8.2, 210: 15.8, 240: 22.9, 270: 10.3, 300: 4.1, 330: 3.7}
+    for th in sorted(by_dir):
+        e, s = by_dir[th].get("edmo"), by_dir[th].get("strong")
+        if not e or not s:
             continue
-        b, f = v[mb], v[mf]
-        rows.append(f"{th}$^\\circ$ & {v['wind_speed']:.1f} & {f['save_mean']:.1f} & {b['save_mean']:.1f} & "
-                    f"{b['save_median']:.1f} & {b['save_p90']:.1f} & {b['extra_len_mean']:.1f} \\\\")
-    w = plan.get("weighted", {})
-    t = ["\\footnotesize\\begin{tabular}{@{}lrrrrrr@{}}", "\\toprule",
-         " & & \\multicolumn{4}{c}{energy saved vs.\\ shortest path (\\%)} & \\\\",
-         "\\cmidrule(lr){3-6}",
-         "Wind from & $U_{10}$ (m/s) & fixed 10\\,m/s & best speed & median & p90 & extra length (\\%) \\\\",
-         "\\midrule"]
-    t += rows
-    t.append("\\midrule")
-    for kind, name in (("edmo", "climate-weighted, EDMO speeds"), ("strong", "climate-weighted, 8\\,m/s")):
-        e = w.get(kind, {}).get("expected_save_pct", {})
-        kb = f"{label}_best" if f"{label}_best" in e else None
-        kf = f"{label}_fix10" if f"{label}_fix10" in e else None
-        if kb:
-            t.append(f"\\multicolumn{{2}}{{@{{}}l}}{{{name}}} & {e[kf]:.1f} & {e[kb]:.1f} & & & \\\\")
+        f = lambda v, k: f"{v[f'{lab}_{k}']['save_mean']:.1f}"
+        t.append(f"{th}$^\\circ$ & {edmo.get(th, 0):.1f} & {e['wind_speed']:.1f} & {f(e, 'fix10')} & {f(e, 'best')} & "
+                 f"{f(s, 'fix10')} & {f(s, 'best')} & {s[f'{lab}_best']['save_p90']:.0f} \\\\")
     t += ["\\bottomrule", "\\end{tabular}"]
+    w = plan.get("weighted", {})
+    ew, es = w.get("edmo", {}).get("expected_save_pct", {}), w.get("strong", {}).get("expected_save_pct", {})
+    lv = ["\\small\\begin{tabular}{@{}lrr@{}}", "\\toprule",
+          "Lever (climate-weighted, \\% of energy) & typical & 8\\,m/s \\\\", "\\midrule"]
+    if "effect_wind_speed_adaptation_pct" in ew:
+        rows = [("efficient speed, not wind: 18.3 vs.\\ 10\\,m/s, still air", "effect_speed_choice_still_air_pct", 0),
+                ("wind-adaptive speed: best per segment vs.\\ 18.3\\,m/s", "effect_wind_speed_adaptation_pct", 1),
+                ("wind-aware route, both at best speed", "effect_route_given_best_speed_pct", 1),
+                ("wind-aware route, fixed 10\\,m/s", "effect_route_only_pct", 1),
+                ("direction of travel: A$\\to$B vs.\\ B$\\to$A, same path", "effect_direction_asym_best_pct", 0)]
+        for n, k, nd in rows:
+            lv.append(f"{n} & {ew[k]:.{nd}f} & {es[k]:.{nd}f} \\\\")
+    lv += ["\\bottomrule", "\\end{tabular}"]
     ndir = len(plan.get("directions_available", []))
-    cmp = ("straight line vs.\\ energy path with energy-aware smoothing" if label == "fair"
-           else "raw graph paths (both on the 26-neighbour grid)")
-    s = (f"{plan.get('n_pairs', '--')} random start--goal pairs over the campus ($\\geq$\\,250\\,m apart), both legs, "
-         f"{ndir} wind directions. Comparison: {cmp}.\n\n\\medskip\n"
-         "\\textbf{Reading:} at typical winds the wind-aware \\emph{route} saves a few per cent; at 8\\,m/s it saves more, "
-         "with a long tail of trips that save 15--25\\,\\%. Choosing the \\emph{speed} for the local wind adds more "
-         "than choosing the route. The direction of travel matters most: the same straight path costs far more upwind than downwind.")
-    return "\n".join(t) + "\n", s
+    s = (f"{plan.get('n_pairs', '--')} random start--goal pairs ($\\geq$\\,250\\,m apart, both legs), {ndir} wind directions. "
+         "Shortest path (smoothed) vs.\\ energy path (smoothed only where it lowers energy), both re-evaluated in the same wind. ")
+    if "effect_route_given_best_speed_pct" in ew:
+        s += (f"\\textbf{{Reading:}} the wind-aware \\emph{{route}} saves about {ew['effect_route_given_best_speed_pct']:.0f}\\,\\% at typical "
+              f"winds and {es['effect_route_given_best_speed_pct']:.0f}\\,\\% at 8\\,m/s (some trips 15--25\\,\\%). Flying at the right \\emph{{speed}} "
+              f"is worth more ({ew['effect_wind_speed_adaptation_pct']:.0f}\\,\\% from adapting it to the wind, {ew['effect_speed_choice_still_air_pct']:.0f}\\,\\% "
+              "from leaving 10\\,m/s), and the \\emph{direction} of a leg changes its cost by 40--70\\,\\%. So the cost function pays off mostly in "
+              "speed scheduling and leg ordering; the route matters on windy days and in the shelter of buildings.")
+    return "\n".join(t) + "\n", "\n".join(lv) + "\n", s
