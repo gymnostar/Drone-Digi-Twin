@@ -18,6 +18,10 @@ Henry's work on the DLR scene (`dlr_site_*_mm(1).stl` in the repo root). The sit
 | `Open Wind View.command` | Double-click on macOS to open that view in ParaView 6.2. |
 | `wind-data/` | 2016–2025 wind reports from the EDMO airfield (IEM archive), with fetch and summary scripts. See its README. |
 | `results/` | Saved pictures. |
+| `meshStudy/` | Mesh-independence study (4/2/1 m meshes, report, slides). |
+| `atlas/` | **Wind atlas**: 12 wind directions on the mesh-study mesh, resampled to a 5 m grid; lookup for any direction and speed (`wind_atlas.py`) and its validation. See [atlas/README.md](atlas/README.md). |
+| `planner/` | **Drone energy and battery model, wind-aware path planner, RL environment**. See [PLANNER.md](planner/PLANNER.md), [ENERGY_MODEL.md](planner/ENERGY_MODEL.md), [RL_ENV.md](planner/RL_ENV.md). |
+| `slides/2026-11-26/` | Thursday deck (`sh build.sh`, numbers generated from the results). |
 
 ## How to run
 
@@ -61,5 +65,5 @@ It takes about 10 min to mesh and 50 min to solve on an Intel MacBook (16 GB), f
 ## Not done yet / open
 
 - **No validation yet.** EDMO is the inflow reference. The comparison point would be the DLR weather station inside the campus (see `wind-data/README.md`), but its data is only published as plots and stops in October 2024. We need the raw data.
-- **No mesh study yet.** Run coarse, medium and fine meshes, and check that the result barely changes.
+- Mesh study done (17 Nov 2026, `meshStudy/`); wind atlas and planner done overnight 24–25 Nov 2026.
 - **No turbine yet.** It's planned after validation. We still need to choose the model, the position and a reference for its wake.
