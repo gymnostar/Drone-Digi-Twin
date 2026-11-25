@@ -33,11 +33,11 @@ def arrow(ax, theta, x=0.1, y=0.88, L=0.12):
 
 def maps(atlas, h=30.0):
     V.ATLAS = atlas
-    dirs = list(atlas.directions)
+    dirs = [d for d in atlas.directions if round(d) % 30 == 0]   # 255 is validation-only
     n = len(dirs)
     cols = 4 if n > 4 else n
     rows = int(np.ceil(n / cols))
-    fig, axs = plt.subplots(rows, cols, figsize=(3.1 * cols, 3.0 * rows + 0.4), squeeze=False)
+    fig, axs = plt.subplots(rows, cols, figsize=(3.0 * cols + 0.8, 2.75 * rows + 0.5), squeeze=False, constrained_layout=True)
     bld = (atlas.ground() - atlas.terrain()) > 3.0
     ustar = V.KAPPA * 5.0 / np.log((V.ZREF + V.Z0) / V.Z0)
     free = ustar / V.KAPPA * np.log((h + V.Z0) / V.Z0)
@@ -55,10 +55,10 @@ def maps(atlas, h=30.0):
         arrow(ax, th)
     for ax in list(axs.flat)[n:]:
         ax.axis("off")
-    cb = fig.colorbar(im, ax=axs, shrink=0.8, pad=0.01)
+    cb = fig.colorbar(im, ax=axs, shrink=0.7, pad=0.01)
     cb.set_label(f"|U| / free-stream |U| at {h:g} m above ground")
     fig.suptitle(f"DLR campus wind atlas: speed-up (red) and shelter (blue) {h:g} m above ground, "
-                 f"steady RANS k-ε, 5 m/s at 10 m", y=0.995)
+                 f"steady RANS k-ε, 5 m/s at 10 m")
     f = OUT / f"atlas_maps_{h:g}m.png"
     fig.savefig(f, bbox_inches="tight"); plt.close(fig)
     return f
